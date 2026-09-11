@@ -46,7 +46,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .badge {
@@ -59,6 +65,18 @@
       border: 1px solid rgba(0, 229, 153, 0.25);
       padding: 4px 10px;
       border-radius: 6px;
+    }
+
+    .btn-back {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-sub);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: none;
     }
 
     .lang-switcher {
@@ -86,18 +104,129 @@
       color: #061017;
     }
 
+    /* Экраны */
+    .view {
+      display: none;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Главный экран (Hub) */
+    .hero-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .hero-card h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .hero-card p {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--emerald);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-sub);
+      margin: 18px 4px 10px;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .project-card h3 {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .project-card p {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-sub);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* Экран скоринга */
     header {
       margin-bottom: 20px;
       text-align: left;
     }
 
-    h1 {
+    header h2 {
       font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.4px;
     }
 
-    p.subtitle {
+    header p.subtitle {
       font-size: 13px;
       color: var(--text-sub);
       margin-top: 4px;
@@ -241,7 +370,8 @@
       color: #4b5568;
     }
 
-    .btn-submit {
+    /* Кнопки действий */
+    .btn-action {
       width: 100%;
       padding: 16px;
       border-radius: 14px;
@@ -252,10 +382,10 @@
       border: none;
       cursor: pointer;
       box-shadow: 0 6px 20px rgba(0, 229, 153, 0.25);
-      transition: opacity 0.15s;
+      transition: opacity 0.15s, transform 0.15s;
     }
 
-    .btn-submit:active {
+    .btn-action:active {
       opacity: 0.85;
       transform: scale(0.99);
     }
@@ -265,7 +395,10 @@
 
 <div class="container">
   <div class="top-bar">
-    <div class="badge">Open Hall Community</div>
+    <div class="nav-left">
+      <button class="btn-back" id="btnBack" onclick="showScreen('home')">Назад</button>
+      <div class="badge">Open Hall Community</div>
+    </div>
     <div class="lang-switcher">
       <button class="lang-btn active" onclick="setLanguage('ru')">RU</button>
       <button class="lang-btn" onclick="setLanguage('en')">EN</button>
@@ -274,73 +407,113 @@
     </div>
   </div>
 
-  <header>
-    <h1 id="t_title">Рецензия проекта</h1>
-    <p class="subtitle" id="t_subtitle">Оценка от участников сообщества по 5 критериям</p>
-  </header>
+  <!-- ГЛАВНЫЙ ЭКРАН (HOME) -->
+  <div id="screen-home" class="view active">
+    <div class="hero-card">
+      <h1 id="t_home_title">Платформа открытых рецензий</h1>
+      <p id="t_home_desc">Оценивайте медиа, веб-сервисы и авторские проекты. Каждая рецензия формирует объективный рейтинг сообщества Open Hall.</p>
+      
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-val">5</span>
+          <span class="stat-lbl" id="t_stat1">критериев</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">1–10</span>
+          <span class="stat-lbl" id="t_stat2">шкала</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">100%</span>
+          <span class="stat-lbl" id="t_stat3">комьюнити</span>
+        </div>
+      </div>
+    </div>
 
-  <div class="score-banner">
-    <div class="score-left">
-      <span id="t_scoreLabel">Вердикт участников</span>
-      <div id="verdict" class="score-verdict">Одобрено сообществом</div>
+    <div class="section-title" id="t_home_current_label">Текущий проект на оценке</div>
+
+    <div class="project-card">
+      <h3 id="project_name">Open Hall Hub</h3>
+      <p id="t_proj_desc">Интерактивная экосистема для аудита, скоринга и продвижения независимых продуктов и креаторов.</p>
+      <div class="project-tags">
+        <span class="tag">Telegram App</span>
+        <span class="tag">Community Scoring</span>
+        <span class="tag">Web3 / Media</span>
+      </div>
     </div>
-    <div class="score-right">
-      <div id="totalScore" class="big-num">7.0</div>
-      <div class="max-num">/ 10</div>
-    </div>
+
+    <button class="btn-action" id="btnStartScore" onclick="showScreen('scoring')">Перейти к оценке</button>
   </div>
 
-  <div class="criteria-card">
-    <div class="crit-header">
-      <span class="crit-title" id="t_c1_title">1. Концепция и новизна</span>
-      <span id="val1" class="crit-val">7</span>
+  <!-- ЭКРАН СКОРИНГА (SCORING) -->
+  <div id="screen-scoring" class="view">
+    <header>
+      <h2 id="t_score_title">Рецензия проекта</h2>
+      <p class="subtitle" id="t_score_subtitle">Оценка от участников сообщества по 5 критериям</p>
+    </header>
+
+    <div class="score-banner">
+      <div class="score-left">
+        <span id="t_scoreLabel">Вердикт участников</span>
+        <div id="verdict" class="score-verdict">Одобрено сообществом</div>
+      </div>
+      <div class="score-right">
+        <div id="totalScore" class="big-num">7.0</div>
+        <div class="max-num">/ 10</div>
+      </div>
     </div>
-    <div class="crit-desc" id="t_c1_desc">Оригинальность замысла и отличие от того, что уже есть на рынке.</div>
-    <input type="range" id="c1" min="1" max="10" value="7">
-  </div>
 
-  <div class="criteria-card">
-    <div class="crit-header">
-      <span class="crit-title" id="t_c2_title">2. Визуал и удобство</span>
-      <span id="val2" class="crit-val">7</span>
+    <div class="criteria-card">
+      <div class="crit-header">
+        <span class="crit-title" id="t_c1_title">1. Концепция и новизна</span>
+        <span id="val1" class="crit-val">7</span>
+      </div>
+      <div class="crit-desc" id="t_c1_desc">Оригинальность замысла и отличие от того, что уже есть на рынке.</div>
+      <input type="range" id="c1" min="1" max="10" value="7">
     </div>
-    <div class="crit-desc" id="t_c2_desc">Вкус, оформление, аккуратность и насколько приятно этим пользоваться.</div>
-    <input type="range" id="c2" min="1" max="10" value="7">
-  </div>
 
-  <div class="criteria-card">
-    <div class="crit-header">
-      <span class="crit-title" id="t_c3_title">3. Интерес аудитории</span>
-      <span id="val3" class="crit-val">7</span>
+    <div class="criteria-card">
+      <div class="crit-header">
+        <span class="crit-title" id="t_c2_title">2. Визуал и удобство</span>
+        <span id="val2" class="crit-val">7</span>
+      </div>
+      <div class="crit-desc" id="t_c2_desc">Вкус, оформление, аккуратность и насколько приятно этим пользоваться.</div>
+      <input type="range" id="c2" min="1" max="10" value="7">
     </div>
-    <div class="crit-desc" id="t_c3_desc">Насколько проект вовлекает людей и вызывает желание делиться с друзьями.</div>
-    <input type="range" id="c3" min="1" max="10" value="7">
-  </div>
 
-  <div class="criteria-card">
-    <div class="crit-header">
-      <span class="crit-title" id="t_c4_title">4. Уровень готовности</span>
-      <span id="val4" class="crit-val">7</span>
+    <div class="criteria-card">
+      <div class="crit-header">
+        <span class="crit-title" id="t_c3_title">3. Интерес аудитории</span>
+        <span id="val3" class="crit-val">7</span>
+      </div>
+      <div class="crit-desc" id="t_c3_desc">Насколько проект вовлекает людей и вызывает желание делиться с друзьями.</div>
+      <input type="range" id="c3" min="1" max="10" value="7">
     </div>
-    <div class="crit-desc" id="t_c4_desc">Это уже рабочий продукт/материал или пока только черновой набросок?</div>
-    <input type="range" id="c4" min="1" max="10" value="7">
-  </div>
 
-  <div class="criteria-card">
-    <div class="crit-header">
-      <span class="crit-title" id="t_c5_title">5. Потенциал масштаба</span>
-      <span id="val5" class="crit-val">7</span>
+    <div class="criteria-card">
+      <div class="crit-header">
+        <span class="crit-title" id="t_c4_title">4. Уровень готовности</span>
+        <span id="val4" class="crit-val">7</span>
+      </div>
+      <div class="crit-desc" id="t_c4_desc">Это уже рабочий продукт/материал или пока только черновой набросок?</div>
+      <input type="range" id="c4" min="1" max="10" value="7">
     </div>
-    <div class="crit-desc" id="t_c5_desc">Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.</div>
-    <input type="range" id="c5" min="1" max="10" value="7">
-  </div>
 
-  <div class="comment-card">
-    <label for="comment" id="t_commentLabel">Заметка к оценке (необязательно)</label>
-    <textarea id="comment" placeholder="В чем главные плюсы и что авторам стоит доработать?"></textarea>
-  </div>
+    <div class="criteria-card">
+      <div class="crit-header">
+        <span class="crit-title" id="t_c5_title">5. Потенциал масштаба</span>
+        <span id="val5" class="crit-val">7</span>
+      </div>
+      <div class="crit-desc" id="t_c5_desc">Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.</div>
+      <input type="range" id="c5" min="1" max="10" value="7">
+    </div>
 
-  <button class="btn-submit" id="submitBtn">Оставить рецензию</button>
+    <div class="comment-card">
+      <label for="comment" id="t_commentLabel">Заметка к оценке (необязательно)</label>
+      <textarea id="comment" placeholder="В чем главные плюсы и что авторам стоит доработать?"></textarea>
+    </div>
+
+    <button class="btn-action" id="submitBtn">Оставить рецензию</button>
+  </div>
 </div>
 
 <script>
@@ -352,8 +525,17 @@
 
   const i18n = {
     ru: {
-      title: "Рецензия проекта",
-      subtitle: "Оценка от участников сообщества по 5 критериям",
+      btnBack: "Назад",
+      home_title: "Платформа открытых рецензий",
+      home_desc: "Оценивайте медиа, веб-сервисы и авторские проекты. Каждая рецензия формирует объективный рейтинг сообщества Open Hall.",
+      stat1: "критериев",
+      stat2: "шкала",
+      stat3: "комьюнити",
+      home_current: "Текущий проект на оценке",
+      proj_desc: "Интерактивная экосистема для аудита, скоринга и продвижения независимых продуктов и креаторов.",
+      btnStart: "Перейти к оценке",
+      score_title: "Рецензия проекта",
+      score_subtitle: "Оценка от участников сообщества по 5 критериям",
       scoreLabel: "Вердикт участников",
       c1_title: "1. Концепция и новизна",
       c1_desc: "Оригинальность замысла и отличие от того, что уже есть на рынке.",
@@ -374,8 +556,17 @@
       v_low: "Нужна доработка"
     },
     en: {
-      title: "Project Review",
-      subtitle: "Community rating across 5 key criteria",
+      btnBack: "Back",
+      home_title: "Open Review Platform",
+      home_desc: "Rate media, web apps, and indie products. Every review powers the unbiased Open Hall community rating.",
+      stat1: "criteria",
+      stat2: "scale",
+      stat3: "community",
+      home_current: "Current Project for Review",
+      proj_desc: "Interactive ecosystem for auditing, scoring, and supporting independent creator projects.",
+      btnStart: "Start Review",
+      score_title: "Project Review",
+      score_subtitle: "Community rating across 5 key criteria",
       scoreLabel: "Community Verdict",
       c1_title: "1. Concept & Novelty",
       c1_desc: "Originality of the idea and what sets it apart from existing products.",
@@ -396,8 +587,17 @@
       v_low: "Needs Work"
     },
     am: {
-      title: "Նախագծի ակնարկ",
-      subtitle: "Համայնքի գնահատականը 5 հիմնական չափանիշներով",
+      btnBack: "Հետ",
+      home_title: "Բաց ակնարկների հարթակ",
+      home_desc: "Գնահատեք մեդիա, վեբ ծառայություններ և նախագծեր։ Յուրաքանչյուր ակնարկ ձևավորում է Open Hall-ի վարկանիշը։",
+      stat1: "չափանիշ",
+      stat2: "սանդղակ",
+      stat3: "համայնք",
+      home_current: "Գնահատման ընթացիկ նախագիծը",
+      proj_desc: "Ինտերակտիվ էկոհամակարգ անկախ նախագծերի և հեղինակների աուդիտի, գնահատման և առաջխաղացման համար:",
+      btnStart: "Անցնել գնահատմանը",
+      score_title: "Նախագծի ակնարկ",
+      score_subtitle: "Համայնքի գնահատականը 5 հիմնական չափանիշներով",
       scoreLabel: "Համայնքի վճիռը",
       c1_title: "1. Գաղափար և նորարարություն",
       c1_desc: "Մտահղացման ինքնատիպությունը և տարբերությունը շուկայում եղածից:",
@@ -418,8 +618,17 @@
       v_low: "Կարիք ունի լրամշակման"
     },
     ge: {
-      title: "პროექტის შეფასება",
-      subtitle: "საზოგადოების შეფასება 5 ძირითადი კრიტერიუმით",
+      btnBack: "უკან",
+      home_title: "ღია შეფასებების პლატფორმა",
+      home_desc: "შეაფასეთ მედია, ვებ-სერვისები და პროექტები. ყოველი შეფასება აყალიბებს Open Hall-ის რეიტინგს.",
+      stat1: "კრიტერიუმი",
+      stat2: "შკალა",
+      stat3: "საზოგადოება",
+      home_current: "მიმდინარე პროექტი შესაფასებლად",
+      proj_desc: "ინტერაქტიული ეკოსისტემა დამოუკიდებელი პროდუქტებისა და შემქმნელების აუდიტისა და წინსვლისთვის.",
+      btnStart: "შეფასებაზე გადასვლა",
+      score_title: "პროექტის შეფასება",
+      score_subtitle: "საზოგადოების შეფასება 5 ძირითადი კრიტერიუმით",
       scoreLabel: "საზოგადოების ვერდიქტი",
       c1_title: "1. კონცეფცია და სიახლე",
       c1_desc: "იდეის ორიგინალობა და განსხვავება არსებული გადაწყვეტილებებისგან.",
@@ -443,6 +652,26 @@
 
   let currentLang = 'ru';
 
+  const screenHome = document.getElementById('screen-home');
+  const screenScoring = document.getElementById('screen-scoring');
+  const btnBack = document.getElementById('btnBack');
+
+  function showScreen(name) {
+    if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+
+    if (name === 'scoring') {
+      screenHome.classList.remove('active');
+      screenScoring.classList.add('active');
+      btnBack.style.display = 'inline-block';
+      window.scrollTo(0, 0);
+    } else {
+      screenScoring.classList.remove('active');
+      screenHome.classList.add('active');
+      btnBack.style.display = 'none';
+      window.scrollTo(0, 0);
+    }
+  }
+
   const sliders = [
     { el: document.getElementById('c1'), valEl: document.getElementById('val1') },
     { el: document.getElementById('c2'), valEl: document.getElementById('val2') },
@@ -462,8 +691,18 @@
     });
 
     const t = i18n[lang];
-    document.getElementById('t_title').textContent = t.title;
-    document.getElementById('t_subtitle').textContent = t.subtitle;
+    btnBack.textContent = t.btnBack;
+    document.getElementById('t_home_title').textContent = t.home_title;
+    document.getElementById('t_home_desc').textContent = t.home_desc;
+    document.getElementById('t_stat1').textContent = t.stat1;
+    document.getElementById('t_stat2').textContent = t.stat2;
+    document.getElementById('t_stat3').textContent = t.stat3;
+    document.getElementById('t_home_current_label').textContent = t.home_current;
+    document.getElementById('t_proj_desc').textContent = t.proj_desc;
+    document.getElementById('btnStartScore').textContent = t.btnStart;
+
+    document.getElementById('t_score_title').textContent = t.score_title;
+    document.getElementById('t_score_subtitle').textContent = t.score_subtitle;
     document.getElementById('t_scoreLabel').textContent = t.scoreLabel;
     document.getElementById('t_c1_title').textContent = t.c1_title;
     document.getElementById('t_c1_desc').textContent = t.c1_desc;
@@ -511,20 +750,17 @@
 
   sliders.forEach(item => {
     item.el.addEventListener('input', () => {
-      if (tg?.HapticFeedback) {
-        tg.HapticFeedback.selectionChanged();
-      }
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
       calculate();
     });
   });
 
   submitBtn.addEventListener('click', () => {
-    if (tg?.HapticFeedback) {
-      tg.HapticFeedback.notificationOccurred('success');
-    }
+    if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
 
     const payload = {
       lang: currentLang,
+      project: document.getElementById('project_name').textContent,
       score: totalEl.textContent,
       verdict: verdictEl.textContent,
       metrics: {
