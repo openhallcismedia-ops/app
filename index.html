@@ -481,27 +481,9 @@
     <h1 id="t_feed_title">Лента проектов</h1>
     <p class="subtitle" id="t_feed_sub">Проекты на оценке у комьюнити</p>
 
-    <div class="card">
-      <h3 id="proj1_title">Open Hall Bot</h3>
-      <p id="t_feed_p1">Интерактивный шлюз экосистемы: каталог сервисов, распределение грантов и комьюнити-скоринг.</p>
-      <div class="card-footer">
-        <div class="project-tags">
-          <span class="tag">Telegram App</span>
-          <span class="tag">Media</span>
-        </div>
-        <button class="btn-small" onclick="startScoring('Open Hall Bot')" id="t_btn_eval1">Оценить</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3 id="proj2_title">Pulse Media</h3>
-      <p id="t_feed_p2">Независимый авторский дайджест о креативной индустрии и цифровых продуктах региона.</p>
-      <div class="card-footer">
-        <div class="project-tags">
-          <span class="tag">Channel</span>
-          <span class="tag">Culture</span>
-        </div>
-        <button class="btn-small" onclick="startScoring('Pulse Media')" id="t_btn_eval2">Оценить</button>
+    <div id="feed-list">
+      <div class="card">
+        <p id="t_feed_loading">Загрузка проектов...</p>
       </div>
     </div>
   </div>
@@ -610,7 +592,19 @@
     <div class="card">
       <h3 id="t_submit_title">Подать проект на аудит</h3>
       <p id="t_submit_desc">Хотите получить независимый скоринг и привлечь аудиторию? Отправьте заявку на добавление в витрину.</p>
-      <button class="btn-action" style="padding:12px;" id="t_btn_submit_proj" onclick="alert('Форма приема заявок откроется в следующем обновлении')">Заполнить заявку</button>
+
+      <label for="newProjName" style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;" id="t_form_name_label">Название проекта</label>
+      <input type="text" id="newProjName" maxlength="80" placeholder="Например: My Cool App"
+        style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:#fff; font-size:13px; outline:none; margin-bottom:12px;">
+
+      <label for="newProjDesc" style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;" id="t_form_desc_label">Описание</label>
+      <textarea id="newProjDesc" maxlength="500" placeholder="Пара предложений о проекте..." style="margin-bottom:12px;"></textarea>
+
+      <label for="newProjTags" style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;" id="t_form_tags_label">Теги (через запятую)</label>
+      <input type="text" id="newProjTags" placeholder="Media, Bot, Community"
+        style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:#fff; font-size:13px; outline:none; margin-bottom:16px;">
+
+      <button class="btn-action" style="padding:12px;" id="submitProjBtn">Заполнить заявку</button>
     </div>
   </div>
 </div>
@@ -707,7 +701,47 @@
     }
   }
 
-  // Переключение вкладок
+  // Загрузка ленты проектов с сервера
+  async function fetchFeed() {
+    const feedContainer = document.getElementById('feed-list');
+    try {
+      const res = await fetch(`${API_URL}/api/projects`);
+      const projects = await res.json();
+
+      if (!projects || projects.length === 0) {
+        feedContainer.innerHTML = `<div class="card"><p>Пока нет проектов в ленте.</p></div>`;
+        return;
+      }
+
+      feedContainer.innerHTML = projects.map(p => {
+        const tagsHtml = (p.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
+        const safeName = escapeHtml(p.name);
+        return `
+          <div class="card">
+            <h3>${safeName}</h3>
+            <p>${escapeHtml(p.description)}</p>
+            <div class="card-footer">
+              <div class="project-tags">${tagsHtml}</div>
+              <button class="btn-small" onclick="startScoring('${safeName.replace(/'/g, "\\'")}')">${i18n[currentLang].btn_eval}</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error("Ошибка загрузки ленты:", err);
+      feedContainer.innerHTML = `<div class="card"><p style="color:#ff5c5c;">Сервер просыпается... повторите через 15 секунд.</p></div>`;
+    }
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  fetchFeed();
+
+
   function switchTab(tabId) {
     if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
 
@@ -768,6 +802,9 @@
       submit_title: "Подать проект на аудит",
       submit_desc: "Хотите получить независимый скоринг и привлечь аудиторию? Отправьте заявку на добавление в витрину.",
       btn_submit_proj: "Заполнить заявку",
+      form_name_label: "Название проекта",
+      form_desc_label: "Описание",
+      form_tags_label: "Теги (через запятую)",
       v_top: "Фаворит комьюнити",
       v_good: "Одобрено сообществом",
       v_mid: "Есть потенциал",
@@ -808,6 +845,9 @@
       submit_title: "Submit Project for Audit",
       submit_desc: "Want an independent score and broader audience? Apply for showcase inclusion.",
       btn_submit_proj: "Submit Application",
+      form_name_label: "Project name",
+      form_desc_label: "Description",
+      form_tags_label: "Tags (comma-separated)",
       v_top: "Community Favorite",
       v_good: "Community Approved",
       v_mid: "Shows Potential",
@@ -848,6 +888,9 @@
       submit_title: "Ներկայացնել նախագիծ",
       submit_desc: "Ցանկանո՞ւմ եք ստանալ գնահատական և ներգրավել լսարան:",
       btn_submit_proj: "Լրացնել հայտը",
+      form_name_label: "Նախագծի անվանումը",
+      form_desc_label: "Նկարագրություն",
+      form_tags_label: "Թեգեր (ստորակետով)",
       v_top: "Համայնքի ընտրյալ",
       v_good: "Համայնքի կողմից հավանված",
       v_mid: "Ունի ներուժ",
@@ -888,6 +931,9 @@
       submit_title: "პროექტის შეტანა აუდიტზე",
       submit_desc: "გსურთ მიიღოთ დამოუკიდებელი სქორინგი და მოიზიდოთ აუდიტორია?",
       btn_submit_proj: "განაცხადის შევსება",
+      form_name_label: "პროექტის სახელი",
+      form_desc_label: "აღწერა",
+      form_tags_label: "ტეგები (მძიმით გამოყოფილი)",
       v_top: "საზოგადოების რჩეული",
       v_good: "საზოგადოების მიერ მოწონებული",
       v_mid: "აქვს პოტენციალი",
@@ -954,7 +1000,10 @@
     document.getElementById('t_stat_trust').textContent = t.stat_trust;
     document.getElementById('t_submit_title').textContent = t.submit_title;
     document.getElementById('t_submit_desc').textContent = t.submit_desc;
-    document.getElementById('t_btn_submit_proj').textContent = t.btn_submit_proj;
+    document.getElementById('t_form_name_label').textContent = t.form_name_label;
+    document.getElementById('t_form_desc_label').textContent = t.form_desc_label;
+    document.getElementById('t_form_tags_label').textContent = t.form_tags_label;
+    submitProjBtn.textContent = t.btn_submit_proj;
 
     calculate();
   }
@@ -1033,6 +1082,63 @@
       submitBtn.disabled = false;
       submitBtn.textContent = i18n[currentLang].submitBtn;
       isSubmitting = false;
+    }
+  });
+
+  // Отправка новой заявки на проект
+  const submitProjBtn = document.getElementById('submitProjBtn');
+  let isSubmittingProj = false;
+  submitProjBtn.addEventListener('click', async () => {
+    if (isSubmittingProj) return;
+
+    const nameEl = document.getElementById('newProjName');
+    const descEl = document.getElementById('newProjDesc');
+    const tagsEl = document.getElementById('newProjTags');
+
+    const name = nameEl.value.trim();
+    const description = descEl.value.trim();
+
+    if (!name || !description) {
+      alert('Заполните название и описание проекта.');
+      return;
+    }
+
+    isSubmittingProj = true;
+    if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    submitProjBtn.disabled = true;
+    submitProjBtn.textContent = 'Отправка...';
+
+    try {
+      const res = await fetch(`${API_URL}/api/projects`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          initData: tg?.initData || '',
+          name,
+          description,
+          tags: tagsEl.value
+        })
+      });
+
+      if (res.status === 409) {
+        alert('Проект с таким названием уже есть в ленте.');
+      } else if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      } else {
+        alert(`Проект «${name}» опубликован в ленте!`);
+        nameEl.value = '';
+        descEl.value = '';
+        tagsEl.value = '';
+        fetchFeed();
+        switchTab('feed');
+      }
+    } catch (err) {
+      console.error('Ошибка отправки проекта:', err);
+      alert('Не удалось отправить заявку. Проверьте интернет и попробуйте ещё раз.');
+    } finally {
+      submitProjBtn.disabled = false;
+      submitProjBtn.textContent = i18n[currentLang].btn_submit_proj;
+      isSubmittingProj = false;
     }
   });
 
