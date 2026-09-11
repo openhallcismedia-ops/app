@@ -994,7 +994,11 @@
   });
 
   // Отправка отзыва на бэкенд
+  let isSubmitting = false; // защита от двойного тапа / повторной отправки
   submitBtn.addEventListener('click', async () => {
+    if (isSubmitting) return;
+    isSubmitting = true;
+
     if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
 
     const payload = {
@@ -1024,10 +1028,11 @@
       switchTab('top');
     } catch (err) {
       console.error("Ошибка сохранения:", err);
-      alert(`[${activeProject}] ${payload.score} / 10 (${payload.verdict})`);
+      alert("Не удалось сохранить оценку. Проверьте интернет и попробуйте ещё раз.");
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = i18n[currentLang].submitBtn;
+      isSubmitting = false;
     }
   });
 
