@@ -584,8 +584,8 @@
       <h3 id="user_display_name">Участник комьюнити</h3>
       <p id="t_prof_badge" style="color:var(--emerald); font-weight:700; font-size:12px; margin-bottom:8px;">Активный рецензент</p>
       <div class="project-tags">
-        <span class="tag" id="t_stat_reviews">Рецензий: 12</span>
-        <span class="tag" id="t_stat_trust">Индекс доверия: 98%</span>
+        <span class="tag" id="t_stat_reviews">Рецензий: —</span>
+        <span class="tag" id="t_stat_projects">Проектов подано: —</span>
       </div>
     </div>
 
@@ -739,7 +739,36 @@
     return div.innerHTML;
   }
 
+  let profileStats = { reviews_count: null, projects_submitted: null };
+
+  function renderProfileStats() {
+    const t = i18n[currentLang];
+    const r = profileStats.reviews_count;
+    const p = profileStats.projects_submitted;
+    document.getElementById('t_stat_reviews').textContent = `${t.stat_reviews_label}: ${r === null ? '—' : r}`;
+    document.getElementById('t_stat_projects').textContent = `${t.stat_projects_label}: ${p === null ? '—' : p}`;
+  }
+
+  async function fetchProfile() {
+    if (!tg?.initData) {
+      renderProfileStats();
+      return;
+    }
+    try {
+      const res = await fetch(`${API_URL}/api/profile?initData=${encodeURIComponent(tg.initData)}`);
+      const data = await res.json();
+      if (data.available) {
+        profileStats.reviews_count = data.reviews_count;
+        profileStats.projects_submitted = data.projects_submitted;
+      }
+    } catch (err) {
+      console.error('Ошибка загрузки статистики профиля:', err);
+    }
+    renderProfileStats();
+  }
+
   fetchFeed();
+  fetchProfile();
 
 
   function switchTab(tabId) {
@@ -756,6 +785,9 @@
 
     if (tabId === 'top') {
       fetchLeaderboard();
+    }
+    if (tabId === 'profile') {
+      fetchProfile();
     }
   }
 
@@ -797,8 +829,8 @@
       prof_title: "Профиль участника",
       prof_sub: "Личная статистика и статус в сообществе",
       prof_badge: "Активный рецензент",
-      stat_reviews: "Рецензий: 12",
-      stat_trust: "Индекс доверия: 98%",
+      stat_reviews_label: "Рецензий",
+      stat_projects_label: "Проектов подано",
       submit_title: "Подать проект на аудит",
       submit_desc: "Хотите получить независимый скоринг и привлечь аудиторию? Отправьте заявку на добавление в витрину.",
       btn_submit_proj: "Заполнить заявку",
@@ -840,8 +872,8 @@
       prof_title: "Member Profile",
       prof_sub: "Personal statistics and community standing",
       prof_badge: "Active Reviewer",
-      stat_reviews: "Reviews: 12",
-      stat_trust: "Trust Index: 98%",
+      stat_reviews_label: "Reviews",
+      stat_projects_label: "Projects submitted",
       submit_title: "Submit Project for Audit",
       submit_desc: "Want an independent score and broader audience? Apply for showcase inclusion.",
       btn_submit_proj: "Submit Application",
@@ -883,8 +915,8 @@
       prof_title: "Մասնակցի պրոֆիլ",
       prof_sub: "Անձնական վիճակագրություն և կարգավիճակ",
       prof_badge: "Ակտիվ գրախոս",
-      stat_reviews: "Ակնարկներ: 12",
-      stat_trust: "Վստահության ինդեքս: 98%",
+      stat_reviews_label: "Ակնարկներ",
+      stat_projects_label: "Ներկայացված նախագծեր",
       submit_title: "Ներկայացնել նախագիծ",
       submit_desc: "Ցանկանո՞ւմ եք ստանալ գնահատական և ներգրավել լսարան:",
       btn_submit_proj: "Լրացնել հայտը",
@@ -926,8 +958,8 @@
       prof_title: "მონაწილის პროფილი",
       prof_sub: "პირადი სტატისტიკა და სტატუსი საზოგადოებაში",
       prof_badge: "აქტიური შემფასებელი",
-      stat_reviews: "შეფასებები: 12",
-      stat_trust: "ნდობის ინდექსი: 98%",
+      stat_reviews_label: "შეფასებები",
+      stat_projects_label: "წარდგენილი პროექტები",
       submit_title: "პროექტის შეტანა აუდიტზე",
       submit_desc: "გსურთ მიიღოთ დამოუკიდებელი სქორინგი და მოიზიდოთ აუდიტორია?",
       btn_submit_proj: "განაცხადის შევსება",
@@ -996,8 +1028,7 @@
     document.getElementById('t_prof_title').textContent = t.prof_title;
     document.getElementById('t_prof_sub').textContent = t.prof_sub;
     document.getElementById('t_prof_badge').textContent = t.prof_badge;
-    document.getElementById('t_stat_reviews').textContent = t.stat_reviews;
-    document.getElementById('t_stat_trust').textContent = t.stat_trust;
+    renderProfileStats();
     document.getElementById('t_submit_title').textContent = t.submit_title;
     document.getElementById('t_submit_desc').textContent = t.submit_desc;
     document.getElementById('t_form_name_label').textContent = t.form_name_label;
