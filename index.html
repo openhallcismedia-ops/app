@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Open Hall — Экспертная оценка</title>
+  <title>Open Hall — Оценка проекта</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
@@ -95,7 +95,7 @@
     .score-verdict {
       font-size: 15px;
       font-weight: 700;
-      color: var(--emerald);
+      color: var(--cyan);
     }
 
     .score-right {
@@ -235,15 +235,15 @@
 
 <div class="container">
   <header>
-    <div class="badge">Open Hall Review</div>
-    <h1>Оценка проекта</h1>
-    <p class="subtitle">Экспертный аудит по базовым направлениям</p>
+    <div class="badge">Open Hall Community</div>
+    <h1>Рецензия проекта</h1>
+    <p class="subtitle">Оценка от участников сообщества по 5 критериям</p>
   </header>
 
   <div class="score-banner">
     <div class="score-left">
-      <span>Индекс качества</span>
-      <div id="verdict" class="score-verdict">Перспективный уровень</div>
+      <span>Вердикт участников</span>
+      <div id="verdict" class="score-verdict">Одобрено сообществом</div>
     </div>
     <div class="score-right">
       <div id="totalScore" class="big-num">7.0</div>
@@ -256,34 +256,34 @@
       <span class="crit-title">1. Концепция и новизна</span>
       <span id="val1" class="crit-val">7</span>
     </div>
-    <div class="crit-desc">Оригинальность замысла и отличие от существующих решений.</div>
+    <div class="crit-desc">Оригинальность замысла и отличие от того, что уже есть на рынке.</div>
     <input type="range" id="c1" min="1" max="10" value="7">
   </div>
 
   <div class="criteria-card">
     <div class="crit-header">
-      <span class="crit-title">2. Визуал и интерфейс</span>
+      <span class="crit-title">2. Визуал и удобство</span>
       <span id="val2" class="crit-val">7</span>
     </div>
-    <div class="crit-desc">Эстетика подачи, удобство навигации и аккуратность сборки.</div>
+    <div class="crit-desc">Вкус, оформление, аккуратность и насколько приятно этим пользоваться.</div>
     <input type="range" id="c2" min="1" max="10" value="7">
   </div>
 
   <div class="criteria-card">
     <div class="crit-header">
-      <span class="crit-title">3. Вовлечение аудитории</span>
+      <span class="crit-title">3. Интерес аудитории</span>
       <span id="val3" class="crit-val">7</span>
     </div>
-    <div class="crit-desc">Практическая ценность для людей и желание делиться контентом.</div>
+    <div class="crit-desc">Насколько проект вовлекает людей и вызывает желание делиться с друзьями.</div>
     <input type="range" id="c3" min="1" max="10" value="7">
   </div>
 
   <div class="criteria-card">
     <div class="crit-header">
-      <span class="crit-title">4. Уровень проработки</span>
+      <span class="crit-title">4. Уровень готовности</span>
       <span id="val4" class="crit-val">7</span>
     </div>
-    <div class="crit-desc">Степень готовности: от базовой идеи до законченного продукта.</div>
+    <div class="crit-desc">Это уже рабочий продукт/материал или пока только черновой набросок?</div>
     <input type="range" id="c4" min="1" max="10" value="7">
   </div>
 
@@ -292,16 +292,16 @@
       <span class="crit-title">5. Потенциал масштаба</span>
       <span id="val5" class="crit-val">7</span>
     </div>
-    <div class="crit-desc">Возможности органического роста и расширения аудитории.</div>
+    <div class="crit-desc">Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.</div>
     <input type="range" id="c5" min="1" max="10" value="7">
   </div>
 
   <div class="comment-card">
-    <label for="comment">Заметка эксперта (необязательно)</label>
-    <textarea id="comment" placeholder="Ключевые плюсы и точки роста..."></textarea>
+    <label for="comment">Заметка к оценке (необязательно)</label>
+    <textarea id="comment" placeholder="В чем главные плюсы и что авторам стоит доработать?"></textarea>
   </div>
 
-  <button class="btn-submit" id="submitBtn">Зафиксировать оценку</button>
+  <button class="btn-submit" id="submitBtn">Оставить рецензию</button>
 </div>
 
 <script>
@@ -334,17 +334,17 @@
     const avg = (sum / sliders.length).toFixed(1);
     totalEl.textContent = avg;
 
-    if (avg >= 8.5) {
-      verdictEl.textContent = 'Рекомендовано Open Hall';
+    if (avg >= 9.0) {
+      verdictEl.textContent = '🔥 Фаворит комьюнити';
       verdictEl.style.color = '#00e599';
     } else if (avg >= 7.0) {
-      verdictEl.textContent = 'Перспективный уровень';
+      verdictEl.textContent = '✨ Одобрено сообществом';
       verdictEl.style.color = '#00b4d8';
     } else if (avg >= 5.0) {
-      verdictEl.textContent = 'Базовый прототип';
+      verdictEl.textContent = '⚡ Есть потенциал';
       verdictEl.style.color = '#7f8c9f';
     } else {
-      verdictEl.textContent = 'Ранняя концепция';
+      verdictEl.textContent = '🛠 Нужна доработка';
       verdictEl.style.color = '#536074';
     }
   }
@@ -365,12 +365,12 @@
 
     const payload = {
       score: totalEl.textContent,
-      status: verdictEl.textContent,
+      verdict: verdictEl.textContent,
       metrics: {
         concept: sliders[0].el.value,
-        ui: sliders[1].el.value,
-        retention: sliders[2].el.value,
-        stage: sliders[3].el.value,
+        visual: sliders[1].el.value,
+        interest: sliders[2].el.value,
+        readiness: sliders[3].el.value,
         scale: sliders[4].el.value
       },
       comment: document.getElementById('comment').value
@@ -379,7 +379,7 @@
     if (tg && tg.sendData) {
       tg.sendData(JSON.stringify(payload));
     } else {
-      alert(`Оценка: ${payload.score} / 10 (${payload.status})`);
+      alert(`Оценка сохранена: ${payload.score} / 10 (${payload.verdict})`);
     }
   });
 
