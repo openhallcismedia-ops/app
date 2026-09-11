@@ -47,12 +47,13 @@
       align-items: center;
       justify-content: center;
       z-index: 10000;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
+      transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .preloader.hidden {
       opacity: 0;
       visibility: hidden;
+      transform: scale(1.05);
       pointer-events: none;
     }
 
@@ -138,6 +139,11 @@
       padding: 3px 7px;
       border-radius: 5px;
       cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .lang-btn:active {
+      transform: scale(0.9);
     }
 
     .lang-btn.active {
@@ -148,7 +154,7 @@
     /* Экраны */
     .tab-view {
       display: none;
-      animation: fadeIn 0.15s ease-in-out;
+      animation: fadeIn 0.38s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .tab-view.active {
@@ -156,8 +162,17 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(3px); }
+      from { opacity: 0; transform: translateY(10px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stagger-in {
+      animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
     }
 
     /* Общие стили карточек и текста */
@@ -226,6 +241,12 @@
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
+    }
+
+    .btn-small:active {
+      transform: scale(0.93);
+      opacity: 0.75;
     }
 
     /* Вкладка Скоринга */
@@ -267,6 +288,12 @@
       background: var(--grad-main);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      display: inline-block;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .big-num.pulse {
+      transform: scale(1.12);
     }
 
     .max-num {
@@ -297,6 +324,12 @@
       border-radius: 8px;
       min-width: 42px;
       text-align: center;
+      display: inline-block;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .crit-val.pulse {
+      transform: scale(1.18);
     }
 
     .crit-desc {
@@ -324,6 +357,11 @@
       cursor: pointer;
       box-shadow: 0 0 12px rgba(0, 229, 153, 0.5);
       border: 2px solid #fff;
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    input[type=range]:active::-webkit-slider-thumb {
+      transform: scale(1.25);
     }
 
     textarea {
@@ -392,11 +430,13 @@
       border: none;
       cursor: pointer;
       box-shadow: 0 6px 20px rgba(0, 229, 153, 0.25);
-      transition: opacity 0.15s;
+      transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.18s ease, box-shadow 0.18s ease;
     }
 
     .btn-action:active {
-      opacity: 0.85;
+      opacity: 0.88;
+      transform: scale(0.97);
+      box-shadow: 0 3px 12px rgba(0, 229, 153, 0.2);
     }
 
     /* Нижняя панель навигации */
@@ -429,6 +469,11 @@
       width: 25%;
       height: 100%;
       padding: 8px 0;
+      transition: color 0.25s ease, transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav-btn:active {
+      transform: scale(0.9);
     }
 
     .nav-btn .nav-dot {
@@ -437,6 +482,7 @@
       border-radius: 50%;
       background: transparent;
       margin-top: 4px;
+      transition: background 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .nav-btn.active {
@@ -445,6 +491,7 @@
 
     .nav-btn.active .nav-dot {
       background: var(--emerald);
+      transform: scale(1.6);
     }
 
     .nav-label {
@@ -677,8 +724,9 @@
 
       listContainer.innerHTML = items.map((item, index) => {
         const rankNum = String(index + 1).padStart(2, '0');
+        const delay = Math.min(index * 60, 400);
         return `
-          <div class="rank-item">
+          <div class="rank-item stagger-in" style="animation-delay:${delay}ms">
             <span class="rank-num">${rankNum}</span>
             <div class="rank-info">
               <div class="rank-title">${item.project_name}</div>
@@ -713,11 +761,12 @@
         return;
       }
 
-      feedContainer.innerHTML = projects.map(p => {
+      feedContainer.innerHTML = projects.map((p, index) => {
         const tagsHtml = (p.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
         const safeName = escapeHtml(p.name);
+        const delay = Math.min(index * 60, 400);
         return `
-          <div class="card">
+          <div class="card stagger-in" style="animation-delay:${delay}ms">
             <h3>${safeName}</h3>
             <p>${escapeHtml(p.description)}</p>
             <div class="card-footer">
@@ -1001,10 +1050,7 @@
 
     document.getElementById('t_feed_title').textContent = t.feed_title;
     document.getElementById('t_feed_sub').textContent = t.feed_sub;
-    document.getElementById('t_btn_eval1').textContent = t.btn_eval;
-    document.getElementById('t_btn_eval2').textContent = t.btn_eval;
-    document.getElementById('t_feed_p1').textContent = t.feed_p1;
-    document.getElementById('t_feed_p2').textContent = t.feed_p2;
+    fetchFeed();
 
     document.getElementById('t_score_sub').textContent = t.score_sub;
     document.getElementById('t_scoreLabel').textContent = t.scoreLabel;
@@ -1066,10 +1112,20 @@
     }
   }
 
+  function pulse(el) {
+    el.classList.remove('pulse');
+    // Форсируем reflow, чтобы анимация перезапускалась при быстрых повторных изменениях
+    void el.offsetWidth;
+    el.classList.add('pulse');
+    setTimeout(() => el.classList.remove('pulse'), 200);
+  }
+
   sliders.forEach(item => {
     item.el.addEventListener('input', () => {
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
       calculate();
+      pulse(item.valEl);
+      pulse(totalEl);
     });
   });
 
