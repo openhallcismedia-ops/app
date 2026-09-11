@@ -42,7 +42,6 @@
       max-width: 480px;
     }
 
-    /* Верхняя панель */
     .top-bar {
       display: flex;
       justify-content: space-between;
@@ -62,7 +61,6 @@
       border-radius: 6px;
     }
 
-    /* Переключатель языков */
     .lang-switcher {
       display: flex;
       gap: 4px;
@@ -105,7 +103,6 @@
       margin-top: 4px;
     }
 
-    /* Плашка с баллом */
     .score-banner {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -152,7 +149,6 @@
       font-weight: 600;
     }
 
-    /* Карточки критериев */
     .criteria-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -212,7 +208,6 @@
       border: 2px solid #fff;
     }
 
-    /* Комментарий */
     .comment-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -246,7 +241,6 @@
       color: #4b5568;
     }
 
-    /* Кнопка отправки */
     .btn-submit {
       width: 100%;
       padding: 16px;
@@ -374,10 +368,10 @@
       commentLabel: "Заметка к оценке (необязательно)",
       commentPlaceholder: "В чем главные плюсы и что авторам стоит доработать?",
       submitBtn: "Оставить рецензию",
-      v_top: "🔥 Фаворит комьюнити",
-      v_good: "✨ Одобрено сообществом",
-      v_mid: "⚡ Есть потенциал",
-      v_low: "🛠 Нужна доработка"
+      v_top: "Фаворит комьюнити",
+      v_good: "Одобрено сообществом",
+      v_mid: "Есть потенциал",
+      v_low: "Нужна доработка"
     },
     en: {
       title: "Project Review",
@@ -396,10 +390,10 @@
       commentLabel: "Review notes (optional)",
       commentPlaceholder: "Key strengths and areas for improvement...",
       submitBtn: "Submit Review",
-      v_top: "🔥 Community Favorite",
-      v_good: "✨ Community Approved",
-      v_mid: "⚡ Shows Potential",
-      v_low: "🛠 Needs Work"
+      v_top: "Community Favorite",
+      v_good: "Community Approved",
+      v_mid: "Shows Potential",
+      v_low: "Needs Work"
     },
     am: {
       title: "Նախագծի ակնարկ",
@@ -418,10 +412,10 @@
       commentLabel: "Գնահատականի նշումներ (ըստ ցանկության)",
       commentPlaceholder: "Որո՞նք են գլխավոր առավելությունները և ի՞նչը արժե բարելավել...",
       submitBtn: "Ուղարկել ակնարկը",
-      v_top: "🔥 Համայնքի ընտրյալ",
-      v_good: "✨ Համայնքի կողմից հավանված",
-      v_mid: "⚡ Ունի ներուժ",
-      v_low: "🛠 Կարիք ունի լրամշակման"
+      v_top: "Համայնքի ընտրյալ",
+      v_good: "Համայնքի կողմից հավանված",
+      v_mid: "Ունի ներուժ",
+      v_low: "Կարիք ունի լրամշակման"
     },
     ge: {
       title: "პროექტის შეფასება",
@@ -440,10 +434,10 @@
       commentLabel: "შენიშვნა შეფასებისთვის (არასავალდებულო)",
       commentPlaceholder: "მთავარი პლიუსები და რა არის გასაუმჯობესებელი...",
       submitBtn: "შეფასების გაგზავნა",
-      v_top: "🔥 საზოგადოების რჩეული",
-      v_good: "✨ საზოგადოების მიერ მოწონებული",
-      v_mid: "⚡ აქვს პოტენციალი",
-      v_low: "🛠 საჭიროებს დამუშავებას"
+      v_top: "საზოგადოების რჩეული",
+      v_good: "საზოგადოების მიერ მოწონებული",
+      v_mid: "აქვს პოტენციალი",
+      v_low: "საჭიროებს დამუშავებას"
     }
   };
 
@@ -550,7 +544,6 @@
     }
   });
 
-  // Автоматическое определение языка из Telegram при открытии
   const userLang = tg?.initDataUnsafe?.user?.language_code;
   if (userLang === 'hy' || userLang === 'am') {
     setLanguage('am');
