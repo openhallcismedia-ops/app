@@ -341,7 +341,7 @@
       opacity: 0.85;
     }
 
-    /* Нижняя панель навигации (Таббар) */
+    /* Нижняя панель навигации */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -513,31 +513,16 @@
     <h1 id="t_top_title">Рейтинг проектов</h1>
     <p class="subtitle" id="t_top_sub">Лидеры по оценкам участников комьюнити</p>
 
-    <div class="rank-item">
-      <span class="rank-num">01</span>
-      <div class="rank-info">
-        <div class="rank-title">Open Hall Bot</div>
-        <div class="rank-cat">Telegram Ecosystem</div>
+    <div id="leaderboard-list">
+      <!-- Сюда динамически загружаются данные с бэкенда -->
+      <div class="rank-item">
+        <span class="rank-num">--</span>
+        <div class="rank-info">
+          <div class="rank-title">Загрузка данных...</div>
+          <div class="rank-cat">Синхронизация с сервером</div>
+        </div>
+        <span class="rank-score">...</span>
       </div>
-      <span class="rank-score">9.2</span>
-    </div>
-
-    <div class="rank-item">
-      <span class="rank-num">02</span>
-      <div class="rank-info">
-        <div class="rank-title">Pulse Media</div>
-        <div class="rank-cat">Digital Journal</div>
-      </div>
-      <span class="rank-score">8.6</span>
-    </div>
-
-    <div class="rank-item">
-      <span class="rank-num">03</span>
-      <div class="rank-info">
-        <div class="rank-title">Urban Sound</div>
-        <div class="rank-cat">Music Platform</div>
-      </div>
-      <span class="rank-score">7.8</span>
     </div>
   </div>
 
@@ -584,10 +569,58 @@
 </nav>
 
 <script>
+  // Адрес живого бэкенда на Render
+  const API_URL = "https://openhall-backend-1.onrender.com";
+
   const tg = window.Telegram?.WebApp;
   if (tg) {
     tg.ready();
     tg.expand();
+  }
+
+  // Загрузка живого лидерборда с сервера
+  async function fetchLeaderboard() {
+    const listContainer = document.getElementById('leaderboard-list');
+    try {
+      const res = await fetch(`${API_URL}/api/leaderboard`);
+      const items = await res.json();
+
+      if (!items || items.length === 0) {
+        listContainer.innerHTML = `
+          <div class="rank-item">
+            <div class="rank-info">
+              <div class="rank-title">Пока нет оценок</div>
+              <div class="rank-cat">Будьте первым, кто оценит проект!</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      listContainer.innerHTML = items.map((item, index) => {
+        const rankNum = String(index + 1).padStart(2, '0');
+        return `
+          <div class="rank-item">
+            <span class="rank-num">${rankNum}</span>
+            <div class="rank-info">
+              <div class="rank-title">${item.project_name}</div>
+              <div class="rank-cat">Голосов: ${item.total_votes}</div>
+            </div>
+            <span class="rank-score">${item.avg_score}</span>
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error("Ошибка загрузки лидерборда:", err);
+      listContainer.innerHTML = `
+        <div class="rank-item">
+          <div class="rank-info">
+            <div class="rank-title" style="color:#ff5c5c;">Сервер просыпается...</div>
+            <div class="rank-cat">Повторите через 15 секунд</div>
+          </div>
+        </div>
+      `;
+    }
   }
 
   // Переключение вкладок
@@ -602,6 +635,10 @@
     const indexMap = { feed: 0, scoring: 1, top: 2, profile: 3 };
     document.querySelectorAll('.nav-btn')[indexMap[tabId]].classList.add('active');
     window.scrollTo(0, 0);
+
+    if (tabId === 'top') {
+      fetchLeaderboard();
+    }
   }
 
   let activeProject = 'Open Hall Bot';
@@ -872,32 +909,46 @@
     });
   });
 
-  submitBtn.addEventListener('click', () => {
+  // Отправка отзыва на бэкенд
+  submitBtn.addEventListener('click', async () => {
     if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
 
     const payload = {
-      lang: currentLang,
+      initData: tg?.initData || "",
       project: activeProject,
-      score: totalEl.textContent,
+      score: parseFloat(totalEl.textContent),
       verdict: verdictEl.textContent,
-      metrics: {
-        concept: sliders[0].el.value,
-        visual: sliders[1].el.value,
-        interest: sliders[2].el.value,
-        readiness: sliders[3].el.value,
-        scale: sliders[4].el.value
-      },
       comment: document.getElementById('comment').value
     };
 
-    if (tg && tg.sendData) {
-      tg.sendData(JSON.stringify(payload));
-    } else {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Сохранение...";
+
+    try {
+      const res = await fetch(`${API_URL}/api/review`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      alert(`Оценка для «${activeProject}» сохранена!`);
+      document.getElementById('comment').value = '';
+      switchTab('top');
+    } catch (err) {
+      console.error("Ошибка сохранения:", err);
+      // Запасной локальный вывод
       alert(`[${activeProject}] ${payload.score} / 10 (${payload.verdict})`);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = i18n[currentLang].submitBtn;
     }
   });
 
-  // Автозаполнение имени из Telegram, если доступно
+  // Автозаполнение имени из Telegram
   if (tg?.initDataUnsafe?.user?.first_name) {
     document.getElementById('user_display_name').textContent = tg.initDataUnsafe.user.first_name;
   }
