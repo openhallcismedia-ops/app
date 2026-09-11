@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Open Hall — Оценка проекта</title>
+  <title>Open Hall</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
@@ -42,13 +42,15 @@
       max-width: 480px;
     }
 
-    header {
-      margin-bottom: 20px;
-      text-align: left;
+    /* Верхняя панель */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
     }
 
     .badge {
-      display: inline-block;
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
@@ -58,7 +60,37 @@
       border: 1px solid rgba(0, 229, 153, 0.25);
       padding: 4px 10px;
       border-radius: 6px;
-      margin-bottom: 8px;
+    }
+
+    /* Переключатель языков */
+    .lang-switcher {
+      display: flex;
+      gap: 4px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 3px;
+      border-radius: 8px;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-sub);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .lang-btn.active {
+      background: var(--emerald);
+      color: #061017;
+    }
+
+    header {
+      margin-bottom: 20px;
+      text-align: left;
     }
 
     h1 {
@@ -73,6 +105,7 @@
       margin-top: 4px;
     }
 
+    /* Плашка с баллом */
     .score-banner {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -119,6 +152,7 @@
       font-weight: 600;
     }
 
+    /* Карточки критериев */
     .criteria-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -178,6 +212,7 @@
       border: 2px solid #fff;
     }
 
+    /* Комментарий */
     .comment-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -211,6 +246,7 @@
       color: #4b5568;
     }
 
+    /* Кнопка отправки */
     .btn-submit {
       width: 100%;
       padding: 16px;
@@ -234,15 +270,24 @@
 <body>
 
 <div class="container">
-  <header>
+  <div class="top-bar">
     <div class="badge">Open Hall Community</div>
-    <h1>Рецензия проекта</h1>
-    <p class="subtitle">Оценка от участников сообщества по 5 критериям</p>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLanguage('ru')">RU</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn" onclick="setLanguage('am')">AM</button>
+      <button class="lang-btn" onclick="setLanguage('ge')">GE</button>
+    </div>
+  </div>
+
+  <header>
+    <h1 id="t_title">Рецензия проекта</h1>
+    <p class="subtitle" id="t_subtitle">Оценка от участников сообщества по 5 критериям</p>
   </header>
 
   <div class="score-banner">
     <div class="score-left">
-      <span>Вердикт участников</span>
+      <span id="t_scoreLabel">Вердикт участников</span>
       <div id="verdict" class="score-verdict">Одобрено сообществом</div>
     </div>
     <div class="score-right">
@@ -253,51 +298,51 @@
 
   <div class="criteria-card">
     <div class="crit-header">
-      <span class="crit-title">1. Концепция и новизна</span>
+      <span class="crit-title" id="t_c1_title">1. Концепция и новизна</span>
       <span id="val1" class="crit-val">7</span>
     </div>
-    <div class="crit-desc">Оригинальность замысла и отличие от того, что уже есть на рынке.</div>
+    <div class="crit-desc" id="t_c1_desc">Оригинальность замысла и отличие от того, что уже есть на рынке.</div>
     <input type="range" id="c1" min="1" max="10" value="7">
   </div>
 
   <div class="criteria-card">
     <div class="crit-header">
-      <span class="crit-title">2. Визуал и удобство</span>
+      <span class="crit-title" id="t_c2_title">2. Визуал и удобство</span>
       <span id="val2" class="crit-val">7</span>
     </div>
-    <div class="crit-desc">Вкус, оформление, аккуратность и насколько приятно этим пользоваться.</div>
+    <div class="crit-desc" id="t_c2_desc">Вкус, оформление, аккуратность и насколько приятно этим пользоваться.</div>
     <input type="range" id="c2" min="1" max="10" value="7">
   </div>
 
   <div class="criteria-card">
     <div class="crit-header">
-      <span class="crit-title">3. Интерес аудитории</span>
+      <span class="crit-title" id="t_c3_title">3. Интерес аудитории</span>
       <span id="val3" class="crit-val">7</span>
     </div>
-    <div class="crit-desc">Насколько проект вовлекает людей и вызывает желание делиться с друзьями.</div>
+    <div class="crit-desc" id="t_c3_desc">Насколько проект вовлекает людей и вызывает желание делиться с друзьями.</div>
     <input type="range" id="c3" min="1" max="10" value="7">
   </div>
 
   <div class="criteria-card">
     <div class="crit-header">
-      <span class="crit-title">4. Уровень готовности</span>
+      <span class="crit-title" id="t_c4_title">4. Уровень готовности</span>
       <span id="val4" class="crit-val">7</span>
     </div>
-    <div class="crit-desc">Это уже рабочий продукт/материал или пока только черновой набросок?</div>
+    <div class="crit-desc" id="t_c4_desc">Это уже рабочий продукт/материал или пока только черновой набросок?</div>
     <input type="range" id="c4" min="1" max="10" value="7">
   </div>
 
   <div class="criteria-card">
     <div class="crit-header">
-      <span class="crit-title">5. Потенциал масштаба</span>
+      <span class="crit-title" id="t_c5_title">5. Потенциал масштаба</span>
       <span id="val5" class="crit-val">7</span>
     </div>
-    <div class="crit-desc">Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.</div>
+    <div class="crit-desc" id="t_c5_desc">Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.</div>
     <input type="range" id="c5" min="1" max="10" value="7">
   </div>
 
   <div class="comment-card">
-    <label for="comment">Заметка к оценке (необязательно)</label>
+    <label for="comment" id="t_commentLabel">Заметка к оценке (необязательно)</label>
     <textarea id="comment" placeholder="В чем главные плюсы и что авторам стоит доработать?"></textarea>
   </div>
 
@@ -311,6 +356,99 @@
     tg.expand();
   }
 
+  const i18n = {
+    ru: {
+      title: "Рецензия проекта",
+      subtitle: "Оценка от участников сообщества по 5 критериям",
+      scoreLabel: "Вердикт участников",
+      c1_title: "1. Концепция и новизна",
+      c1_desc: "Оригинальность замысла и отличие от того, что уже есть на рынке.",
+      c2_title: "2. Визуал и удобство",
+      c2_desc: "Вкус, оформление, аккуратность и насколько приятно этим пользоваться.",
+      c3_title: "3. Интерес аудитории",
+      c3_desc: "Насколько проект вовлекает людей и вызывает желание делиться с друзьями.",
+      c4_title: "4. Уровень готовности",
+      c4_desc: "Это уже рабочий продукт/материал или пока только черновой набросок?",
+      c5_title: "5. Потенциал масштаба",
+      c5_desc: "Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.",
+      commentLabel: "Заметка к оценке (необязательно)",
+      commentPlaceholder: "В чем главные плюсы и что авторам стоит доработать?",
+      submitBtn: "Оставить рецензию",
+      v_top: "🔥 Фаворит комьюнити",
+      v_good: "✨ Одобрено сообществом",
+      v_mid: "⚡ Есть потенциал",
+      v_low: "🛠 Нужна доработка"
+    },
+    en: {
+      title: "Project Review",
+      subtitle: "Community rating across 5 key criteria",
+      scoreLabel: "Community Verdict",
+      c1_title: "1. Concept & Novelty",
+      c1_desc: "Originality of the idea and what sets it apart from existing products.",
+      c2_title: "2. Visuals & UX",
+      c2_desc: "Aesthetics, polish, layout, and how intuitive it feels to use.",
+      c3_title: "3. Audience Appeal",
+      c3_desc: "How engaging the project is and whether people would share it.",
+      c4_title: "4. Stage of Readiness",
+      c4_desc: "Is it an active, usable product or still an early concept draft?",
+      c5_title: "5. Scale Potential",
+      c5_desc: "Can the project grow into a major platform and reach a wide audience?",
+      commentLabel: "Review notes (optional)",
+      commentPlaceholder: "Key strengths and areas for improvement...",
+      submitBtn: "Submit Review",
+      v_top: "🔥 Community Favorite",
+      v_good: "✨ Community Approved",
+      v_mid: "⚡ Shows Potential",
+      v_low: "🛠 Needs Work"
+    },
+    am: {
+      title: "Նախագծի ակնարկ",
+      subtitle: "Համայնքի գնահատականը 5 հիմնական չափանիշներով",
+      scoreLabel: "Համայնքի վճիռը",
+      c1_title: "1. Գաղափար և նորարարություն",
+      c1_desc: "Մտահղացման ինքնատիպությունը և տարբերությունը շուկայում եղածից:",
+      c2_title: "2. Վիզուալ և հարմարավետություն",
+      c2_desc: "Ոճը, ձևավորումը և օգտագործման հարմարավետությունը:",
+      c3_title: "3. Լսարանի հետաքրքրություն",
+      c3_desc: "Որքանով է նախագիծը գրավում մարդկանց և ընկերների հետ կիսվելու ցանկություն առաջացնում:",
+      c4_title: "4. Պատրաստվածության մակարդակ",
+      c4_desc: "Արդյո՞ք սա գործող արդյունք է, թե՞ դեռ նախնական սևագիր:",
+      c5_title: "5. Մասշտաբի ներուժ",
+      c5_desc: "Կարո՞ղ է արդյոք նախագիծը վերածվել մեծ պատմության և հավաքել լայն լսարան:",
+      commentLabel: "Գնահատականի նշումներ (ըստ ցանկության)",
+      commentPlaceholder: "Որո՞նք են գլխավոր առավելությունները և ի՞նչը արժե բարելավել...",
+      submitBtn: "Ուղարկել ակնարկը",
+      v_top: "🔥 Համայնքի ընտրյալ",
+      v_good: "✨ Համայնքի կողմից հավանված",
+      v_mid: "⚡ Ունի ներուժ",
+      v_low: "🛠 Կարիք ունի լրամշակման"
+    },
+    ge: {
+      title: "პროექტის შეფასება",
+      subtitle: "საზოგადოების შეფასება 5 ძირითადი კრიტერიუმით",
+      scoreLabel: "საზოგადოების ვერდიქტი",
+      c1_title: "1. კონცეფცია და სიახლე",
+      c1_desc: "იდეის ორიგინალობა და განსხვავება არსებული გადაწყვეტილებებისგან.",
+      c2_title: "2. ვიზუალი და მოხერხებულობა",
+      c2_desc: "სტილი, დიზაინი, აკურატულობა და რამდენად სასიამოვნოა გამოყენება.",
+      c3_title: "3. აუდიტორიის ინტერესი",
+      c3_desc: "რამდენად იზიდავს პროექტი ხალხს და აჩენს გაზიარების სურვილს.",
+      c4_title: "4. მზადყოფნის დონე",
+      c4_desc: "ეს უკვე მოქმედი პროდუქტია თუ ჯერ მხოლოდ საწყისი ჩანახატი?",
+      c5_title: "5. მასშტაბის პოტენციალი",
+      c5_desc: "შეუძლია თუ არა პროექტს გაიზარდოს და შეკრიბოს ფართო აუდიტორია.",
+      commentLabel: "შენიშვნა შეფასებისთვის (არასავალდებულო)",
+      commentPlaceholder: "მთავარი პლიუსები და რა არის გასაუმჯობესებელი...",
+      submitBtn: "შეფასების გაგზავნა",
+      v_top: "🔥 საზოგადოების რჩეული",
+      v_good: "✨ საზოგადოების მიერ მოწონებული",
+      v_mid: "⚡ აქვს პოტენციალი",
+      v_low: "🛠 საჭიროებს დამუშავებას"
+    }
+  };
+
+  let currentLang = 'ru';
+
   const sliders = [
     { el: document.getElementById('c1'), valEl: document.getElementById('val1') },
     { el: document.getElementById('c2'), valEl: document.getElementById('val2') },
@@ -323,6 +461,33 @@
   const verdictEl = document.getElementById('verdict');
   const submitBtn = document.getElementById('submitBtn');
 
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+    });
+
+    const t = i18n[lang];
+    document.getElementById('t_title').textContent = t.title;
+    document.getElementById('t_subtitle').textContent = t.subtitle;
+    document.getElementById('t_scoreLabel').textContent = t.scoreLabel;
+    document.getElementById('t_c1_title').textContent = t.c1_title;
+    document.getElementById('t_c1_desc').textContent = t.c1_desc;
+    document.getElementById('t_c2_title').textContent = t.c2_title;
+    document.getElementById('t_c2_desc').textContent = t.c2_desc;
+    document.getElementById('t_c3_title').textContent = t.c3_title;
+    document.getElementById('t_c3_desc').textContent = t.c3_desc;
+    document.getElementById('t_c4_title').textContent = t.c4_title;
+    document.getElementById('t_c4_desc').textContent = t.c4_desc;
+    document.getElementById('t_c5_title').textContent = t.c5_title;
+    document.getElementById('t_c5_desc').textContent = t.c5_desc;
+    document.getElementById('t_commentLabel').textContent = t.commentLabel;
+    document.getElementById('comment').placeholder = t.commentPlaceholder;
+    submitBtn.textContent = t.submitBtn;
+
+    calculate();
+  }
+
   function calculate() {
     let sum = 0;
     sliders.forEach(item => {
@@ -334,17 +499,18 @@
     const avg = (sum / sliders.length).toFixed(1);
     totalEl.textContent = avg;
 
+    const t = i18n[currentLang];
     if (avg >= 9.0) {
-      verdictEl.textContent = '🔥 Фаворит комьюнити';
+      verdictEl.textContent = t.v_top;
       verdictEl.style.color = '#00e599';
     } else if (avg >= 7.0) {
-      verdictEl.textContent = '✨ Одобрено сообществом';
+      verdictEl.textContent = t.v_good;
       verdictEl.style.color = '#00b4d8';
     } else if (avg >= 5.0) {
-      verdictEl.textContent = '⚡ Есть потенциал';
+      verdictEl.textContent = t.v_mid;
       verdictEl.style.color = '#7f8c9f';
     } else {
-      verdictEl.textContent = '🛠 Нужна доработка';
+      verdictEl.textContent = t.v_low;
       verdictEl.style.color = '#536074';
     }
   }
@@ -364,6 +530,7 @@
     }
 
     const payload = {
+      lang: currentLang,
       score: totalEl.textContent,
       verdict: verdictEl.textContent,
       metrics: {
@@ -379,11 +546,21 @@
     if (tg && tg.sendData) {
       tg.sendData(JSON.stringify(payload));
     } else {
-      alert(`Оценка сохранена: ${payload.score} / 10 (${payload.verdict})`);
+      alert(`[${currentLang.toUpperCase()}] ${payload.score} / 10 (${payload.verdict})`);
     }
   });
 
-  calculate();
+  // Автоматическое определение языка из Telegram при открытии
+  const userLang = tg?.initDataUnsafe?.user?.language_code;
+  if (userLang === 'hy' || userLang === 'am') {
+    setLanguage('am');
+  } else if (userLang === 'ka' || userLang === 'ge') {
+    setLanguage('ge');
+  } else if (userLang === 'en') {
+    setLanguage('en');
+  } else {
+    setLanguage('ru');
+  }
 </script>
 
 </body>
