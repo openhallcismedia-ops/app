@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Open Hall</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
@@ -10,7 +10,6 @@
       --bg: #070a0f;
       --card-bg: rgba(18, 24, 38, 0.55);
       --card-border: rgba(255, 255, 255, 0.12);
-      --glass-shine: rgba(255, 255, 255, 0.08);
       --emerald: #00e599;
       --cyan: #00b4d8;
       --blue: #1877f2;
@@ -28,19 +27,29 @@
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      padding: 16px 14px 84px;
+    html, body {
+      width: 100%;
+      height: 100%;
       min-height: 100vh;
+      min-height: -webkit-fill-available;
+      overflow-x: hidden;
+      background-color: var(--bg);
+    }
+
+    body {
+      color: var(--text-main);
+      /* Учет безопасных зон iOS (вырезы, Home Bar) */
+      padding-top: calc(16px + env(safe-area-inset-top, 0px));
+      padding-left: calc(14px + env(safe-area-inset-left, 0px));
+      padding-right: calc(14px + env(safe-area-inset-right, 0px));
+      padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
-      overflow-x: hidden;
     }
 
-    /* Фоновые жидкие неоновые сферы (Liquid Blobs) для эффекта преломления стекла */
+    /* Фоновые жидкие неоновые сферы */
     .bg-blob {
       position: fixed;
       border-radius: 50%;
@@ -85,7 +94,7 @@
       100% { transform: translate(-20px, -25px) scale(0.95); }
     }
 
-    /* Анимация загрузки (Splash Screen) */
+    /* Экран загрузки */
     .preloader {
       position: fixed;
       inset: 0;
@@ -147,6 +156,7 @@
       max-width: 480px;
       position: relative;
       z-index: 1;
+      flex: 1;
     }
 
     /* Верхняя панель */
@@ -193,11 +203,11 @@
       padding: 4px 8px;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.25s ease, color 0.25s ease, transform 0.15s ease;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .lang-btn:active {
-      transform: scale(0.92);
+      transform: scale(0.9);
     }
 
     .lang-btn.active {
@@ -243,7 +253,7 @@
       margin-bottom: 18px;
     }
 
-    /* Liquid Glass Cards */
+    /* Карточки Liquid Glass */
     .card {
       background: var(--card-bg);
       backdrop-filter: blur(24px) saturate(190%);
@@ -258,7 +268,7 @@
         inset 0 -1px 0 rgba(0, 0, 0, 0.3);
       position: relative;
       overflow: hidden;
-      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .card::before {
@@ -270,10 +280,6 @@
       height: 40%;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
       pointer-events: none;
-    }
-
-    .card:active {
-      transform: scale(0.985);
     }
 
     .card h3 {
@@ -313,6 +319,7 @@
       -webkit-backdrop-filter: blur(10px);
     }
 
+    /* Кнопки и анимации */
     .btn-small {
       background: rgba(0, 229, 153, 0.15);
       border: 1px solid rgba(0, 229, 153, 0.4);
@@ -325,12 +332,85 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-      transition: transform 0.15s ease, opacity 0.15s ease;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, opacity 0.2s ease;
     }
 
     .btn-small:active {
       transform: scale(0.92);
-      opacity: 0.8;
+      background: rgba(0, 229, 153, 0.25);
+    }
+
+    .btn-action {
+      width: 100%;
+      padding: 16px;
+      border-radius: 16px;
+      background: var(--grad-main);
+      color: #061017;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 229, 153, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, filter 0.25s ease;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(0, 229, 153, 0.12);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 229, 153, 0.35);
+      color: var(--emerald);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      display: none;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .btn-action::after, .btn-secondary::after, .btn-small::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -130%;
+      width: 60%;
+      height: 200%;
+      background: linear-gradient(
+        60deg,
+        rgba(255, 255, 255, 0) 10%,
+        rgba(255, 255, 255, 0.45) 50%,
+        rgba(255, 255, 255, 0) 90%
+      );
+      transform: rotate(25deg);
+      pointer-events: none;
+      animation: glassSheen 4.2s ease-in-out infinite;
+    }
+
+    @keyframes glassSheen {
+      0%, 70% { left: -130%; }
+      100% { left: 230%; }
+    }
+
+    .btn-action:active {
+      transform: scale(0.95);
+      filter: brightness(1.1);
+      box-shadow: 0 4px 16px rgba(0, 229, 153, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.95);
+      background: rgba(0, 229, 153, 0.22);
+      box-shadow: 0 4px 16px rgba(0, 229, 153, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.3);
     }
 
     /* Вкладка Скоринга */
@@ -528,54 +608,10 @@
       text-shadow: 0 0 12px rgba(0, 229, 153, 0.35);
     }
 
-    /* Кнопки действий */
-    .btn-action {
-      width: 100%;
-      padding: 16px;
-      border-radius: 16px;
-      background: var(--grad-main);
-      color: #061017;
-      font-size: 16px;
-      font-weight: 800;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 8px 24px rgba(0, 229, 153, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-      transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .btn-action:active {
-      opacity: 0.9;
-      transform: scale(0.975);
-      box-shadow: 0 4px 14px rgba(0, 229, 153, 0.2);
-    }
-
-    .btn-secondary {
-      width: 100%;
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(0, 229, 153, 0.12);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(0, 229, 153, 0.35);
-      color: var(--emerald);
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 10px;
-      display: none;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
-      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
-    }
-
-    .btn-secondary:active {
-      transform: scale(0.97);
-      opacity: 0.8;
-    }
-
-    /* Нижняя панель навигации (iOS Liquid Glass Bar) */
+    /* Нижняя панель навигации */
     .bottom-nav {
       position: fixed;
-      bottom: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom, 0px));
       left: 14px;
       right: 14px;
       max-width: 480px;
@@ -608,11 +644,11 @@
       width: 25%;
       height: 100%;
       padding: 6px 0 4px;
-      transition: color 0.25s ease, transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: color 0.25s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .nav-btn:active {
-      transform: scale(0.9);
+      transform: scale(0.88);
     }
 
     .nav-icon {
@@ -657,7 +693,7 @@
       letter-spacing: 0.2px;
     }
 
-    /* Модальное окно рецензий (iOS Bottom Sheet) */
+    /* Модальное окно рецензий */
     .reviews-modal-overlay {
       position: fixed;
       inset: 0;
@@ -693,6 +729,7 @@
       transform: translateY(100%);
       box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25);
       transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     .reviews-modal-overlay.open .reviews-modal-sheet {
@@ -782,12 +819,12 @@
 </head>
 <body>
 
-<!-- Плавающие жидкие неоновые сферы заднего плана -->
+<!-- Плавающие сферы заднего плана -->
 <div class="bg-blob blob-1"></div>
 <div class="blob-2 bg-blob"></div>
 <div class="blob-3 bg-blob"></div>
 
-<!-- Экран загрузки (Splash Screen) -->
+<!-- Экран загрузки -->
 <div id="app-preloader" class="preloader">
   <div class="preloader-content">
     <div class="preloader-logo">Open Hall</div>
@@ -807,7 +844,7 @@
     </div>
   </div>
 
-  <!-- ВКЛАДКА 1: ЛЕНТА (FEED) -->
+  <!-- ВКЛАДКА 1: ЛЕНТА -->
   <div id="tab-feed" class="tab-view active">
     <h1 id="t_feed_title">Лента проектов</h1>
     <p class="subtitle" id="t_feed_sub">Проекты на оценке у комьюнити</p>
@@ -819,7 +856,7 @@
     </div>
   </div>
 
-  <!-- ВКЛАДКА 2: ОЦЕНКА (SCORING) -->
+  <!-- ВКЛАДКА 2: ОЦЕНКА -->
   <div id="tab-scoring" class="tab-view">
     <h1 id="t_score_title">Рецензия проекта</h1>
     <p class="subtitle" id="t_score_sub">Оценка от участников сообщества по 5 критериям</p>
@@ -889,7 +926,7 @@
     <button class="btn-secondary" id="shareBtn">Поделиться оценкой</button>
   </div>
 
-  <!-- ВКЛАДКА 3: ТОП / РЕЙТИНГ (LEADERBOARD) -->
+  <!-- ВКЛАДКА 3: ТОП -->
   <div id="tab-top" class="tab-view">
     <h1 id="t_top_title">Рейтинг проектов</h1>
     <p class="subtitle" id="t_top_sub">Лидеры по оценкам участников комьюнити</p>
@@ -906,7 +943,7 @@
     </div>
   </div>
 
-  <!-- ВКЛАДКА 4: ПРОФИЛЬ (PROFILE) -->
+  <!-- ВКЛАДКА 4: ПРОФИЛЬ -->
   <div id="tab-profile" class="tab-view">
     <h1 id="t_prof_title">Профиль участника</h1>
     <p class="subtitle" id="t_prof_sub">Личная статистика и статус в сообществе</p>
@@ -938,7 +975,7 @@
   </div>
 </div>
 
-<!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ С ИКОНКАМИ -->
+<!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ -->
 <nav class="bottom-nav">
   <button class="nav-btn active" onclick="switchTab('feed')">
     <svg class="nav-icon" viewBox="0 0 24 24">
@@ -981,7 +1018,7 @@
   </button>
 </nav>
 
-<!-- МОДАЛЬНОЕ ОКНО СПИСКА РЕЦЕНЗИЙ -->
+<!-- МОДАЛЬНОЕ ОКНО РЕЦЕНЗИЙ -->
 <div id="reviews-modal" class="reviews-modal-overlay" onclick="if(event.target === this) closeReviews()">
   <div class="reviews-modal-sheet">
     <div class="reviews-modal-header">
@@ -1000,7 +1037,30 @@
   const tg = window.Telegram?.WebApp;
   if (tg) {
     tg.ready();
+    // Раскрытие на максимум
     tg.expand();
+
+    // Запрос полноэкранного режима (Bot API 8.0+)
+    if (typeof tg.requestFullscreen === 'function') {
+      try {
+        tg.requestFullscreen();
+      } catch (e) {
+        console.log("Fullscreen request fallback:", e);
+      }
+    }
+
+    // Блокировка случайного закрытия свайпом вниз при прокрутке
+    if (typeof tg.disableVerticalSwipes === 'function') {
+      tg.disableVerticalSwipes();
+    }
+
+    // Фирменные цвета для шторки Telegram под цвет темного фона
+    if (typeof tg.setHeaderColor === 'function') {
+      tg.setHeaderColor('#070a0f');
+    }
+    if (typeof tg.setBackgroundColor === 'function') {
+      tg.setBackgroundColor('#070a0f');
+    }
   }
 
   function hidePreloader() {
