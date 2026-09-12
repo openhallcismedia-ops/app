@@ -841,8 +841,10 @@
   }
 
   let activeProject = 'Open Hall Bot';
+  let projectChosen = false;
   function startScoring(projName) {
     activeProject = projName;
+    projectChosen = true;
     document.getElementById('t_score_title').textContent = projName;
     switchTab('scoring');
   }
@@ -858,8 +860,10 @@
       btn_eval: "Оценить",
       feed_p1: "Интерактивный шлюз экосистемы: каталог сервисов, распределение грантов и комьюнити-скоринг.",
       feed_p2: "Независимый авторский дайджест о креативной индустрии и цифровых продуктах региона.",
+      score_title: "Рецензия проекта",
       score_sub: "Оценка от участников сообщества по 5 критериям",
       scoreLabel: "Вердикт участников",
+      score_title_default: "Рецензия проекта",
       c1_title: "1. Концепция и новизна",
       c1_desc: "Оригинальность замысла и отличие от того, что уже есть на рынке.",
       c2_title: "2. Визуал и удобство",
@@ -901,8 +905,10 @@
       btn_eval: "Review",
       feed_p1: "Interactive gateway: services catalog, grant allocation, and community scoring.",
       feed_p2: "Independent editorial digest covering creative industry and digital products.",
+      score_title: "Project Review",
       score_sub: "Community rating across 5 key criteria",
       scoreLabel: "Community Verdict",
+      score_title_default: "Project Review",
       c1_title: "1. Concept & Novelty",
       c1_desc: "Originality of the idea and what sets it apart from existing products.",
       c2_title: "2. Visuals & UX",
@@ -944,8 +950,10 @@
       btn_eval: "Գնահատել",
       feed_p1: "Էկոհամակարգի դարպաս. ծառայություններ, դրամաշնորհներ և սքորինգ:",
       feed_p2: "Անկախ հեղինակային մեդիա թվային նախագծերի մասին:",
+      score_title: "Նախագծի գնահատում",
       score_sub: "Համայնքի գնահատականը 5 հիմնական չափանիշներով",
       scoreLabel: "Համայնքի վճիռը",
+      score_title_default: "Նախագծի գնահատում",
       c1_title: "1. Գաղափար և նորարարություն",
       c1_desc: "Մտահղացման ինքնատիպությունը և տարբերությունը շուկայում եղածից:",
       c2_title: "2. Վիզուալ և հարմարավետություն",
@@ -987,8 +995,10 @@
       btn_eval: "შეფასება",
       feed_p1: "ეკოსისტემის ინტერაქტიული კარიბჭე: სერვისები, გრანტები და სქორინგი.",
       feed_p2: "დამოუკიდებელი მიმოხილვა ციფრული და შემოქმედებითი პროდუქტების შესახებ.",
+      score_title: "პროექტის შეფასება",
       score_sub: "საზოგადოების შეფასება 5 ძირითადი კრიტერიუმით",
       scoreLabel: "საზოგადოების ვერდიქტი",
+      score_title_default: "პროექტის შეფასება",
       c1_title: "1. კონცეფცია და სიახლე",
       c1_desc: "იდეის ორიგინალობა და განსხვავება არსებული გადაწყვეტილებებისგან.",
       c2_title: "2. ვიზუალი და მოხერხებულობა",
@@ -1052,6 +1062,7 @@
     document.getElementById('t_feed_sub').textContent = t.feed_sub;
     fetchFeed();
 
+    document.getElementById('t_score_title').textContent = projectChosen ? activeProject : t.score_title;
     document.getElementById('t_score_sub').textContent = t.score_sub;
     document.getElementById('t_scoreLabel').textContent = t.scoreLabel;
     document.getElementById('t_c1_title').textContent = t.c1_title;
