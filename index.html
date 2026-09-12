@@ -439,6 +439,27 @@
       box-shadow: 0 3px 12px rgba(0, 229, 153, 0.2);
     }
 
+    /* Кнопка шеринга */
+    .btn-secondary {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(0, 229, 153, 0.12);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+      color: var(--emerald);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      display: none;
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.97);
+      opacity: 0.8;
+    }
+
     /* Нижняя панель навигации */
     .bottom-nav {
       position: fixed;
@@ -500,7 +521,7 @@
       letter-spacing: 0.2px;
     }
 
-    /* Модальное окно рецензий (iOS-style bottom sheet) */
+    /* Модальное окно рецензий */
     .reviews-modal-overlay {
       position: fixed;
       inset: 0;
@@ -715,6 +736,7 @@
     </div>
 
     <button class="btn-action" id="submitBtn">Оставить рецензию</button>
+    <button class="btn-secondary" id="shareBtn">Поделиться оценкой</button>
   </div>
 
   <!-- ВКЛАДКА 3: ТОП / РЕЙТИНГ (LEADERBOARD) -->
@@ -723,7 +745,6 @@
     <p class="subtitle" id="t_top_sub">Лидеры по оценкам участников комьюнити</p>
 
     <div id="leaderboard-list">
-      <!-- Сюда динамически загружаются данные с бэкенда -->
       <div class="rank-item">
         <span class="rank-num">--</span>
         <div class="rank-info">
@@ -803,7 +824,6 @@
 </div>
 
 <script>
-  // Адрес живого бэкенда на Render
   const API_URL = "https://openhall-backend-1.onrender.com";
 
   const tg = window.Telegram?.WebApp;
@@ -812,7 +832,6 @@
     tg.expand();
   }
 
-  // Скрытие экрана загрузки
   function hidePreloader() {
     const preloader = document.getElementById('app-preloader');
     if (preloader) {
@@ -822,14 +841,16 @@
   }
 
   window.addEventListener('load', () => {
-    // Плавное растворение сплэш-экрана через 600мс после полной загрузки
     setTimeout(hidePreloader, 600);
   });
-
-  // Запасное отключение через 3 секунды, если сеть медленная
   setTimeout(hidePreloader, 3000);
 
-  // Загрузка живого лидерборда с сервера
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
   async function fetchLeaderboard() {
     const listContainer = document.getElementById('leaderboard-list');
     try {
@@ -877,7 +898,6 @@
     }
   }
 
-  // Загрузка ленты проектов с сервера
   async function fetchFeed() {
     const feedContainer = document.getElementById('feed-list');
     try {
@@ -914,13 +934,6 @@
     }
   }
 
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str || '';
-    return div.innerHTML;
-  }
-
-  // Модальное окно со списком рецензий на проект
   const reviewsModal = document.getElementById('reviews-modal');
   const reviewsModalBody = document.getElementById('reviews-modal-body');
 
@@ -1005,7 +1018,6 @@
   fetchFeed();
   fetchProfile();
 
-
   function switchTab(tabId) {
     if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
 
@@ -1032,6 +1044,7 @@
     activeProject = projName;
     projectChosen = true;
     document.getElementById('t_score_title').textContent = projName;
+    shareBtn.style.display = 'none';
     switchTab('scoring');
   }
 
@@ -1044,12 +1057,9 @@
       feed_title: "Лента проектов",
       feed_sub: "Проекты на оценке у комьюнити",
       btn_eval: "Оценить",
-      feed_p1: "Интерактивный шлюз экосистемы: каталог сервисов, распределение грантов и комьюнити-скоринг.",
-      feed_p2: "Независимый авторский дайджест о креативной индустрии и цифровых продуктах региона.",
       score_title: "Рецензия проекта",
       score_sub: "Оценка от участников сообщества по 5 критериям",
       scoreLabel: "Вердикт участников",
-      score_title_default: "Рецензия проекта",
       c1_title: "1. Концепция и новизна",
       c1_desc: "Оригинальность замысла и отличие от того, что уже есть на рынке.",
       c2_title: "2. Визуал и удобство",
@@ -1063,6 +1073,7 @@
       commentLabel: "Заметка к оценке (необязательно)",
       commentPlaceholder: "В чем главные плюсы и что авторам стоит доработать?",
       submitBtn: "Оставить рецензию",
+      share_btn: "Поделиться оценкой",
       top_title: "Рейтинг проектов",
       top_sub: "Лидеры по оценкам участников комьюнити",
       prof_title: "Профиль участника",
@@ -1094,12 +1105,9 @@
       feed_title: "Project Feed",
       feed_sub: "Projects currently under review by the community",
       btn_eval: "Review",
-      feed_p1: "Interactive gateway: services catalog, grant allocation, and community scoring.",
-      feed_p2: "Independent editorial digest covering creative industry and digital products.",
       score_title: "Project Review",
       score_sub: "Community rating across 5 key criteria",
       scoreLabel: "Community Verdict",
-      score_title_default: "Project Review",
       c1_title: "1. Concept & Novelty",
       c1_desc: "Originality of the idea and what sets it apart from existing products.",
       c2_title: "2. Visuals & UX",
@@ -1113,6 +1121,7 @@
       commentLabel: "Review notes (optional)",
       commentPlaceholder: "Key strengths and areas for improvement...",
       submitBtn: "Submit Review",
+      share_btn: "Share Review",
       top_title: "Project Leaderboard",
       top_sub: "Highest-rated projects by community votes",
       prof_title: "Member Profile",
@@ -1144,12 +1153,9 @@
       feed_title: "Նախագծերի լրահոս",
       feed_sub: "Համայնքի կողմից գնահատվող նախագծեր",
       btn_eval: "Գնահատել",
-      feed_p1: "Էկոհամակարգի դարպաս. ծառայություններ, դրամաշնորհներ և սքորինգ:",
-      feed_p2: "Անկախ հեղինակային մեդիա թվային նախագծերի մասին:",
       score_title: "Նախագծի գնահատում",
       score_sub: "Համայնքի գնահատականը 5 հիմնական չափանիշներով",
       scoreLabel: "Համայնքի վճիռը",
-      score_title_default: "Նախագծի գնահատում",
       c1_title: "1. Գաղափար և նորարարություն",
       c1_desc: "Մտահղացման ինքնատիպությունը և տարբերությունը շուկայում եղածից:",
       c2_title: "2. Վիզուալ և հարմարավետություն",
@@ -1163,6 +1169,7 @@
       commentLabel: "Գնահատականի նշումներ (ըստ ցանկության)",
       commentPlaceholder: "Որո՞նք են գլխավոր առավելությունները և ի՞նչը արժե բարելավել...",
       submitBtn: "Ուղարկել ակնարկը",
+      share_btn: "Կիսվել գնահատականով",
       top_title: "Վարկանիշային աղյուսակ",
       top_sub: "Առաջատարներն ըստ համայնքի ձայների",
       prof_title: "Մասնակցի պրոֆիլ",
@@ -1194,12 +1201,9 @@
       feed_title: "პროექტების ლენტა",
       feed_sub: "პროექტები საზოგადოების შეფასების პროცესში",
       btn_eval: "შეფასება",
-      feed_p1: "ეკოსისტემის ინტერაქტიული კარიბჭე: სერვისები, გრანტები და სქორინგი.",
-      feed_p2: "დამოუკიდებელი მიმოხილვა ციფრული და შემოქმედებითი პროდუქტების შესახებ.",
       score_title: "პროექტის შეფასება",
       score_sub: "საზოგადოების შეფასება 5 ძირითადი კრიტერიუმით",
       scoreLabel: "საზოგადოების ვერდიქტი",
-      score_title_default: "პროექტის შეფასება",
       c1_title: "1. კონცეფცია და სიახლე",
       c1_desc: "იდეის ორიგინალობა და განსხვავება არსებული გადაწყვეტილებებისგან.",
       c2_title: "2. ვიზუალი და მოხერხებულობა",
@@ -1213,6 +1217,7 @@
       commentLabel: "შენიშვნა შეფასებისთვის (არასავალდებულო)",
       commentPlaceholder: "მთავარი პლიუსები და რა არის გასაუმჯობესებელი...",
       submitBtn: "შეფასების გაგზავნა",
+      share_btn: "შეფასების გაზიარება",
       top_title: "პროექტების რეიტინგი",
       top_sub: "ლიდერები საზოგადოების შეფასებების მიხედვით",
       prof_title: "მონაწილის პროფილი",
@@ -1251,6 +1256,7 @@
   const totalEl = document.getElementById('totalScore');
   const verdictEl = document.getElementById('verdict');
   const submitBtn = document.getElementById('submitBtn');
+  const shareBtn = document.getElementById('shareBtn');
 
   function setLanguage(lang) {
     currentLang = lang;
@@ -1284,6 +1290,7 @@
     document.getElementById('t_commentLabel').textContent = t.commentLabel;
     document.getElementById('comment').placeholder = t.commentPlaceholder;
     submitBtn.textContent = t.submitBtn;
+    shareBtn.textContent = `${t.share_btn} «${activeProject}»`;
 
     document.getElementById('t_top_title').textContent = t.top_title;
     document.getElementById('t_top_sub').textContent = t.top_sub;
@@ -1331,7 +1338,6 @@
 
   function pulse(el) {
     el.classList.remove('pulse');
-    // Форсируем reflow, чтобы анимация перезапускалась при быстрых повторных изменениях
     void el.offsetWidth;
     el.classList.add('pulse');
     setTimeout(() => el.classList.remove('pulse'), 200);
@@ -1347,18 +1353,21 @@
   });
 
   // Отправка отзыва на бэкенд
-  let isSubmitting = false; // защита от двойного тапа / повторной отправки
+  let isSubmitting = false;
   submitBtn.addEventListener('click', async () => {
     if (isSubmitting) return;
     isSubmitting = true;
 
     if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
 
+    const scoreVal = parseFloat(totalEl.textContent);
+    const verdictVal = verdictEl.textContent;
+
     const payload = {
       initData: tg?.initData || "",
       project: activeProject,
-      score: parseFloat(totalEl.textContent),
-      verdict: verdictEl.textContent,
+      score: scoreVal,
+      verdict: verdictVal,
       comment: document.getElementById('comment').value
     };
 
@@ -1377,8 +1386,10 @@
       }
 
       alert(`Оценка для «${activeProject}» сохранена!`);
-      document.getElementById('comment').value = '';
-      switchTab('top');
+      
+      // Показываем кнопку шеринга
+      shareBtn.style.display = 'block';
+      shareBtn.textContent = `${i18n[currentLang].share_btn} «${activeProject}»`;
     } catch (err) {
       console.error("Ошибка сохранения:", err);
       alert("Не удалось сохранить оценку. Проверьте интернет и попробуйте ещё раз.");
@@ -1386,6 +1397,23 @@
       submitBtn.disabled = false;
       submitBtn.textContent = i18n[currentLang].submitBtn;
       isSubmitting = false;
+    }
+  });
+
+  // Логика кнопки шеринга в чаты Telegram
+  shareBtn.addEventListener('click', () => {
+    if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+
+    const scoreVal = parseFloat(totalEl.textContent);
+    const verdictVal = verdictEl.textContent;
+    const text = `Я оценил проект «${activeProject}» на ${scoreVal}/10 («${verdictVal}») в Open Hall Hub!\n\nПрисоединяйся к скорингу проектов сообщества 👇`;
+
+    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
+
+    if (tg?.openTelegramLink) {
+      tg.openTelegramLink(shareUrl);
+    } else {
+      window.open(shareUrl, '_blank');
     }
   });
 
@@ -1446,12 +1474,10 @@
     }
   });
 
-  // Автозаполнение имени из Telegram
   if (tg?.initDataUnsafe?.user?.first_name) {
     document.getElementById('user_display_name').textContent = tg.initDataUnsafe.user.first_name;
   }
 
-  // Язык по умолчанию
   const userLang = tg?.initDataUnsafe?.user?.language_code;
   if (userLang === 'hy' || userLang === 'am') {
     setLanguage('am');
@@ -1466,3 +1492,4 @@
 
 </body>
 </html>
+
