@@ -175,7 +175,7 @@
       animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
     }
 
-    /* Общие стили карточек и текста */
+    /* Карточки и текст */
     h1 {
       font-size: 22px;
       font-weight: 800;
@@ -439,7 +439,6 @@
       box-shadow: 0 3px 12px rgba(0, 229, 153, 0.2);
     }
 
-    /* Кнопка шеринга */
     .btn-secondary {
       width: 100%;
       padding: 14px;
@@ -460,7 +459,7 @@
       opacity: 0.8;
     }
 
-    /* Нижняя панель навигации */
+    /* Нижняя панель навигации и иконки */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -489,12 +488,29 @@
       cursor: pointer;
       width: 25%;
       height: 100%;
-      padding: 8px 0;
+      padding: 6px 0 4px;
       transition: color 0.25s ease, transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .nav-btn:active {
-      transform: scale(0.9);
+      transform: scale(0.92);
+    }
+
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      stroke: var(--text-sub);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      margin-bottom: 2px;
+      transition: stroke 0.25s ease, transform 0.2s ease;
+    }
+
+    .nav-btn.active .nav-icon {
+      stroke: var(--emerald);
+      transform: translateY(-1px);
     }
 
     .nav-btn .nav-dot {
@@ -502,7 +518,7 @@
       height: 4px;
       border-radius: 50%;
       background: transparent;
-      margin-top: 4px;
+      margin-top: 3px;
       transition: background 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -512,11 +528,11 @@
 
     .nav-btn.active .nav-dot {
       background: var(--emerald);
-      transform: scale(1.6);
+      transform: scale(1.5);
     }
 
     .nav-label {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.2px;
     }
@@ -790,21 +806,44 @@
   </div>
 </div>
 
-<!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ -->
+<!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ С ИКОНКАМИ -->
 <nav class="bottom-nav">
   <button class="nav-btn active" onclick="switchTab('feed')">
+    <svg class="nav-icon" viewBox="0 0 24 24">
+      <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+      <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+      <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+      <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+    </svg>
     <span class="nav-label" id="t_nav_feed">Лента</span>
     <span class="nav-dot"></span>
   </button>
+
   <button class="nav-btn" onclick="switchTab('scoring')">
+    <svg class="nav-icon" viewBox="0 0 24 24">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+    </svg>
     <span class="nav-label" id="t_nav_score">Оценка</span>
     <span class="nav-dot"></span>
   </button>
+
   <button class="nav-btn" onclick="switchTab('top')">
+    <svg class="nav-icon" viewBox="0 0 24 24">
+      <path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"></path>
+      <path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"></path>
+      <path d="M4 22h16"></path>
+      <path d="M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34"></path>
+      <path d="M6 3h12v7a6 6 0 0 1-12 0V3z"></path>
+    </svg>
     <span class="nav-label" id="t_nav_top">Топ</span>
     <span class="nav-dot"></span>
   </button>
+
   <button class="nav-btn" onclick="switchTab('profile')">
+    <svg class="nav-icon" viewBox="0 0 24 24">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>
     <span class="nav-label" id="t_nav_prof">Профиль</span>
     <span class="nav-dot"></span>
   </button>
@@ -1352,7 +1391,7 @@
     });
   });
 
-  // Отправка отзыва на бэкенд
+  // Отправка отзыва
   let isSubmitting = false;
   submitBtn.addEventListener('click', async () => {
     if (isSubmitting) return;
@@ -1386,8 +1425,6 @@
       }
 
       alert(`Оценка для «${activeProject}» сохранена!`);
-      
-      // Показываем кнопку шеринга
       shareBtn.style.display = 'block';
       shareBtn.textContent = `${i18n[currentLang].share_btn} «${activeProject}»`;
     } catch (err) {
@@ -1400,7 +1437,7 @@
     }
   });
 
-  // Логика кнопки шеринга в чаты Telegram
+  // Кнопка шеринга
   shareBtn.addEventListener('click', () => {
     if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
@@ -1417,7 +1454,7 @@
     }
   });
 
-  // Отправка новой заявки на проект
+  // Отправка нового проекта
   const submitProjBtn = document.getElementById('submitProjBtn');
   let isSubmittingProj = false;
   submitProjBtn.addEventListener('click', async () => {
@@ -1492,4 +1529,3 @@
 
 </body>
 </html>
-
