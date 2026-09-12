@@ -17,6 +17,7 @@
       --text-main: #ffffff;
       --text-sub: #8c9cb0;
       --track-bg: rgba(255, 255, 255, 0.08);
+      --spring-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     * {
@@ -24,6 +25,8 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
@@ -38,7 +41,6 @@
 
     body {
       color: var(--text-main);
-      /* Учет безопасных зон iOS (вырезы, Home Bar) */
       padding-top: calc(16px + env(safe-area-inset-top, 0px));
       padding-left: calc(14px + env(safe-area-inset-left, 0px));
       padding-right: calc(14px + env(safe-area-inset-right, 0px));
@@ -203,11 +205,12 @@
       padding: 4px 8px;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.25s ease, color 0.25s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: background 0.25s ease, color 0.25s ease, transform 0.25s var(--spring-ease);
     }
 
-    .lang-btn:active {
-      transform: scale(0.9);
+    .lang-btn.touch-active, .lang-btn:active {
+      transform: scale(0.85);
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .lang-btn.active {
@@ -268,7 +271,7 @@
         inset 0 -1px 0 rgba(0, 0, 0, 0.3);
       position: relative;
       overflow: hidden;
-      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 0.25s var(--spring-ease);
     }
 
     .card::before {
@@ -299,6 +302,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
     }
 
     .project-tags {
@@ -319,29 +323,59 @@
       -webkit-backdrop-filter: blur(10px);
     }
 
-    /* Кнопки и анимации */
+    /* === КНОПКИ И НАСТОЯЩИЕ ИНТЕРАКТИВНЫЕ АНИМАЦИИ IOS === */
+    .ios-btn-tap {
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: transform 0.28s var(--spring-ease), filter 0.2s ease, opacity 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Кнопка Оценить (btn-small) */
     .btn-small {
       background: rgba(0, 229, 153, 0.15);
-      border: 1px solid rgba(0, 229, 153, 0.4);
+      border: 1px solid rgba(0, 229, 153, 0.45);
       color: var(--emerald);
-      padding: 7px 14px;
-      border-radius: 10px;
+      padding: 8px 16px;
+      border-radius: 12px;
       font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
+      font-weight: 800;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 3px 10px rgba(0, 0, 0, 0.2);
       position: relative;
       overflow: hidden;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, opacity 0.2s ease;
+      flex-shrink: 0;
     }
 
-    .btn-small:active {
+    .btn-small.touch-active, .btn-small:active {
+      transform: scale(0.91);
+      background: rgba(0, 229, 153, 0.35);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 16px rgba(0, 229, 153, 0.5);
+    }
+
+    /* Кнопка Читать отзывы */
+    .read-reviews-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--cyan);
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 10px;
+      background: rgba(0, 180, 216, 0.1);
+      border: 1px solid rgba(0, 180, 216, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .read-reviews-btn.touch-active, .read-reviews-btn:active {
       transform: scale(0.92);
-      background: rgba(0, 229, 153, 0.25);
+      background: rgba(0, 180, 216, 0.25);
+      color: #fff;
     }
 
+    /* Главная кнопка действия */
     .btn-action {
       width: 100%;
       padding: 16px;
@@ -351,13 +385,18 @@
       font-size: 16px;
       font-weight: 800;
       border: none;
-      cursor: pointer;
       box-shadow: 0 8px 24px rgba(0, 229, 153, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
       position: relative;
       overflow: hidden;
-      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, filter 0.25s ease;
     }
 
+    .btn-action.touch-active, .btn-action:active {
+      transform: scale(0.94);
+      filter: brightness(1.15);
+      box-shadow: 0 3px 12px rgba(0, 229, 153, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Вторичная кнопка (Шеринг) */
     .btn-secondary {
       width: 100%;
       padding: 14px;
@@ -369,15 +408,20 @@
       color: var(--emerald);
       font-size: 15px;
       font-weight: 700;
-      cursor: pointer;
       margin-top: 10px;
       display: none;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
       position: relative;
       overflow: hidden;
-      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease;
     }
 
+    .btn-secondary.touch-active, .btn-secondary:active {
+      transform: scale(0.94);
+      background: rgba(0, 229, 153, 0.25);
+      box-shadow: 0 4px 16px rgba(0, 229, 153, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Бегущий блик стекла */
     .btn-action::after, .btn-secondary::after, .btn-small::after {
       content: "";
       position: absolute;
@@ -388,7 +432,7 @@
       background: linear-gradient(
         60deg,
         rgba(255, 255, 255, 0) 10%,
-        rgba(255, 255, 255, 0.45) 50%,
+        rgba(255, 255, 255, 0.4) 50%,
         rgba(255, 255, 255, 0) 90%
       );
       transform: rotate(25deg);
@@ -399,18 +443,6 @@
     @keyframes glassSheen {
       0%, 70% { left: -130%; }
       100% { left: 230%; }
-    }
-
-    .btn-action:active {
-      transform: scale(0.95);
-      filter: brightness(1.1);
-      box-shadow: 0 4px 16px rgba(0, 229, 153, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.4);
-    }
-
-    .btn-secondary:active {
-      transform: scale(0.95);
-      background: rgba(0, 229, 153, 0.22);
-      box-shadow: 0 4px 16px rgba(0, 229, 153, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.3);
     }
 
     /* Вкладка Скоринга */
@@ -457,7 +489,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: transform 0.2s var(--spring-ease);
     }
 
     .big-num.pulse {
@@ -495,7 +527,7 @@
       display: inline-block;
       backdrop-filter: blur(10px);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: transform 0.18s var(--spring-ease);
     }
 
     .crit-val.pulse {
@@ -520,18 +552,18 @@
 
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       background: var(--emerald);
       cursor: pointer;
       box-shadow: 0 0 14px rgba(0, 229, 153, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4);
       border: 2.5px solid #fff;
-      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.18s var(--spring-ease);
     }
 
     input[type=range]:active::-webkit-slider-thumb {
-      transform: scale(1.22);
+      transform: scale(1.25);
     }
 
     input[type=text], textarea {
@@ -543,6 +575,8 @@
       color: #fff;
       font-size: 13px;
       outline: none;
+      user-select: text;
+      -webkit-user-select: text;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -571,11 +605,12 @@
       padding: 14px 18px;
       margin-bottom: 10px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 0.25s var(--spring-ease), background 0.2s ease;
     }
 
-    .rank-item:active {
-      transform: scale(0.985);
+    .rank-item.touch-active, .rank-item:active {
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .rank-num {
@@ -608,7 +643,7 @@
       text-shadow: 0 0 12px rgba(0, 229, 153, 0.35);
     }
 
-    /* Нижняя панель навигации */
+    /* Нижняя панель навигации (Liquid Glass) */
     .bottom-nav {
       position: fixed;
       bottom: calc(12px + env(safe-area-inset-bottom, 0px));
@@ -644,11 +679,11 @@
       width: 25%;
       height: 100%;
       padding: 6px 0 4px;
-      transition: color 0.25s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: color 0.25s ease, transform 0.25s var(--spring-ease);
     }
 
-    .nav-btn:active {
-      transform: scale(0.88);
+    .nav-btn.touch-active, .nav-btn:active {
+      transform: scale(0.82);
     }
 
     .nav-icon {
@@ -674,7 +709,7 @@
       border-radius: 50%;
       background: transparent;
       margin-top: 3px;
-      transition: background 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: background 0.25s ease, transform 0.25s var(--spring-ease);
     }
 
     .nav-btn.active {
@@ -760,12 +795,12 @@
       font-size: 19px;
       line-height: 1;
       cursor: pointer;
-      transition: transform 0.15s ease, background 0.15s ease;
+      transition: transform 0.2s var(--spring-ease), background 0.15s ease;
     }
 
-    .reviews-modal-close:active {
-      transform: scale(0.9);
-      background: rgba(255, 255, 255, 0.16);
+    .reviews-modal-close.touch-active, .reviews-modal-close:active {
+      transform: scale(0.85);
+      background: rgba(255, 255, 255, 0.2);
     }
 
     .reviews-modal-body {
@@ -837,10 +872,10 @@
   <div class="top-bar">
     <div class="badge">Open Hall Hub</div>
     <div class="lang-switcher">
-      <button class="lang-btn active" onclick="setLanguage('ru')">RU</button>
-      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
-      <button class="lang-btn" onclick="setLanguage('am')">AM</button>
-      <button class="lang-btn" onclick="setLanguage('ge')">GE</button>
+      <button class="lang-btn ios-btn-tap active" onclick="setLanguage('ru')">RU</button>
+      <button class="lang-btn ios-btn-tap" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn ios-btn-tap" onclick="setLanguage('am')">AM</button>
+      <button class="lang-btn ios-btn-tap" onclick="setLanguage('ge')">GE</button>
     </div>
   </div>
 
@@ -922,8 +957,8 @@
       <textarea id="comment" placeholder="В чем главные плюсы и что авторам стоит доработать?"></textarea>
     </div>
 
-    <button class="btn-action" id="submitBtn">Оставить рецензию</button>
-    <button class="btn-secondary" id="shareBtn">Поделиться оценкой</button>
+    <button class="btn-action ios-btn-tap" id="submitBtn">Оставить рецензию</button>
+    <button class="btn-secondary ios-btn-tap" id="shareBtn">Поделиться оценкой</button>
   </div>
 
   <!-- ВКЛАДКА 3: ТОП -->
@@ -970,14 +1005,14 @@
       <label for="newProjTags" style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;" id="t_form_tags_label">Теги (через запятую)</label>
       <input type="text" id="newProjTags" placeholder="Media, Bot, Community" style="margin-bottom:16px;">
 
-      <button class="btn-action" style="padding:12px;" id="submitProjBtn">Заполнить заявку</button>
+      <button class="btn-action ios-btn-tap" style="padding:12px;" id="submitProjBtn">Заполнить заявку</button>
     </div>
   </div>
 </div>
 
 <!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ -->
 <nav class="bottom-nav">
-  <button class="nav-btn active" onclick="switchTab('feed')">
+  <button class="nav-btn ios-btn-tap active" onclick="switchTab('feed')">
     <svg class="nav-icon" viewBox="0 0 24 24">
       <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
       <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
@@ -988,7 +1023,7 @@
     <span class="nav-dot"></span>
   </button>
 
-  <button class="nav-btn" onclick="switchTab('scoring')">
+  <button class="nav-btn ios-btn-tap" onclick="switchTab('scoring')">
     <svg class="nav-icon" viewBox="0 0 24 24">
       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
     </svg>
@@ -996,7 +1031,7 @@
     <span class="nav-dot"></span>
   </button>
 
-  <button class="nav-btn" onclick="switchTab('top')">
+  <button class="nav-btn ios-btn-tap" onclick="switchTab('top')">
     <svg class="nav-icon" viewBox="0 0 24 24">
       <path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"></path>
       <path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"></path>
@@ -1008,7 +1043,7 @@
     <span class="nav-dot"></span>
   </button>
 
-  <button class="nav-btn" onclick="switchTab('profile')">
+  <button class="nav-btn ios-btn-tap" onclick="switchTab('profile')">
     <svg class="nav-icon" viewBox="0 0 24 24">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
       <circle cx="12" cy="7" r="4"></circle>
@@ -1023,7 +1058,7 @@
   <div class="reviews-modal-sheet">
     <div class="reviews-modal-header">
       <h3 id="reviewsModalTitle">Рецензии</h3>
-      <button class="reviews-modal-close" onclick="closeReviews()">&times;</button>
+      <button class="reviews-modal-close ios-btn-tap" onclick="closeReviews()">&times;</button>
     </div>
     <div id="reviews-modal-body" class="reviews-modal-body">
       <p id="t_reviews_loading">Загрузка...</p>
@@ -1037,24 +1072,14 @@
   const tg = window.Telegram?.WebApp;
   if (tg) {
     tg.ready();
-    // Раскрытие на максимум
     tg.expand();
 
-    // Запрос полноэкранного режима (Bot API 8.0+)
     if (typeof tg.requestFullscreen === 'function') {
-      try {
-        tg.requestFullscreen();
-      } catch (e) {
-        console.log("Fullscreen request fallback:", e);
-      }
+      try { tg.requestFullscreen(); } catch (e) {}
     }
-
-    // Блокировка случайного закрытия свайпом вниз при прокрутке
     if (typeof tg.disableVerticalSwipes === 'function') {
       tg.disableVerticalSwipes();
     }
-
-    // Фирменные цвета для шторки Telegram под цвет темного фона
     if (typeof tg.setHeaderColor === 'function') {
       tg.setHeaderColor('#070a0f');
     }
@@ -1062,6 +1087,36 @@
       tg.setBackgroundColor('#070a0f');
     }
   }
+
+  // === ГЛОБАЛЬНЫЙ ОБРАБОТЧИК МГНОВЕННОГО ОТКЛИКА IOS ДЛЯ ВСЕХ КНОПОК ===
+  function triggerHaptic(type = 'light') {
+    if (tg?.HapticFeedback) {
+      if (type === 'medium') tg.HapticFeedback.impactOccurred('medium');
+      else if (type === 'heavy') tg.HapticFeedback.impactOccurred('heavy');
+      else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+      else tg.HapticFeedback.impactOccurred('light');
+    }
+  }
+
+  // Делегирование тачей: перехватывает touchstart мгновенно без 300ms задержки Safari
+  document.addEventListener('touchstart', (e) => {
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn');
+    if (target) {
+      target.classList.add('touch-active');
+      triggerHaptic('light');
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn');
+    if (target) {
+      setTimeout(() => target.classList.remove('touch-active'), 120);
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchcancel', () => {
+    document.querySelectorAll('.touch-active').forEach(el => el.classList.remove('touch-active'));
+  }, { passive: true });
 
   function hidePreloader() {
     const preloader = document.getElementById('app-preloader');
@@ -1106,7 +1161,7 @@
         const safeName = escapeHtml(item.project_name);
         const safeNameJs = safeName.replace(/'/g, "\\'");
         return `
-          <div class="rank-item stagger-in" style="animation-delay:${delay}ms; cursor:pointer;" onclick="openReviews('${safeNameJs}')">
+          <div class="rank-item ios-btn-tap stagger-in" style="animation-delay:${delay}ms;" onclick="openReviews('${safeNameJs}')">
             <span class="rank-num">${rankNum}</span>
             <div class="rank-info">
               <div class="rank-title">${safeName}</div>
@@ -1151,10 +1206,10 @@
             <p>${escapeHtml(p.description)}</p>
             <div class="card-footer">
               <div class="project-tags">${tagsHtml}</div>
-              <button class="btn-small" onclick="startScoring('${safeNameJs}')">${i18n[currentLang].btn_eval}</button>
+              <button class="btn-small ios-btn-tap" onclick="startScoring('${safeNameJs}')">${i18n[currentLang].btn_eval}</button>
             </div>
-            <div style="margin-top:12px; text-align:right;">
-              <span style="font-size:12px; color:var(--cyan); font-weight:700; cursor:pointer;" onclick="openReviews('${safeNameJs}')">${i18n[currentLang].read_reviews}</span>
+            <div style="margin-top:14px; text-align:right;">
+              <span class="read-reviews-btn ios-btn-tap" onclick="openReviews('${safeNameJs}')">${i18n[currentLang].read_reviews}</span>
             </div>
           </div>
         `;
@@ -1178,7 +1233,7 @@
   }
 
   async function openReviews(projectName) {
-    if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+    triggerHaptic('medium');
     document.getElementById('reviewsModalTitle').textContent = projectName;
     reviewsModalBody.innerHTML = `<p>${i18n[currentLang].reviews_loading}</p>`;
     reviewsModal.classList.add('open');
@@ -1214,7 +1269,7 @@
   }
 
   function closeReviews() {
-    if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+    triggerHaptic('light');
     reviewsModal.classList.remove('open');
   }
 
@@ -1250,8 +1305,6 @@
   fetchProfile();
 
   function switchTab(tabId) {
-    if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
-
     document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
 
@@ -1576,7 +1629,7 @@
 
   sliders.forEach(item => {
     item.el.addEventListener('input', () => {
-      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      triggerHaptic('light');
       calculate();
       pulse(item.valEl);
       pulse(totalEl);
@@ -1588,7 +1641,7 @@
     if (isSubmitting) return;
     isSubmitting = true;
 
-    if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    triggerHaptic('success');
 
     const scoreVal = parseFloat(totalEl.textContent);
     const verdictVal = verdictEl.textContent;
@@ -1629,7 +1682,7 @@
   });
 
   shareBtn.addEventListener('click', () => {
-    if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+    triggerHaptic('medium');
 
     const scoreVal = parseFloat(totalEl.textContent);
     const verdictVal = verdictEl.textContent;
@@ -1662,7 +1715,7 @@
     }
 
     isSubmittingProj = true;
-    if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    triggerHaptic('success');
     submitProjBtn.disabled = true;
     submitProjBtn.textContent = 'Отправка...';
 
