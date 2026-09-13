@@ -41,8 +41,8 @@
 
     body {
       color: var(--text-main);
-      /* Динамический отступ: адаптируется под полный экран и защищает от перекрытия часами и шторкой */
-      padding-top: calc(var(--tg-content-safe-area-inset-top, var(--tg-safe-area-inset-top, env(safe-area-inset-top, 24px))) + 16px);
+      /* Базовый запас 88px гарантированно опускает контент ниже системных часов и кнопки закрытия */
+      padding-top: calc(max(var(--tg-content-safe-area-inset-top, 0px), var(--tg-safe-area-inset-top, 0px), env(safe-area-inset-top, 0px)) + 88px);
       padding-left: calc(14px + env(safe-area-inset-left, 0px));
       padding-right: calc(14px + env(safe-area-inset-right, 0px));
       padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
@@ -639,7 +639,7 @@
       text-shadow: 0 0 12px rgba(0, 229, 153, 0.35);
     }
 
-    /* Нижняя панель навигации */
+    /* Нижняя панель навигации (Liquid Glass) */
     .bottom-nav {
       position: fixed;
       bottom: calc(12px + env(safe-area-inset-bottom, 0px));
@@ -1070,28 +1070,23 @@
     tg.ready();
     tg.expand();
 
-    // Запрос честного полноэкранного режима Telegram
     if (typeof tg.requestFullscreen === 'function') {
-      try {
-        tg.requestFullscreen();
-      } catch (e) {
-        console.warn("Fullscreen request:", e);
-      }
+      try { tg.requestFullscreen(); } catch (e) {}
     }
 
-    // Динамический пересчет верхнего отступа при смене состояния Fullscreen
-    const applySafeTop = () => {
-      const safeTop = tg.contentSafeAreaInset?.top || tg.safeAreaInset?.top || 0;
-      if (safeTop > 0) {
-        document.body.style.paddingTop = `${safeTop + 14}px`;
-      }
+    const updateSafePadding = () => {
+      const tgInset = tg.contentSafeAreaInset?.top || tg.safeAreaInset?.top || 0;
+      const finalTop = tgInset > 0 ? (tgInset + 16) : 88;
+      document.body.style.paddingTop = finalTop + 'px';
     };
 
+    updateSafePadding();
+
     if (typeof tg.onEvent === 'function') {
-      tg.onEvent('fullscreen_changed', applySafeTop);
-      tg.onEvent('safe_area_changed', applySafeTop);
+      tg.onEvent('fullscreen_changed', updateSafePadding);
+      tg.onEvent('safe_area_changed', updateSafePadding);
     }
-    setTimeout(applySafeTop, 300);
+    setTimeout(updateSafePadding, 250);
 
     if (typeof tg.disableVerticalSwipes === 'function') {
       tg.disableVerticalSwipes();
