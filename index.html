@@ -167,7 +167,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 34px;
+      margin-bottom: 20px;
       transition: opacity 0.25s ease, transform 0.25s var(--spring-ease), max-height 0.25s ease, margin-bottom 0.25s ease;
       max-height: 70px;
       overflow: hidden;
@@ -229,6 +229,81 @@
       background: var(--emerald);
       color: #061017;
       box-shadow: 0 2px 8px rgba(0, 229, 153, 0.35);
+    }
+
+    /* Полоса 50 участников */
+    .community-strip-card {
+      background: rgba(14, 20, 32, 0.65);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 12px 14px;
+      margin-bottom: 24px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      transition: transform 0.25s var(--spring-ease), border-color 0.25s ease;
+    }
+
+    .community-strip-card.touch-active, .community-strip-card:active {
+      transform: scale(0.98);
+      border-color: rgba(0, 229, 153, 0.4);
+    }
+
+    .community-avatars-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      overflow-x: auto;
+      padding: 4px 2px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .community-avatars-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .user-node {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 229, 153, 0.08);
+      border: 1px solid rgba(0, 229, 153, 0.35);
+      color: var(--emerald);
+      box-shadow: 0 0 10px rgba(0, 229, 153, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      transition: transform 0.25s var(--spring-ease);
+    }
+
+    .user-node svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+
+    /* Пользователь: золотисто-рыжий акцент без лишних надписей */
+    .user-node.user-gold {
+      background: radial-gradient(circle, #ffb703 0%, #fb8500 100%);
+      border: 1.5px solid #ffe8a3;
+      color: #2b1400;
+      box-shadow: 
+        0 0 18px rgba(251, 133, 0, 0.75),
+        0 0 35px rgba(255, 183, 3, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
+      transform: scale(1.15);
+      z-index: 2;
+      animation: goldBreathe 2.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes goldBreathe {
+      0% { transform: scale(1.12); box-shadow: 0 0 14px rgba(251, 133, 0, 0.6); }
+      100% { transform: scale(1.22); box-shadow: 0 0 24px rgba(255, 183, 3, 0.9); }
     }
 
     /* Экраны */
@@ -703,6 +778,59 @@
       text-shadow: 0 0 12px rgba(0, 229, 153, 0.35);
     }
 
+    /* Модальное окно участников */
+    .members-list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .member-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 14, 22, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 10px 14px;
+      backdrop-filter: blur(12px);
+    }
+
+    .member-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .member-avatar-mini {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 229, 153, 0.12);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+      color: var(--emerald);
+    }
+
+    .member-avatar-mini svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .member-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .member-status {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
     /* Нижняя панель навигации */
     .bottom-nav {
       position: fixed;
@@ -1077,13 +1205,19 @@
     </div>
   </div>
 
+  <!-- ПОЛОСА 50 УЧАСТНИКОВ -->
+  <div class="community-strip-card ios-btn-tap" onclick="openAllMembersModal()">
+    <div class="community-avatars-row" id="communityAvatarsRow">
+      <!-- Генерируются ровно 50 силуэтов через JS -->
+    </div>
+  </div>
+
   <!-- ВКЛАДКА 1: ЛЕНТА -->
   <div id="tab-feed" class="tab-view active">
     <h1 id="t_feed_title">Лента проектов</h1>
     <p class="subtitle" id="t_feed_sub">Проекты на оценке у комьюнити</p>
 
     <div id="feed-list">
-      <!-- Скелетон-заглушки во время загрузки -->
       <div class="card skeleton-card">
         <div class="skeleton-bar" style="width: 50%;"></div>
         <div class="skeleton-bar" style="width: 85%;"></div>
@@ -1298,6 +1432,21 @@
   </div>
 </div>
 
+<!-- МОДАЛЬНОЕ ОКНО УЧАСТНИКОВ КОМЬЮНИТИ -->
+<div id="members-modal" class="reviews-modal-overlay" onclick="if(event.target === this) closeMembersModal()">
+  <div class="reviews-modal-sheet">
+    <div class="reviews-modal-header">
+      <h3>Участники комьюнити</h3>
+      <button class="reviews-modal-close ios-btn-tap" onclick="closeMembersModal()">&times;</button>
+    </div>
+    <div class="reviews-modal-body">
+      <div class="members-list-container" id="membersListInner">
+        <p style="color:var(--text-sub);">Загрузка участников...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   const API_URL = "https://openhall-backend-1.onrender.com";
   const tg = window.Telegram?.WebApp;
@@ -1341,7 +1490,7 @@
   }
 
   document.addEventListener('touchstart', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn');
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .community-strip-card');
     if (target) {
       target.classList.add('touch-active');
       triggerHaptic('light');
@@ -1349,7 +1498,7 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn');
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .community-strip-card');
     if (target) setTimeout(() => target.classList.remove('touch-active'), 120);
   }, { passive: true });
 
@@ -1407,7 +1556,6 @@
       if (e.target.closest('button, input, textarea, a, .read-reviews-btn')) return;
       const now = Date.now();
       if (now - lastTap < 300) {
-        // Двойной клик сработал
         const touch = e.changedTouches[0];
         const rect = card.getBoundingClientRect();
         const x = touch.clientX - rect.left;
@@ -1479,6 +1627,88 @@
   }
   window.addEventListener('load', () => setTimeout(hidePreloader, 600));
   setTimeout(hidePreloader, 3000);
+
+  // Иконка силуэта человека
+  const humanSvg = `
+    <svg viewBox="0 0 24 24">
+      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+    </svg>
+  `;
+
+  // Отрисовка полосы из 50 участников
+  async function updateCommunityStrip() {
+    const row = document.getElementById('communityAvatarsRow');
+    let userSlot = 24;
+
+    try {
+      const res = await fetch(`${API_URL}/api/community/strip`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ initData: tg?.initData || '' })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        userSlot = data.userSlot;
+      }
+    } catch (e) {}
+
+    let nodesHtml = '';
+    for (let i = 1; i <= 50; i++) {
+      const isMe = (i === userSlot);
+      nodesHtml += `
+        <div class="user-node ${isMe ? 'user-gold' : ''}" id="${isMe ? 'myGoldSlot' : ''}">
+          ${humanSvg}
+        </div>
+      `;
+    }
+    row.innerHTML = nodesHtml;
+
+    setTimeout(() => {
+      const mySlot = document.getElementById('myGoldSlot');
+      if (mySlot) {
+        mySlot.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }, 350);
+  }
+
+  // Модальное окно участников комьюнити
+  async function openAllMembersModal() {
+    triggerHaptic('medium');
+    const modal = document.getElementById('members-modal');
+    const container = document.getElementById('membersListInner');
+    modal.classList.add('open');
+    container.innerHTML = `<p style="color:var(--text-sub);">Загрузка участников...</p>`;
+
+    try {
+      const res = await fetch(`${API_URL}/api/community/all-members`);
+      const members = await res.json();
+
+      if (!members || members.length === 0) {
+        container.innerHTML = `<p style="color:var(--text-sub);">Пока в базе нет участников.</p>`;
+        return;
+      }
+
+      container.innerHTML = members.map(m => `
+        <div class="member-row">
+          <div class="member-info">
+            <div class="member-avatar-mini">${humanSvg}</div>
+            <div>
+              <div class="member-name">${escapeHtml(m.name)}</div>
+              <div class="member-status">${m.isOnline ? '🟢 В сети' : 'Был(а) недавно'}</div>
+            </div>
+          </div>
+          <span class="tag">Рецензий: ${m.reviewsCount}</span>
+        </div>
+      `).join('');
+    } catch (err) {
+      container.innerHTML = `<p style="color:#ff5c5c;">Ошибка загрузки участников.</p>`;
+    }
+  }
+
+  function closeMembersModal() {
+    triggerHaptic('light');
+    document.getElementById('members-modal').classList.remove('open');
+  }
 
   async function translateTexts(texts, target) {
     if (target === 'ru' || !texts || texts.length === 0) return texts;
@@ -1724,9 +1954,13 @@
     moveNavIndicator(tabId);
 
     const topBar = document.getElementById('app-top-bar');
-    if (topBar) {
-      if (tabId === 'profile') topBar.classList.add('hidden');
-      else topBar.classList.remove('hidden');
+    const stripCard = document.querySelector('.community-strip-card');
+    if (tabId === 'profile') {
+      if (topBar) topBar.classList.add('hidden');
+      if (stripCard) stripCard.style.display = 'none';
+    } else {
+      if (topBar) topBar.classList.remove('hidden');
+      if (stripCard) stripCard.style.display = 'block';
     }
 
     window.scrollTo(0, 0);
@@ -2309,6 +2543,10 @@
   else if (userLang === 'ka' || userLang === 'ge') setLanguage('ge');
   else if (userLang === 'en') setLanguage('en');
   else setLanguage('ru');
+
+  // Запуск полосы 50 участников и периодический опрос
+  updateCommunityStrip();
+  setInterval(updateCommunityStrip, 45000);
 
   // Первоначальная инициализация эффектов
   applyTiltToAll();
