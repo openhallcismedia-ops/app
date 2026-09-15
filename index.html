@@ -97,16 +97,17 @@
       100% { transform: translate(-20px, -25px) scale(0.95); }
     }
 
+    /* Футуристичный Liquid Glass прелоадер */
     .preloader {
       position: fixed;
       inset: 0;
-      background: #070a0f;
+      background: radial-gradient(circle at 50% 50%, #0d1522 0%, #070a0f 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 10000;
-      transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .preloader.hidden {
@@ -119,37 +120,79 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 20px;
+      position: relative;
+    }
+
+    .preloader-glow {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.35) 0%, rgba(0, 180, 216, 0.15) 50%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(32px);
+      animation: glowPulse 2.4s ease-in-out infinite alternate;
+      z-index: 0;
     }
 
     .preloader-logo {
-      font-size: 22px;
+      font-size: 26px;
       font-weight: 900;
-      letter-spacing: 2.5px;
-      background: var(--grad-main);
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #00e599 0%, #00b4d8 50%, #1877f2 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+      animation: logoBreathe 2.4s ease-in-out infinite alternate;
     }
 
-    .preloader-spinner {
-      width: 44px;
-      height: 44px;
-      border: 3px solid rgba(0, 229, 153, 0.15);
-      border-top-color: var(--emerald);
-      border-right-color: var(--cyan);
-      border-radius: 50%;
-      animation: spin 0.8s cubic-bezier(0.6, 0.05, 0.28, 0.95) infinite;
+    .preloader-bar-wrap {
+      width: 160px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .preloader-bar-fill {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      background: linear-gradient(90deg, transparent, #00e599, #00b4d8, transparent);
+      border-radius: 10px;
+      animation: liquidBar 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
     }
 
     .preloader-text {
-      font-size: 13px;
+      font-size: 11px;
+      font-weight: 700;
       color: var(--text-sub);
-      letter-spacing: 0.3px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+      opacity: 0.8;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    @keyframes glowPulse {
+      0% { transform: scale(0.85); opacity: 0.4; }
+      100% { transform: scale(1.3); opacity: 0.85; }
+    }
+
+    @keyframes logoBreathe {
+      0% { transform: scale(0.97); filter: drop-shadow(0 0 10px rgba(0, 229, 153, 0.2)); }
+      100% { transform: scale(1.03); filter: drop-shadow(0 0 25px rgba(0, 180, 216, 0.5)); }
+    }
+
+    @keyframes liquidBar {
+      0% { left: -60%; }
+      100% { left: 120%; }
     }
 
     .container {
@@ -226,7 +269,6 @@
       box-shadow: 0 2px 8px rgba(0, 229, 153, 0.35);
     }
 
-    /* Полоса 50 участников */
     .community-strip-card {
       background: rgba(14, 20, 32, 0.65);
       backdrop-filter: blur(24px) saturate(190%);
@@ -935,7 +977,7 @@
       font-size: 13px;
       color: var(--text-main);
       line-height: 1.45;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .review-date {
@@ -1071,11 +1113,15 @@
 <div class="blob-2 bg-blob"></div>
 <div class="blob-3 bg-blob"></div>
 
+<!-- Новый экран загрузки с неоновой аурой и жидкой световой полосой -->
 <div id="app-preloader" class="preloader">
   <div class="preloader-content">
+    <div class="preloader-glow"></div>
     <div class="preloader-logo">Open Hall</div>
-    <div class="preloader-spinner"></div>
-    <p class="preloader-text" id="preloader-status">Синхронизация...</p>
+    <div class="preloader-bar-wrap">
+      <div class="preloader-bar-fill"></div>
+    </div>
+    <p class="preloader-text" id="preloader-status">Синхронизация</p>
   </div>
 </div>
 
@@ -1213,7 +1259,7 @@
     </div>
   </div>
 
-  <!-- ВКЛАДКА 4: ПРОФИЛЬ -->
+  <!-- ВКЛАДКА 4: ПРОФИЛЬ С ДИНАМИЧЕСКИМ ТИРОМ -->
   <div id="tab-profile" class="tab-view">
     <h1 id="t_prof_title">Профиль участника</h1>
     <p class="subtitle" id="t_prof_sub">Личная статистика и статус в сообществе</p>
@@ -1251,7 +1297,6 @@
   </div>
 </div>
 
-<!-- НАВИГАЦИЯ -->
 <nav class="bottom-nav">
   <div id="nav-indicator" class="nav-indicator"></div>
 
@@ -1307,7 +1352,7 @@
   </button>
 </nav>
 
-<!-- МОДАЛЬНОЕ ОКНО РЕЦЕНЗИЙ -->
+<!-- МОДАЛЬНОЕ ОКНО РЕЦЕНЗИЙ (БЕЗ РЕАКЦИЙ) -->
 <div id="reviews-modal" class="reviews-modal-overlay" onclick="if(event.target === this) closeReviews()">
   <div class="reviews-modal-sheet">
     <div class="reviews-modal-header">
@@ -1490,7 +1535,7 @@
     const preloader = document.getElementById('app-preloader');
     if (preloader) {
       preloader.classList.add('hidden');
-      setTimeout(() => preloader.remove(), 450);
+      setTimeout(() => preloader.remove(), 600);
     }
   }
   window.addEventListener('load', () => setTimeout(hidePreloader, 600));
@@ -2290,7 +2335,6 @@
     }
   });
 
-  // AI-агент
   const agentMessagesEl = document.getElementById('agent-messages');
   const agentInputEl = document.getElementById('agentInput');
   const agentSendBtn = document.getElementById('agentSendBtn');
