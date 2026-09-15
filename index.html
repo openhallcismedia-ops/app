@@ -223,7 +223,7 @@
     /* Экраны */
     .tab-view {
       display: none;
-      animation: liquidIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      animation: liquidIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: transform, filter, opacity;
     }
 
@@ -232,15 +232,20 @@
     }
 
     @keyframes liquidIn {
-      from {
+      0% {
         opacity: 0;
-        transform: translateY(16px) scale(0.96);
-        filter: blur(8px);
+        transform: translateY(18px) scale(0.95);
+        filter: blur(10px);
       }
-      60% {
+      35% {
+        opacity: 1;
+        filter: blur(4px);
+      }
+      70% {
+        transform: translateY(0) scale(1);
         filter: blur(1px);
       }
-      to {
+      100% {
         opacity: 1;
         transform: translateY(0) scale(1);
         filter: blur(0);
@@ -654,23 +659,22 @@
     /* Нижняя панель навигации (Liquid Glass) */
     .bottom-nav {
       position: fixed;
-      bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      bottom: calc(10px + env(safe-area-inset-bottom, 0px));
       left: 14px;
       right: 14px;
       max-width: 480px;
       margin: 0 auto;
-      height: 64px;
+      height: 78px;
       background: rgba(14, 20, 32, 0.72);
       backdrop-filter: blur(26px) saturate(210%);
       -webkit-backdrop-filter: blur(26px) saturate(210%);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 24px;
+      border-radius: 26px;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 0 8px;
+      padding: 0 10px;
       z-index: 999;
-      position: relative;
       box-shadow: 
         0 12px 36px rgba(0, 0, 0, 0.5),
         inset 0 1px 0 rgba(255, 255, 255, 0.22);
@@ -683,7 +687,7 @@
       bottom: 8px;
       left: 8px;
       width: calc(20% - 4px);
-      border-radius: 18px;
+      border-radius: 20px;
       background: rgba(0, 229, 153, 0.16);
       border: 1px solid rgba(0, 229, 153, 0.35);
       box-shadow: 0 0 20px rgba(0, 229, 153, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25);
@@ -716,14 +720,14 @@
     }
 
     .nav-icon {
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       stroke: var(--text-sub);
       fill: none;
       stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
       transition: stroke 0.25s ease, transform 0.2s ease;
     }
 
@@ -732,29 +736,15 @@
       transform: translateY(-1px);
     }
 
-    .nav-btn .nav-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: transparent;
-      margin-top: 3px;
-      transition: background 0.25s ease, transform 0.25s var(--spring-ease);
-    }
-
     .nav-btn.active {
       color: var(--emerald);
     }
 
-    .nav-btn.active .nav-dot {
-      background: var(--emerald);
-      transform: scale(1.5);
-      box-shadow: 0 0 6px var(--emerald);
-    }
-
     .nav-label {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.2px;
+      letter-spacing: 0.1px;
+      white-space: nowrap;
     }
 
     /* Модальное окно рецензий */
@@ -1194,7 +1184,6 @@
       <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
     </svg>
     <span class="nav-label" id="t_nav_feed">Лента</span>
-    <span class="nav-dot"></span>
   </button>
 
   <button class="nav-btn ios-btn-tap" onclick="switchTab('scoring')">
@@ -1202,7 +1191,6 @@
       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
     </svg>
     <span class="nav-label" id="t_nav_score">Оценка</span>
-    <span class="nav-dot"></span>
   </button>
 
   <button class="nav-btn ios-btn-tap" onclick="switchTab('top')">
@@ -1214,7 +1202,6 @@
       <path d="M6 3h12v7a6 6 0 0 1-12 0V3z"></path>
     </svg>
     <span class="nav-label" id="t_nav_top">Топ</span>
-    <span class="nav-dot"></span>
   </button>
 
   <button class="nav-btn ios-btn-tap" onclick="switchTab('agent')">
@@ -1227,7 +1214,6 @@
       <path d="M19 10h2v4h-2"></path>
     </svg>
     <span class="nav-label" id="t_nav_agent">Агент</span>
-    <span class="nav-dot"></span>
   </button>
 
   <button class="nav-btn ios-btn-tap" onclick="switchTab('profile')">
@@ -1236,7 +1222,6 @@
       <circle cx="12" cy="7" r="4"></circle>
     </svg>
     <span class="nav-label" id="t_nav_prof">Профиль</span>
-    <span class="nav-dot"></span>
   </button>
 </nav>
 
