@@ -240,16 +240,9 @@
       border-radius: 20px;
       padding: 12px 14px;
       margin-bottom: 24px;
-      cursor: pointer;
       position: relative;
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-      transition: transform 0.25s var(--spring-ease), border-color 0.25s ease;
-    }
-
-    .community-strip-card.touch-active, .community-strip-card:active {
-      transform: scale(0.98);
-      border-color: rgba(0, 229, 153, 0.4);
     }
 
     .community-avatars-row {
@@ -287,7 +280,7 @@
       fill: currentColor;
     }
 
-    /* Пользователь: золотисто-рыжий акцент без лишних надписей */
+    /* Текущий пользователь: янтарно-золотой акцент */
     .user-node.user-gold {
       background: radial-gradient(circle, #ffb703 0%, #fb8500 100%);
       border: 1.5px solid #ffe8a3;
@@ -373,7 +366,6 @@
       will-change: transform;
     }
 
-    /* Динамический световой блик, движущийся за пальцем */
     .card::before {
       content: "";
       position: absolute;
@@ -778,59 +770,6 @@
       text-shadow: 0 0 12px rgba(0, 229, 153, 0.35);
     }
 
-    /* Модальное окно участников */
-    .members-list-container {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .member-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(10, 14, 22, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 10px 14px;
-      backdrop-filter: blur(12px);
-    }
-
-    .member-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .member-avatar-mini {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 229, 153, 0.12);
-      border: 1px solid rgba(0, 229, 153, 0.3);
-      color: var(--emerald);
-    }
-
-    .member-avatar-mini svg {
-      width: 14px;
-      height: 14px;
-      fill: currentColor;
-    }
-
-    .member-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .member-status {
-      font-size: 11px;
-      color: var(--text-sub);
-    }
-
     /* Нижняя панель навигации */
     .bottom-nav {
       position: fixed;
@@ -1206,9 +1145,9 @@
   </div>
 
   <!-- ПОЛОСА 50 УЧАСТНИКОВ -->
-  <div class="community-strip-card ios-btn-tap" onclick="openAllMembersModal()">
+  <div class="community-strip-card">
     <div class="community-avatars-row" id="communityAvatarsRow">
-      <!-- Генерируются ровно 50 силуэтов через JS -->
+      <!-- 50 силуэтов через JS -->
     </div>
   </div>
 
@@ -1432,21 +1371,6 @@
   </div>
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО УЧАСТНИКОВ КОМЬЮНИТИ -->
-<div id="members-modal" class="reviews-modal-overlay" onclick="if(event.target === this) closeMembersModal()">
-  <div class="reviews-modal-sheet">
-    <div class="reviews-modal-header">
-      <h3>Участники комьюнити</h3>
-      <button class="reviews-modal-close ios-btn-tap" onclick="closeMembersModal()">&times;</button>
-    </div>
-    <div class="reviews-modal-body">
-      <div class="members-list-container" id="membersListInner">
-        <p style="color:var(--text-sub);">Загрузка участников...</p>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
   const API_URL = "https://openhall-backend-1.onrender.com";
   const tg = window.Telegram?.WebApp;
@@ -1490,7 +1414,7 @@
   }
 
   document.addEventListener('touchstart', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .community-strip-card');
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn');
     if (target) {
       target.classList.add('touch-active');
       triggerHaptic('light');
@@ -1498,7 +1422,7 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .community-strip-card');
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn');
     if (target) setTimeout(() => target.classList.remove('touch-active'), 120);
   }, { passive: true });
 
@@ -1586,7 +1510,8 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    if (e.target.closest('input[type=range], textarea, input[type=text]')) return;
+    // Исключаем смену вкладок при свайпе по полосе комьюнити, ползункам и полям ввода
+    if (e.target.closest('input, textarea, .community-strip-card')) return;
     const diffX = e.changedTouches[0].clientX - touchStartX;
     const diffY = e.changedTouches[0].clientY - touchStartY;
 
@@ -1669,45 +1594,6 @@
         mySlot.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       }
     }, 350);
-  }
-
-  // Модальное окно участников комьюнити
-  async function openAllMembersModal() {
-    triggerHaptic('medium');
-    const modal = document.getElementById('members-modal');
-    const container = document.getElementById('membersListInner');
-    modal.classList.add('open');
-    container.innerHTML = `<p style="color:var(--text-sub);">Загрузка участников...</p>`;
-
-    try {
-      const res = await fetch(`${API_URL}/api/community/all-members`);
-      const members = await res.json();
-
-      if (!members || members.length === 0) {
-        container.innerHTML = `<p style="color:var(--text-sub);">Пока в базе нет участников.</p>`;
-        return;
-      }
-
-      container.innerHTML = members.map(m => `
-        <div class="member-row">
-          <div class="member-info">
-            <div class="member-avatar-mini">${humanSvg}</div>
-            <div>
-              <div class="member-name">${escapeHtml(m.name)}</div>
-              <div class="member-status">${m.isOnline ? '🟢 В сети' : 'Был(а) недавно'}</div>
-            </div>
-          </div>
-          <span class="tag">Рецензий: ${m.reviewsCount}</span>
-        </div>
-      `).join('');
-    } catch (err) {
-      container.innerHTML = `<p style="color:#ff5c5c;">Ошибка загрузки участников.</p>`;
-    }
-  }
-
-  function closeMembersModal() {
-    triggerHaptic('light');
-    document.getElementById('members-modal').classList.remove('open');
   }
 
   async function translateTexts(texts, target) {
@@ -2152,11 +2038,11 @@
       v_good: "Համայնքի կողմից հավանված",
       v_mid: "Ունի ներուժ",
       v_low: "Կարիք ունի լրամշակման",
-      read_reviews: "Կարդալ ակնարկները →",
-      reviews_loading: "Ակնարկների բեռնում...",
-      reviews_empty: "Այս նախագծի վերաբերյալ ակնարկներ դեռ չկան:",
-      reviews_no_comment: "Առանց մեկնաբանության",
-      reviews_error: "Ակնարկները չհաջողվեց բեռնել: Փորձեք կրկին:"
+      read_reviews: "Читать отзывы →",
+      reviews_loading: "Загрузка рецензий...",
+      reviews_empty: "Пока никто не оставил рецензию на этот проект.",
+      reviews_no_comment: "Без комментария",
+      reviews_error: "Не удалось загрузить рецензии. Попробуйте ещё раз."
     },
     ge: {
       nav_feed: "ლენტა",
@@ -2206,11 +2092,11 @@
       v_good: "საზოგადოების მიერ მოწონებული",
       v_mid: "აქვს პოტენციალი",
       v_low: "საჭიროებს დამუშავებას",
-      read_reviews: "შეფასებების ნახვა →",
-      reviews_loading: "შეფასებები იტვირთება...",
-      reviews_empty: "ამ პროექტს ჯერ არავის შეუფასებია.",
-      reviews_no_comment: "კომენტარის გარეშე",
-      reviews_error: "ვერ ჩაიტვირთა. სცადეთ თავიდან."
+      read_reviews: "Читать отзывы →",
+      reviews_loading: "Загрузка рецензий...",
+      reviews_empty: "Пока никто не оставил рецензию на этот проект.",
+      reviews_no_comment: "Без комментария",
+      reviews_error: "Не удалось загрузить рецензии. Попробуйте ещё раз."
     }
   };
 
@@ -2544,7 +2430,7 @@
   else if (userLang === 'en') setLanguage('en');
   else setLanguage('ru');
 
-  // Запуск полосы 50 участников и периодический опрос
+  // Запуск полосы 50 участников
   updateCommunityStrip();
   setInterval(updateCommunityStrip, 45000);
 
