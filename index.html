@@ -18,7 +18,31 @@
       --text-main: #ffffff;
       --text-sub: #8c9cb0;
       --track-bg: rgba(255, 255, 255, 0.08);
+      --input-bg: rgba(10, 14, 22, 0.65);
+      --nav-bg: rgba(14, 20, 32, 0.72);
+      --modal-bg: rgba(18, 24, 38, 0.92);
+      --tag-bg: rgba(255, 255, 255, 0.07);
+      --tag-border: rgba(255, 255, 255, 0.12);
+      --tag-color: #b0bfd4;
+      --shadow-color: rgba(0, 0, 0, 0.35);
       --spring-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Светлая тема (Ice Glass) */
+    body.light-theme {
+      --bg: #edf2f7;
+      --card-bg: rgba(255, 255, 255, 0.72);
+      --card-border: rgba(255, 255, 255, 0.9);
+      --text-main: #0c1421;
+      --text-sub: #5f7188;
+      --track-bg: rgba(0, 0, 0, 0.08);
+      --input-bg: rgba(255, 255, 255, 0.85);
+      --nav-bg: rgba(255, 255, 255, 0.82);
+      --modal-bg: rgba(248, 250, 252, 0.95);
+      --tag-bg: rgba(0, 0, 0, 0.05);
+      --tag-border: rgba(0, 0, 0, 0.08);
+      --tag-color: #475569;
+      --shadow-color: rgba(30, 41, 59, 0.08);
     }
 
     * {
@@ -39,6 +63,7 @@
       overflow-x: hidden;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      transition: background-color 0.45s ease, color 0.45s ease;
     }
 
     body {
@@ -61,6 +86,12 @@
       pointer-events: none;
       opacity: 0.45;
       animation: floatBlobs 12s ease-in-out infinite alternate;
+      transition: opacity 0.45s ease;
+    }
+
+    body.light-theme .bg-blob {
+      opacity: 0.28;
+      filter: blur(90px);
     }
 
     .blob-1 {
@@ -97,7 +128,6 @@
       100% { transform: translate(-20px, -25px) scale(0.95); }
     }
 
-    /* Футуристичный Liquid Glass прелоадер */
     .preloader {
       position: fixed;
       inset: 0;
@@ -221,6 +251,12 @@
       pointer-events: none;
     }
 
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .badge {
       font-size: 11px;
       font-weight: 700;
@@ -235,6 +271,29 @@
       -webkit-backdrop-filter: blur(12px);
     }
 
+    .theme-toggle-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-main);
+      width: 34px;
+      height: 32px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: all 0.25s var(--spring-ease);
+    }
+
+    body.light-theme .theme-toggle-btn {
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
     .lang-switcher {
       display: flex;
       gap: 3px;
@@ -244,6 +303,12 @@
       border: 1px solid rgba(255, 255, 255, 0.12);
       padding: 3px;
       border-radius: 12px;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    body.light-theme .lang-switcher {
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(0, 0, 0, 0.08);
     }
 
     .lang-btn {
@@ -270,16 +335,17 @@
     }
 
     .community-strip-card {
-      background: rgba(14, 20, 32, 0.65);
+      background: var(--card-bg);
       backdrop-filter: blur(24px) saturate(190%);
       -webkit-backdrop-filter: blur(24px) saturate(190%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--card-border);
       border-radius: 20px;
       padding: 12px 14px;
       margin-bottom: 24px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      box-shadow: 0 10px 30px var(--shadow-color), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
     }
 
     .community-avatars-row {
@@ -335,6 +401,69 @@
       100% { transform: scale(1.22); box-shadow: 0 0 24px rgba(255, 183, 3, 0.9); }
     }
 
+    .tags-filter-bar {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 14px;
+      margin-bottom: 4px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tags-filter-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-tag-chip {
+      background: var(--tag-bg);
+      border: 1px solid var(--tag-border);
+      color: var(--text-sub);
+      padding: 6px 13px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: all 0.22s var(--spring-ease);
+      flex-shrink: 0;
+    }
+
+    .filter-tag-chip.active {
+      background: rgba(0, 229, 153, 0.18);
+      border-color: var(--emerald);
+      color: var(--emerald);
+      box-shadow: 0 0 14px rgba(0, 229, 153, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .form-tags-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 16px;
+    }
+
+    .form-tag-item {
+      background: var(--input-bg);
+      border: 1px solid var(--tag-border);
+      color: var(--text-sub);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s var(--spring-ease);
+    }
+
+    .form-tag-item.selected {
+      background: rgba(0, 229, 153, 0.2);
+      border-color: var(--emerald);
+      color: var(--emerald);
+      box-shadow: 0 0 10px rgba(0, 229, 153, 0.25);
+    }
+
     .tab-view {
       display: none;
       animation: liquidIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -380,15 +509,12 @@
       border-radius: 20px;
       padding: 18px;
       margin-bottom: 14px;
-      box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 30px var(--shadow-color), inset 0 1px 0 rgba(255, 255, 255, 0.2);
       position: relative;
       overflow: hidden;
       transform-style: preserve-3d;
       perspective: 1000px;
-      transition: transform 0.25s var(--spring-ease), border-color 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.25s var(--spring-ease), border-color 0.3s ease, box-shadow 0.3s ease, background 0.45s ease;
       will-change: transform;
     }
 
@@ -430,11 +556,18 @@
     .tag {
       font-size: 10px;
       font-weight: 700;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #b0bfd4;
+      background: var(--tag-bg);
+      border: 1px solid var(--tag-border);
+      color: var(--tag-color);
       padding: 4px 9px;
       border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, color 0.2s ease, background 0.3s ease;
+    }
+
+    .tag:hover {
+      border-color: var(--emerald);
+      color: var(--emerald);
     }
 
     /* ДИНАМИЧЕСКИЕ ТИРЫ ПРОФИЛЯ */
@@ -443,13 +576,13 @@
     }
 
     .profile-tier-card.tier-obsidian {
-      background: rgba(18, 24, 38, 0.6);
-      border-color: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      background: var(--card-bg);
+      border-color: var(--card-border);
+      box-shadow: 0 10px 30px var(--shadow-color), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
 
     .profile-tier-card.tier-emerald {
-      background: linear-gradient(135deg, rgba(0, 229, 153, 0.12) 0%, rgba(18, 24, 38, 0.72) 100%);
+      background: linear-gradient(135deg, rgba(0, 229, 153, 0.12) 0%, var(--card-bg) 100%);
       border-color: rgba(0, 229, 153, 0.45);
       box-shadow: 0 12px 35px rgba(0, 229, 153, 0.18), inset 0 1px 1px rgba(0, 229, 153, 0.35);
     }
@@ -460,7 +593,7 @@
     }
 
     .profile-tier-card.tier-gold {
-      background: linear-gradient(135deg, rgba(251, 133, 0, 0.16) 0%, rgba(22, 18, 28, 0.8) 100%);
+      background: linear-gradient(135deg, rgba(251, 133, 0, 0.16) 0%, var(--card-bg) 100%);
       border-color: rgba(255, 183, 3, 0.55);
       box-shadow: 
         0 14px 40px rgba(251, 133, 0, 0.22), 
@@ -485,6 +618,10 @@
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
       margin-bottom: 10px;
+    }
+
+    body.light-theme .skeleton-bar {
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.04) 25%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.04) 75%);
     }
 
     @keyframes shimmer {
@@ -589,18 +726,18 @@
     }
 
     .score-banner {
-      background: rgba(18, 24, 38, 0.65);
+      background: var(--card-bg);
       backdrop-filter: blur(28px) saturate(200%);
       -webkit-backdrop-filter: blur(28px) saturate(200%);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      border: 1px solid var(--card-border);
       border-radius: 22px;
       padding: 20px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 20px;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
-      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 14px 34px var(--shadow-color);
+      transition: background 0.45s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     }
 
     .score-banner.score-perfect {
@@ -707,16 +844,16 @@
 
     input[type=text], textarea {
       width: 100%;
-      background: rgba(10, 14, 22, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--input-bg);
+      border: 1px solid var(--tag-border);
       border-radius: 12px;
       padding: 12px 14px;
-      color: #fff;
+      color: var(--text-main);
       font-size: 13px;
       outline: none;
       user-select: text;
       -webkit-user-select: text;
-      transition: border 0.2s ease;
+      transition: border 0.2s ease, background 0.3s ease, color 0.3s ease;
     }
 
     input[type=text]:focus, textarea:focus {
@@ -739,8 +876,8 @@
       border-radius: 16px;
       padding: 14px 18px;
       margin-bottom: 10px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-      transition: transform 0.25s var(--spring-ease), background 0.2s ease;
+      box-shadow: 0 6px 20px var(--shadow-color);
+      transition: transform 0.25s var(--spring-ease), background 0.3s ease, border-color 0.3s ease;
     }
 
     .rank-item.touch-active, .rank-item:active {
@@ -763,7 +900,7 @@
     .rank-title {
       font-size: 15px;
       font-weight: 700;
-      color: #fff;
+      color: var(--text-main);
     }
 
     .rank-cat {
@@ -786,18 +923,18 @@
       max-width: 480px;
       margin: 0 auto;
       height: 78px;
-      background: rgba(14, 20, 32, 0.72);
+      background: var(--nav-bg);
       backdrop-filter: blur(26px) saturate(210%);
       -webkit-backdrop-filter: blur(26px) saturate(210%);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid var(--card-border);
       border-radius: 26px;
       display: flex;
       justify-content: space-around;
       align-items: center;
       padding: 0 10px;
       z-index: 999;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+      box-shadow: 0 12px 36px var(--shadow-color);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, background 0.45s ease, border-color 0.45s ease;
     }
 
     .bottom-nav.nav-hidden {
@@ -894,17 +1031,17 @@
       width: 100%;
       max-width: 480px;
       max-height: 80vh;
-      background: rgba(18, 24, 38, 0.88);
+      background: var(--modal-bg);
       backdrop-filter: blur(30px) saturate(200%);
       -webkit-backdrop-filter: blur(30px) saturate(200%);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      border: 1px solid var(--card-border);
       border-bottom: none;
       border-radius: 26px 26px 0 0;
       display: flex;
       flex-direction: column;
       transform: translateY(100%);
-      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 -10px 40px var(--shadow-color);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.45s ease;
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
@@ -917,7 +1054,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 18px 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid var(--tag-border);
       flex-shrink: 0;
     }
 
@@ -927,7 +1064,7 @@
     }
 
     .reviews-modal-close {
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--tag-bg);
       border: none;
       color: var(--text-sub);
       width: 32px;
@@ -945,13 +1082,14 @@
     }
 
     .review-item {
-      background: rgba(10, 14, 22, 0.6);
+      background: var(--card-bg);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.09);
+      border: 1px solid var(--card-border);
       border-radius: 16px;
       padding: 14px 16px;
       margin-bottom: 12px;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     .review-item-header {
@@ -977,7 +1115,7 @@
       font-size: 13px;
       color: var(--text-main);
       line-height: 1.45;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .review-date {
@@ -996,7 +1134,8 @@
       height: calc(100vh - 320px);
       min-height: 320px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 10px 30px var(--shadow-color);
+      transition: background 0.45s ease, border-color 0.45s ease;
     }
 
     .agent-messages {
@@ -1024,8 +1163,8 @@
 
     .agent-msg-bot {
       align-self: flex-start;
-      background: rgba(10, 14, 22, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--tag-bg);
+      border: 1px solid var(--card-border);
       border-bottom-left-radius: 4px;
       color: var(--text-main);
     }
@@ -1043,8 +1182,8 @@
       display: flex;
       gap: 4px;
       padding: 13px 16px;
-      background: rgba(10, 14, 22, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--tag-bg);
+      border: 1px solid var(--card-border);
       border-radius: 16px;
       border-bottom-left-radius: 4px;
     }
@@ -1070,7 +1209,7 @@
       align-items: flex-end;
       gap: 8px;
       padding: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid var(--tag-border);
       flex-shrink: 0;
     }
 
@@ -1113,7 +1252,6 @@
 <div class="blob-2 bg-blob"></div>
 <div class="blob-3 bg-blob"></div>
 
-<!-- Новый экран загрузки с неоновой аурой и жидкой световой полосой -->
 <div id="app-preloader" class="preloader">
   <div class="preloader-content">
     <div class="preloader-glow"></div>
@@ -1128,11 +1266,17 @@
 <div class="container">
   <div class="top-bar" id="app-top-bar">
     <div class="badge">Open Hall Hub</div>
-    <div class="lang-switcher">
-      <button class="lang-btn ios-btn-tap active" onclick="setLanguage('ru')">RU</button>
-      <button class="lang-btn ios-btn-tap" onclick="setLanguage('en')">EN</button>
-      <button class="lang-btn ios-btn-tap" onclick="setLanguage('am')">AM</button>
-      <button class="lang-btn ios-btn-tap" onclick="setLanguage('ge')">GE</button>
+    
+    <div class="top-bar-right">
+      <!-- КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ -->
+      <button class="theme-toggle-btn ios-btn-tap" id="themeToggleBtn" onclick="toggleAppTheme()" aria-label="Сменить тему">☀️</button>
+      
+      <div class="lang-switcher">
+        <button class="lang-btn ios-btn-tap active" onclick="setLanguage('ru')">RU</button>
+        <button class="lang-btn ios-btn-tap" onclick="setLanguage('en')">EN</button>
+        <button class="lang-btn ios-btn-tap" onclick="setLanguage('am')">AM</button>
+        <button class="lang-btn ios-btn-tap" onclick="setLanguage('ge')">GE</button>
+      </div>
     </div>
   </div>
 
@@ -1144,6 +1288,10 @@
   <div id="tab-feed" class="tab-view active">
     <h1 id="t_feed_title">Лента проектов</h1>
     <p class="subtitle" id="t_feed_sub">Проекты на оценке у комьюнити</p>
+
+    <div class="tags-filter-bar" id="tagsFilterBar">
+      <div class="filter-tag-chip active" onclick="filterByTag('all', this)">Все</div>
+    </div>
 
     <div id="feed-list">
       <div class="card skeleton-card">
@@ -1259,7 +1407,7 @@
     </div>
   </div>
 
-  <!-- ВКЛАДКА 4: ПРОФИЛЬ С ДИНАМИЧЕСКИМ ТИРОМ -->
+  <!-- ВКЛАДКА 4: ПРОФИЛЬ -->
   <div id="tab-profile" class="tab-view">
     <h1 id="t_prof_title">Профиль участника</h1>
     <p class="subtitle" id="t_prof_sub">Личная статистика и статус в сообществе</p>
@@ -1289,8 +1437,17 @@
       <label for="newProjDesc" style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;" id="t_form_desc_label">Описание</label>
       <textarea id="newProjDesc" maxlength="500" placeholder="Пара предложений о проекте..." style="margin-bottom:12px;"></textarea>
 
-      <label for="newProjTags" style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;" id="t_form_tags_label">Теги (через запятую)</label>
-      <input type="text" id="newProjTags" placeholder="Media, Bot, Community" style="margin-bottom:16px;">
+      <label style="display:block; font-size:13px; font-weight:700; margin-bottom:8px;" id="t_form_tags_label">Выберите категории (до 4)</label>
+      <div class="form-tags-picker" id="formTagsPicker">
+        <span class="form-tag-item" onclick="toggleFormTag('Telegram App', this)">Telegram App</span>
+        <span class="form-tag-item" onclick="toggleFormTag('AI', this)">AI</span>
+        <span class="form-tag-item" onclick="toggleFormTag('Media', this)">Media</span>
+        <span class="form-tag-item" onclick="toggleFormTag('Community', this)">Community</span>
+        <span class="form-tag-item" onclick="toggleFormTag('Fintech', this)">Fintech</span>
+        <span class="form-tag-item" onclick="toggleFormTag('Web3', this)">Web3</span>
+        <span class="form-tag-item" onclick="toggleFormTag('Culture', this)">Culture</span>
+        <span class="form-tag-item" onclick="toggleFormTag('SaaS', this)">SaaS</span>
+      </div>
 
       <button class="btn-action ios-btn-tap" style="padding:15px;" id="submitProjBtn">Опубликовать проект</button>
     </div>
@@ -1352,7 +1509,7 @@
   </button>
 </nav>
 
-<!-- МОДАЛЬНОЕ ОКНО РЕЦЕНЗИЙ (БЕЗ РЕАКЦИЙ) -->
+<!-- МОДАЛЬНОЕ ОКНО РЕЦЕНЗИЙ -->
 <div id="reviews-modal" class="reviews-modal-overlay" onclick="if(event.target === this) closeReviews()">
   <div class="reviews-modal-sheet">
     <div class="reviews-modal-header">
@@ -1368,6 +1525,37 @@
 <script>
   const API_URL = "https://openhall-backend-1.onrender.com";
   const tg = window.Telegram?.WebApp;
+
+  let allProjectsData = [];
+  let currentFilterTag = 'all';
+  let selectedFormTags = new Set();
+  let currentTheme = localStorage.getItem('openhall_theme') || 'dark';
+
+  function applyTheme(theme) {
+    currentTheme = theme;
+    localStorage.setItem('openhall_theme', theme);
+    const toggleBtn = document.getElementById('themeToggleBtn');
+
+    if (theme === 'light') {
+      document.body.classList.add('light-theme');
+      if (toggleBtn) toggleBtn.textContent = '🌙';
+      if (typeof tg?.setHeaderColor === 'function') tg.setHeaderColor('#edf2f7');
+      if (typeof tg?.setBackgroundColor === 'function') tg.setBackgroundColor('#edf2f7');
+    } else {
+      document.body.classList.remove('light-theme');
+      if (toggleBtn) toggleBtn.textContent = '☀️';
+      if (typeof tg?.setHeaderColor === 'function') tg.setHeaderColor('#070a0f');
+      if (typeof tg?.setBackgroundColor === 'function') tg.setBackgroundColor('#070a0f');
+    }
+  }
+
+  function toggleAppTheme() {
+    triggerHaptic('medium');
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+  }
+
+  // Применяем сохраненную тему сразу
+  applyTheme(currentTheme);
 
   function updateSafePadding() {
     if (!tg) return;
@@ -1393,8 +1581,6 @@
     }
     [100, 300, 600, 1000, 1800].forEach(delay => setTimeout(updateSafePadding, delay));
     if (typeof tg.disableVerticalSwipes === 'function') tg.disableVerticalSwipes();
-    if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#070a0f');
-    if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#070a0f');
   }
 
   function triggerHaptic(type = 'light') {
@@ -1407,7 +1593,7 @@
   }
 
   document.addEventListener('touchstart', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn');
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
     if (target) {
       target.classList.add('touch-active');
       triggerHaptic('light');
@@ -1415,7 +1601,7 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn');
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
     if (target) setTimeout(() => target.classList.remove('touch-active'), 120);
   }, { passive: true });
 
@@ -1468,7 +1654,7 @@
   function initDoubleTap(card) {
     let lastTap = 0;
     card.addEventListener('touchend', (e) => {
-      if (e.target.closest('button, input, textarea, a, .read-reviews-btn')) return;
+      if (e.target.closest('button, input, textarea, a, .read-reviews-btn, .tag')) return;
       const now = Date.now();
       if (now - lastTap < 300) {
         const touch = e.changedTouches[0];
@@ -1500,7 +1686,7 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    if (e.target.closest('input, textarea, .community-strip-card')) return;
+    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar')) return;
     const diffX = e.changedTouches[0].clientX - touchStartX;
     const diffY = e.changedTouches[0].clientY - touchStartY;
 
@@ -1607,6 +1793,122 @@
     return div.innerHTML;
   }
 
+  function updateTagsFilterBar(projects) {
+    const bar = document.getElementById('tagsFilterBar');
+    const tagsSet = new Set();
+
+    projects.forEach(p => {
+      (p.tags || []).forEach(t => {
+        if (t && t.trim()) tagsSet.add(t.trim());
+      });
+    });
+
+    const tagsArr = Array.from(tagsSet);
+    bar.innerHTML = `
+      <div class="filter-tag-chip ${currentFilterTag === 'all' ? 'active' : ''}" onclick="filterByTag('all', this)">Все</div>
+      ${tagsArr.map(t => `
+        <div class="filter-tag-chip ${currentFilterTag === t ? 'active' : ''}" onclick="filterByTag('${escapeHtml(t).replace(/'/g, "\\'")}', this)">#${escapeHtml(t)}</div>
+      `).join('')}
+    `;
+  }
+
+  function filterByTag(tag, element) {
+    triggerHaptic('light');
+    currentFilterTag = tag;
+    document.querySelectorAll('.filter-tag-chip').forEach(el => el.classList.remove('active'));
+    if (element) element.classList.add('active');
+    renderFeedList();
+  }
+
+  function renderFeedList() {
+    const feedContainer = document.getElementById('feed-list');
+    let projects = allProjectsData;
+
+    if (currentFilterTag !== 'all') {
+      projects = projects.filter(p => (p.tags || []).includes(currentFilterTag));
+    }
+
+    if (!projects || projects.length === 0) {
+      feedContainer.innerHTML = `<div class="card"><p>В этой категории пока нет проектов.</p></div>`;
+      return;
+    }
+
+    feedContainer.innerHTML = projects.map((p, index) => {
+      const tagsHtml = (p.tags || []).map(tag => `
+        <span class="tag" onclick="filterByTag('${escapeHtml(tag).replace(/'/g, "\\'")}', null)">#${escapeHtml(tag)}</span>
+      `).join('');
+      const safeDisplayName = escapeHtml(p.displayName || p.name);
+      const safeOriginalNameJs = escapeHtml(p.name).replace(/'/g, "\\'");
+      const delay = Math.min(index * 60, 400);
+
+      return `
+        <div class="card stagger-in" style="animation-delay:${delay}ms">
+          <h3>${safeDisplayName}</h3>
+          <p>${escapeHtml(p.displayDesc || p.description)}</p>
+          <div class="card-footer">
+            <div class="project-tags">${tagsHtml}</div>
+            <button class="btn-small ios-btn-tap" onclick="startScoring('${safeOriginalNameJs}')">${i18n[currentLang].btn_eval}</button>
+          </div>
+          <div style="margin-top:14px; text-align:right;">
+            <span class="read-reviews-btn ios-btn-tap" onclick="openReviews('${safeOriginalNameJs}')">${i18n[currentLang].read_reviews}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    applyTiltToAll();
+    document.querySelectorAll('#feed-list .card').forEach(initDoubleTap);
+  }
+
+  async function fetchFeed() {
+    const feedContainer = document.getElementById('feed-list');
+    try {
+      const res = await fetch(`${API_URL}/api/projects`);
+      const projects = await res.json();
+
+      if (!projects || projects.length === 0) {
+        feedContainer.innerHTML = `<div class="card"><p>Пока нет опубликованных проектов.</p></div>`;
+        return;
+      }
+
+      let displayNames = projects.map(p => p.name);
+      let displayDescs = projects.map(p => p.description);
+      if (currentLang !== 'ru') {
+        [displayNames, displayDescs] = await Promise.all([
+          translateTexts(displayNames, currentLang),
+          translateTexts(displayDescs, currentLang)
+        ]);
+      }
+
+      allProjectsData = projects.map((p, i) => ({
+        ...p,
+        displayName: displayNames[i],
+        displayDesc: displayDescs[i]
+      }));
+
+      updateTagsFilterBar(allProjectsData);
+      renderFeedList();
+    } catch (err) {
+      console.error("Ошибка загрузки ленты:", err);
+      feedContainer.innerHTML = `<div class="card"><p style="color:#ff5c5c;">Сервер просыпается... повторите через 15 секунд.</p></div>`;
+    }
+  }
+
+  function toggleFormTag(tag, element) {
+    triggerHaptic('light');
+    if (selectedFormTags.has(tag)) {
+      selectedFormTags.delete(tag);
+      element.classList.remove('selected');
+    } else {
+      if (selectedFormTags.size >= 4) {
+        alert('Можно выбрать максимум 4 категории.');
+        return;
+      }
+      selectedFormTags.add(tag);
+      element.classList.add('selected');
+    }
+  }
+
   async function fetchLeaderboard() {
     const listContainer = document.getElementById('leaderboard-list');
     try {
@@ -1656,54 +1958,6 @@
           </div>
         </div>
       `;
-    }
-  }
-
-  async function fetchFeed() {
-    const feedContainer = document.getElementById('feed-list');
-    try {
-      const res = await fetch(`${API_URL}/api/projects`);
-      const projects = await res.json();
-
-      if (!projects || projects.length === 0) {
-        feedContainer.innerHTML = `<div class="card"><p>Пока нет опубликованных проектов.</p></div>`;
-        return;
-      }
-
-      let displayNames = projects.map(p => p.name);
-      let displayDescs = projects.map(p => p.description);
-      if (currentLang !== 'ru') {
-        [displayNames, displayDescs] = await Promise.all([
-          translateTexts(displayNames, currentLang),
-          translateTexts(displayDescs, currentLang)
-        ]);
-      }
-
-      feedContainer.innerHTML = projects.map((p, index) => {
-        const tagsHtml = (p.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
-        const safeDisplayName = escapeHtml(displayNames[index]);
-        const safeOriginalNameJs = escapeHtml(p.name).replace(/'/g, "\\'");
-        const delay = Math.min(index * 60, 400);
-        return `
-          <div class="card stagger-in" style="animation-delay:${delay}ms">
-            <h3>${safeDisplayName}</h3>
-            <p>${escapeHtml(displayDescs[index])}</p>
-            <div class="card-footer">
-              <div class="project-tags">${tagsHtml}</div>
-              <button class="btn-small ios-btn-tap" onclick="startScoring('${safeOriginalNameJs}')">${i18n[currentLang].btn_eval}</button>
-            </div>
-            <div style="margin-top:14px; text-align:right;">
-              <span class="read-reviews-btn ios-btn-tap" onclick="openReviews('${safeOriginalNameJs}')">${i18n[currentLang].read_reviews}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      applyTiltToAll();
-      document.querySelectorAll('#feed-list .card').forEach(initDoubleTap);
-    } catch (err) {
-      console.error("Ошибка загрузки ленты:", err);
-      feedContainer.innerHTML = `<div class="card"><p style="color:#ff5c5c;">Сервер просыпается... повторите через 15 секунд.</p></div>`;
     }
   }
 
@@ -1932,7 +2186,7 @@
       btn_submit_proj: "Опубликовать проект",
       form_name_label: "Название проекта",
       form_desc_label: "Описание",
-      form_tags_label: "Теги (через запятую)",
+      form_tags_label: "Выберите категории (до 4)",
       v_top: "Фаворит комьюнити",
       v_good: "Одобрено сообществом",
       v_mid: "Есть потенциал",
@@ -1985,7 +2239,7 @@
       btn_submit_proj: "Publish Project",
       form_name_label: "Project name",
       form_desc_label: "Description",
-      form_tags_label: "Tags (comma-separated)",
+      form_tags_label: "Select categories (up to 4)",
       v_top: "Community Favorite",
       v_good: "Community Approved",
       v_mid: "Shows Potential",
@@ -2038,7 +2292,7 @@
       btn_submit_proj: "Հրապարակել նախագիծը",
       form_name_label: "Նախագծի անվանումը",
       form_desc_label: "Նկարագրություն",
-      form_tags_label: "Թեգեր (ստորակետով)",
+      form_tags_label: "Ընտրեք կատեգորիաներ (մինչև 4)",
       v_top: "Համայնքի ընտրյալ",
       v_good: "Համայնքի կողմից հավանված",
       v_mid: "Ունի ներուժ",
@@ -2091,7 +2345,7 @@
       btn_submit_proj: "პროექტის გამოქვეყნება",
       form_name_label: "პროექტის სახელი",
       form_desc_label: "აღწერა",
-      form_tags_label: "ტეგები (მძიმით გამოყოფილი)",
+      form_tags_label: "აირჩიეთ კატეგორიები (4-მდე)",
       v_top: "საზოგადოების რჩეული",
       v_good: "საზოგადოების მიერ მოწონებული",
       v_mid: "აქვს პოტენციალი",
@@ -2287,7 +2541,7 @@
 
     const nameEl = document.getElementById('newProjName');
     const descEl = document.getElementById('newProjDesc');
-    const tagsEl = document.getElementById('newProjTags');
+    const tags = Array.from(selectedFormTags);
 
     const name = nameEl.value.trim();
     const description = descEl.value.trim();
@@ -2310,7 +2564,7 @@
           initData: tg?.initData || '',
           name,
           description,
-          tags: tagsEl.value
+          tags: tags
         })
       });
 
@@ -2322,7 +2576,8 @@
         alert(`Проект «${name}» отправлен на модерацию! Он появится в ленте сразу после проверки.`);
         nameEl.value = '';
         descEl.value = '';
-        tagsEl.value = '';
+        selectedFormTags.clear();
+        document.querySelectorAll('.form-tag-item').forEach(el => el.classList.remove('selected'));
         switchTab('feed');
       }
     } catch (err) {
