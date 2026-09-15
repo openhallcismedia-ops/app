@@ -678,6 +678,15 @@
       box-shadow: 
         0 12px 36px rgba(0, 0, 0, 0.5),
         inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+    }
+
+    /* Прячем панель, пока открыта системная клавиатура (фокус в поле ввода) —
+       иначе position:fixed "плывёт" вместе со сдвигом видимой области на iOS/в WebView */
+    .bottom-nav.nav-hidden {
+      transform: translateY(140%);
+      opacity: 0;
+      pointer-events: none;
     }
 
     /* Жидкая стеклянная капсула, перетекающая между активными вкладками */
@@ -1322,6 +1331,28 @@
   document.addEventListener('touchcancel', () => {
     document.querySelectorAll('.touch-active').forEach(el => el.classList.remove('touch-active'));
   }, { passive: true });
+
+  // Прячем нижнюю панель, пока открыта клавиатура (фокус в input/textarea),
+  // и возвращаем обратно после потери фокуса — иначе position:fixed "плывёт"
+  // вместе со сдвигом видимой области при появлении клавиатуры.
+  const bottomNavEl = document.querySelector('.bottom-nav');
+  let navShowTimeout;
+
+  document.addEventListener('focusin', (e) => {
+    if (e.target.matches('input, textarea')) {
+      clearTimeout(navShowTimeout);
+      bottomNavEl.classList.add('nav-hidden');
+    }
+  });
+
+  document.addEventListener('focusout', (e) => {
+    if (e.target.matches('input, textarea')) {
+      clearTimeout(navShowTimeout);
+      navShowTimeout = setTimeout(() => {
+        bottomNavEl.classList.remove('nav-hidden');
+      }, 200);
+    }
+  });
 
   function hidePreloader() {
     const preloader = document.getElementById('app-preloader');
