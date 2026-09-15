@@ -42,7 +42,6 @@
 
     body {
       color: var(--text-main);
-      /* Стартовый запас, пока JS не посчитает точное значение через safeAreaInset + contentSafeAreaInset */
       padding-top: 140px;
       padding-left: calc(14px + env(safe-area-inset-left, 0px));
       padding-right: calc(14px + env(safe-area-inset-right, 0px));
@@ -163,12 +162,12 @@
       flex: 1;
     }
 
-    /* Верхняя панель с увеличенным отступом снизу */
+    /* Верхняя панель */
     .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 34px; /* Увеличенный зазор до заголовков и вкладок */
+      margin-bottom: 34px;
       transition: opacity 0.25s ease, transform 0.25s var(--spring-ease), max-height 0.25s ease, margin-bottom 0.25s ease;
       max-height: 70px;
       overflow: hidden;
@@ -235,7 +234,7 @@
     /* Экраны */
     .tab-view {
       display: none;
-      animation: liquidIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      animation: liquidIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: transform, filter, opacity;
     }
 
@@ -246,16 +245,8 @@
     @keyframes liquidIn {
       0% {
         opacity: 0;
-        transform: translateY(18px) scale(0.95);
-        filter: blur(10px);
-      }
-      35% {
-        opacity: 1;
-        filter: blur(4px);
-      }
-      70% {
-        transform: translateY(0) scale(1);
-        filter: blur(1px);
+        transform: translateY(14px) scale(0.97);
+        filter: blur(6px);
       }
       100% {
         opacity: 1;
@@ -286,7 +277,7 @@
       margin-bottom: 18px;
     }
 
-    /* Карточки Liquid Glass */
+    /* 3D Tilt Карточки Liquid Glass */
     .card {
       background: var(--card-bg);
       backdrop-filter: blur(24px) saturate(190%);
@@ -301,18 +292,20 @@
         inset 0 -1px 0 rgba(0, 0, 0, 0.3);
       position: relative;
       overflow: hidden;
-      transition: transform 0.25s var(--spring-ease);
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: transform 0.25s var(--spring-ease), border-color 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform;
     }
 
+    /* Динамический световой блик, движущийся за пальцем */
     .card::before {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 40%;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+      inset: -50%;
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 20%), rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 60%);
       pointer-events: none;
+      transition: opacity 0.3s ease;
     }
 
     .card h3 {
@@ -351,6 +344,44 @@
       border-radius: 8px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+    }
+
+    /* Скелетон-шиммер */
+    .skeleton-card {
+      pointer-events: none;
+    }
+
+    .skeleton-bar {
+      height: 14px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.04) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Всплывающая микрореакция при двойном тапе */
+    .reaction-heart {
+      position: absolute;
+      pointer-events: none;
+      font-size: 40px;
+      color: var(--emerald);
+      transform: translate(-50%, -50%) scale(0);
+      animation: heartPop 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      z-index: 50;
+      text-shadow: 0 0 20px rgba(0, 229, 153, 0.8);
+    }
+
+    @keyframes heartPop {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+      40% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+      70% { transform: translate(-50%, -60px) scale(1); opacity: 0.9; }
+      100% { transform: translate(-50%, -90px) scale(0.6); opacity: 0; }
     }
 
     /* Кнопки и тактильные анимации */
@@ -470,7 +501,7 @@
       100% { left: 230%; }
     }
 
-    /* Вкладка Скоринга */
+    /* Вкладка Скоринга с динамическим шейдером */
     .score-banner {
       background: rgba(18, 24, 38, 0.65);
       backdrop-filter: blur(28px) saturate(200%);
@@ -482,9 +513,13 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 20px;
-      box-shadow: 
-        0 14px 34px rgba(0, 0, 0, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .score-banner.score-perfect {
+      border-color: var(--emerald);
+      box-shadow: 0 0 30px rgba(0, 229, 153, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
     .score-left span {
@@ -668,7 +703,7 @@
       text-shadow: 0 0 12px rgba(0, 229, 153, 0.35);
     }
 
-    /* Нижняя панель навигации (Liquid Glass) */
+    /* Нижняя панель навигации */
     .bottom-nav {
       position: fixed;
       bottom: calc(10px + env(safe-area-inset-bottom, 0px));
@@ -687,20 +722,16 @@
       align-items: center;
       padding: 0 10px;
       z-index: 999;
-      box-shadow: 
-        0 12px 36px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.22);
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
     }
 
-    /* Прячем панель при открытии виртуальной клавиатуры */
     .bottom-nav.nav-hidden {
       transform: translateY(140%);
       opacity: 0;
       pointer-events: none;
     }
 
-    /* Жидкая стеклянная капсула, перетекающая между активными вкладками */
     .nav-indicator {
       position: absolute;
       top: 8px;
@@ -713,7 +744,7 @@
       box-shadow: 0 0 20px rgba(0, 229, 153, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
-      transition: transform 0.5s var(--spring-ease);
+      transition: transform 0.4s var(--spring-ease);
       pointer-events: none;
       z-index: 0;
     }
@@ -890,7 +921,7 @@
       color: var(--text-sub);
     }
 
-    /* AI-агент: чат в стиле Liquid Glass */
+    /* AI-агент */
     .agent-chat-card {
       background: var(--card-bg);
       backdrop-filter: blur(24px) saturate(190%);
@@ -1020,7 +1051,7 @@
 </head>
 <body>
 
-<!-- Плавающие сферы заднего плана -->
+<!-- Фоновые сферы -->
 <div class="bg-blob blob-1"></div>
 <div class="blob-2 bg-blob"></div>
 <div class="blob-3 bg-blob"></div>
@@ -1035,7 +1066,7 @@
 </div>
 
 <div class="container">
-  <!-- Верхняя панель с id для автоматического скрытия -->
+  <!-- Верхняя панель -->
   <div class="top-bar" id="app-top-bar">
     <div class="badge">Open Hall Hub</div>
     <div class="lang-switcher">
@@ -1052,8 +1083,15 @@
     <p class="subtitle" id="t_feed_sub">Проекты на оценке у комьюнити</p>
 
     <div id="feed-list">
-      <div class="card">
-        <p id="t_feed_loading">Загрузка проектов...</p>
+      <!-- Скелетон-заглушки во время загрузки -->
+      <div class="card skeleton-card">
+        <div class="skeleton-bar" style="width: 50%;"></div>
+        <div class="skeleton-bar" style="width: 85%;"></div>
+        <div class="skeleton-bar" style="width: 70%;"></div>
+      </div>
+      <div class="card skeleton-card">
+        <div class="skeleton-bar" style="width: 40%;"></div>
+        <div class="skeleton-bar" style="width: 80%;"></div>
       </div>
     </div>
   </div>
@@ -1063,7 +1101,7 @@
     <h1 id="t_score_title">Рецензия проекта</h1>
     <p class="subtitle" id="t_score_sub">Оценка от участников сообщества по 5 критериям</p>
 
-    <div class="score-banner">
+    <div class="score-banner" id="scoreBannerBox">
       <div class="score-left">
         <span id="t_scoreLabel">Вердикт участников</span>
         <div id="verdict" class="score-verdict">Одобрено сообществом</div>
@@ -1074,7 +1112,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card tilt-card">
       <div class="crit-header">
         <span class="crit-title" id="t_c1_title">1. Концепция и новизна</span>
         <span id="val1" class="crit-val">7</span>
@@ -1083,7 +1121,7 @@
       <input type="range" id="c1" min="1" max="10" value="7">
     </div>
 
-    <div class="card">
+    <div class="card tilt-card">
       <div class="crit-header">
         <span class="crit-title" id="t_c2_title">2. Визуал и удобство</span>
         <span id="val2" class="crit-val">7</span>
@@ -1092,7 +1130,7 @@
       <input type="range" id="c2" min="1" max="10" value="7">
     </div>
 
-    <div class="card">
+    <div class="card tilt-card">
       <div class="crit-header">
         <span class="crit-title" id="t_c3_title">3. Интерес аудитории</span>
         <span id="val3" class="crit-val">7</span>
@@ -1101,7 +1139,7 @@
       <input type="range" id="c3" min="1" max="10" value="7">
     </div>
 
-    <div class="card">
+    <div class="card tilt-card">
       <div class="crit-header">
         <span class="crit-title" id="t_c4_title">4. Уровень готовности</span>
         <span id="val4" class="crit-val">7</span>
@@ -1110,7 +1148,7 @@
       <input type="range" id="c4" min="1" max="10" value="7">
     </div>
 
-    <div class="card">
+    <div class="card tilt-card">
       <div class="crit-header">
         <span class="crit-title" id="t_c5_title">5. Потенциал масштаба</span>
         <span id="val5" class="crit-val">7</span>
@@ -1119,7 +1157,7 @@
       <input type="range" id="c5" min="1" max="10" value="7">
     </div>
 
-    <div class="card">
+    <div class="card tilt-card">
       <label for="comment" style="display:block; font-size:14px; font-weight:700; margin-bottom:8px;" id="t_commentLabel">Заметка к оценке (необязательно)</label>
       <textarea id="comment" placeholder="В чем главные плюсы и что авторам стоит доработать?"></textarea>
     </div>
@@ -1134,13 +1172,11 @@
     <p class="subtitle" id="t_top_sub">Лидеры по оценкам участников комьюнити</p>
 
     <div id="leaderboard-list">
-      <div class="rank-item">
-        <span class="rank-num">--</span>
-        <div class="rank-info">
-          <div class="rank-title">Загрузка данных...</div>
-          <div class="rank-cat">Синхронизация с сервером</div>
-        </div>
-        <span class="rank-score">...</span>
+      <div class="card skeleton-card">
+        <div class="skeleton-bar" style="width: 60%;"></div>
+      </div>
+      <div class="card skeleton-card">
+        <div class="skeleton-bar" style="width: 45%;"></div>
       </div>
     </div>
   </div>
@@ -1166,7 +1202,7 @@
     <h1 id="t_prof_title">Профиль участника</h1>
     <p class="subtitle" id="t_prof_sub">Личная статистика и статус в сообществе</p>
 
-    <div class="card">
+    <div class="card tilt-card">
       <h3 id="user_display_name">Участник комьюнити</h3>
       <p id="t_prof_badge" style="color:var(--emerald); font-weight:700; font-size:12px; margin-bottom:8px;">Активный рецензент</p>
       <div class="project-tags">
@@ -1175,7 +1211,7 @@
       </div>
     </div>
 
-    <div class="card" style="margin-bottom:60px;">
+    <div class="card tilt-card" style="margin-bottom:60px;">
       <h3 id="t_submit_title">Подать проект на аудит</h3>
       <p id="t_submit_desc">Хотите получить независимый скоринг и привлечь аудиторию? Отправьте заявку на добавление в витрину.</p>
 
@@ -1264,7 +1300,6 @@
 
 <script>
   const API_URL = "https://openhall-backend-1.onrender.com";
-
   const tg = window.Telegram?.WebApp;
 
   function updateSafePadding() {
@@ -1279,34 +1314,23 @@
   if (tg) {
     tg.ready();
     tg.expand();
-
     if (typeof tg.requestFullscreen === 'function') {
       try { tg.requestFullscreen(); } catch (e) {}
     }
-
     updateSafePadding();
-
     if (typeof tg.onEvent === 'function') {
       tg.onEvent('fullscreenChanged', updateSafePadding);
       tg.onEvent('safeAreaChanged', updateSafePadding);
       tg.onEvent('contentSafeAreaChanged', updateSafePadding);
       tg.onEvent('viewportChanged', updateSafePadding);
     }
-
     [100, 300, 600, 1000, 1800].forEach(delay => setTimeout(updateSafePadding, delay));
-
-    if (typeof tg.disableVerticalSwipes === 'function') {
-      tg.disableVerticalSwipes();
-    }
-    if (typeof tg.setHeaderColor === 'function') {
-      tg.setHeaderColor('#070a0f');
-    }
-    if (typeof tg.setBackgroundColor === 'function') {
-      tg.setBackgroundColor('#070a0f');
-    }
+    if (typeof tg.disableVerticalSwipes === 'function') tg.disableVerticalSwipes();
+    if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#070a0f');
+    if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#070a0f');
   }
 
-  // === ГЛОБАЛЬНЫЙ ОБРАБОТЧИК МГНОВЕННОГО ОТКЛИКА ДЛЯ ВСЕХ КНОПОК ===
+  // Тактильный виброотклик iOS
   function triggerHaptic(type = 'light') {
     if (tg?.HapticFeedback) {
       if (type === 'medium') tg.HapticFeedback.impactOccurred('medium');
@@ -1326,31 +1350,123 @@
 
   document.addEventListener('touchend', (e) => {
     const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn');
-    if (target) {
-      setTimeout(() => target.classList.remove('touch-active'), 120);
-    }
+    if (target) setTimeout(() => target.classList.remove('touch-active'), 120);
   }, { passive: true });
 
   document.addEventListener('touchcancel', () => {
     document.querySelectorAll('.touch-active').forEach(el => el.classList.remove('touch-active'));
   }, { passive: true });
 
+  // 1. ИНТЕРАКТИВНЫЙ 3D TILT И СВЕТОВОЙ БЛИК
+  function init3DTilt(card) {
+    let bounds;
+    function updateBounds() { bounds = card.getBoundingClientRect(); }
+
+    function handleMove(e) {
+      if (!bounds) updateBounds();
+      const touch = e.touches ? e.touches[0] : e;
+      const x = touch.clientX - bounds.left;
+      const y = touch.clientY - bounds.top;
+
+      const centerX = bounds.width / 2;
+      const centerY = bounds.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -6;
+      const rotateY = ((x - centerX) / centerX) * 6;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.01, 1.01, 1.01)`;
+      card.style.setProperty('--mouse-x', `${(x / bounds.width) * 100}%`);
+      card.style.setProperty('--mouse-y', `${(y / bounds.height) * 100}%`);
+    }
+
+    function handleLeave() {
+      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+      card.style.setProperty('--mouse-x', `50%`);
+      card.style.setProperty('--mouse-y', `20%`);
+    }
+
+    card.addEventListener('touchstart', updateBounds, { passive: true });
+    card.addEventListener('touchmove', handleMove, { passive: true });
+    card.addEventListener('touchend', handleLeave, { passive: true });
+    card.addEventListener('touchcancel', handleLeave, { passive: true });
+  }
+
+  function applyTiltToAll() {
+    document.querySelectorAll('.card').forEach(c => {
+      if (!c.dataset.tiltInit) {
+        c.dataset.tiltInit = 'true';
+        init3DTilt(c);
+      }
+    });
+  }
+
+  // 2. ДВОЙНОЙ ТАП С МИКРОРЕАКЦИЕЙ
+  function initDoubleTap(card) {
+    let lastTap = 0;
+    card.addEventListener('touchend', (e) => {
+      if (e.target.closest('button, input, textarea, a, .read-reviews-btn')) return;
+      const now = Date.now();
+      if (now - lastTap < 300) {
+        // Двойной клик сработал
+        const touch = e.changedTouches[0];
+        const rect = card.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        const heart = document.createElement('div');
+        heart.className = 'reaction-heart';
+        heart.innerHTML = '✦';
+        heart.style.left = `${x}px`;
+        heart.style.top = `${y}px`;
+        card.appendChild(heart);
+
+        triggerHaptic('medium');
+        setTimeout(() => heart.remove(), 750);
+      }
+      lastTap = now;
+    });
+  }
+
+  // 3. ПЛАВНЫЙ СВАЙП МЕЖДУ ЭКРАНАМИ (iOS GESTURES)
+  const tabsOrder = ['feed', 'scoring', 'top', 'agent', 'profile'];
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    if (e.target.closest('input[type=range], textarea, input[type=text]')) return;
+    const diffX = e.changedTouches[0].clientX - touchStartX;
+    const diffY = e.changedTouches[0].clientY - touchStartY;
+
+    if (Math.abs(diffX) > 65 && Math.abs(diffY) < 45) {
+      const curIndex = tabsOrder.indexOf(currentTab);
+      if (diffX < 0 && curIndex < tabsOrder.length - 1) {
+        triggerHaptic('light');
+        switchTab(tabsOrder[curIndex + 1]);
+      } else if (diffX > 0 && curIndex > 0) {
+        triggerHaptic('light');
+        switchTab(tabsOrder[curIndex - 1]);
+      }
+    }
+  }, { passive: true });
+
+  // Скрытие навбара при фокусе в поля ввода
   const bottomNavEl = document.querySelector('.bottom-nav');
   let navShowTimeout;
-
   document.addEventListener('focusin', (e) => {
     if (e.target.matches('input, textarea')) {
       clearTimeout(navShowTimeout);
       bottomNavEl.classList.add('nav-hidden');
     }
   });
-
   document.addEventListener('focusout', (e) => {
     if (e.target.matches('input, textarea')) {
       clearTimeout(navShowTimeout);
-      navShowTimeout = setTimeout(() => {
-        bottomNavEl.classList.remove('nav-hidden');
-      }, 200);
+      navShowTimeout = setTimeout(() => bottomNavEl.classList.remove('nav-hidden'), 200);
     }
   });
 
@@ -1361,10 +1477,7 @@
       setTimeout(() => preloader.remove(), 450);
     }
   }
-
-  window.addEventListener('load', () => {
-    setTimeout(hidePreloader, 600);
-  });
+  window.addEventListener('load', () => setTimeout(hidePreloader, 600));
   setTimeout(hidePreloader, 3000);
 
   async function translateTexts(texts, target) {
@@ -1483,6 +1596,9 @@
           </div>
         `;
       }).join('');
+
+      applyTiltToAll();
+      document.querySelectorAll('#feed-list .card').forEach(initDoubleTap);
     } catch (err) {
       console.error("Ошибка загрузки ленты:", err);
       feedContainer.innerHTML = `<div class="card"><p style="color:#ff5c5c;">Сервер просыпается... повторите через 15 секунд.</p></div>`;
@@ -1607,24 +1723,17 @@
     document.querySelectorAll('.nav-btn')[tabIndexMap[tabId]].classList.add('active');
     moveNavIndicator(tabId);
 
-    // Скрытие верхней плашки в профиле
     const topBar = document.getElementById('app-top-bar');
     if (topBar) {
-      if (tabId === 'profile') {
-        topBar.classList.add('hidden');
-      } else {
-        topBar.classList.remove('hidden');
-      }
+      if (tabId === 'profile') topBar.classList.add('hidden');
+      else topBar.classList.remove('hidden');
     }
 
     window.scrollTo(0, 0);
 
-    if (tabId === 'top') {
-      fetchLeaderboard();
-    }
-    if (tabId === 'profile') {
-      fetchProfile();
-    }
+    if (tabId === 'top') fetchLeaderboard();
+    if (tabId === 'profile') fetchProfile();
+    applyTiltToAll();
   }
 
   let activeProject = 'Open Hall Bot';
@@ -1885,6 +1994,7 @@
   const verdictEl = document.getElementById('verdict');
   const submitBtn = document.getElementById('submitBtn');
   const shareBtn = document.getElementById('shareBtn');
+  const scoreBannerBox = document.getElementById('scoreBannerBox');
 
   function setLanguage(lang) {
     currentLang = lang;
@@ -1928,9 +2038,7 @@
 
     document.getElementById('t_top_title').textContent = t.top_title;
     document.getElementById('t_top_sub').textContent = t.top_sub;
-    if (currentTab === 'top') {
-      fetchLeaderboard();
-    }
+    if (currentTab === 'top') fetchLeaderboard();
 
     document.getElementById('t_prof_title').textContent = t.prof_title;
     document.getElementById('t_prof_sub').textContent = t.prof_sub;
@@ -1946,6 +2054,7 @@
     calculate();
   }
 
+  // 4. ДИНАМИЧЕСКИЙ ШЕЙДЕР СКОРИНГА
   function calculate() {
     let sum = 0;
     sliders.forEach(item => {
@@ -1961,15 +2070,19 @@
     if (avg >= 9.0) {
       verdictEl.textContent = t.v_top;
       verdictEl.style.color = '#00e599';
+      scoreBannerBox.classList.add('score-perfect');
     } else if (avg >= 7.0) {
       verdictEl.textContent = t.v_good;
       verdictEl.style.color = '#00b4d8';
+      scoreBannerBox.classList.remove('score-perfect');
     } else if (avg >= 5.0) {
       verdictEl.textContent = t.v_mid;
       verdictEl.style.color = '#8c9cb0';
+      scoreBannerBox.classList.remove('score-perfect');
     } else {
       verdictEl.textContent = t.v_low;
       verdictEl.style.color = '#536074';
+      scoreBannerBox.classList.remove('score-perfect');
     }
   }
 
@@ -1982,7 +2095,11 @@
 
   sliders.forEach(item => {
     item.el.addEventListener('input', () => {
-      triggerHaptic('light');
+      if (item.el.value === "10") {
+        triggerHaptic('heavy');
+      } else {
+        triggerHaptic('light');
+      }
       calculate();
       pulse(item.valEl);
       pulse(totalEl);
@@ -1993,7 +2110,6 @@
   submitBtn.addEventListener('click', async () => {
     if (isSubmitting) return;
     isSubmitting = true;
-
     triggerHaptic('success');
 
     const scoreVal = parseFloat(totalEl.textContent);
@@ -2016,10 +2132,7 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
       alert(`Оценка для «${activeProject}» сохранена!`);
       shareBtn.style.display = 'block';
@@ -2036,18 +2149,13 @@
 
   shareBtn.addEventListener('click', () => {
     triggerHaptic('medium');
-
     const scoreVal = parseFloat(totalEl.textContent);
     const verdictVal = verdictEl.textContent;
     const text = `Я оценил проект «${activeProject}» на ${scoreVal}/10 («${verdictVal}») в Open Hall Hub!\n\nПрисоединяйся к скорингу проектов сообщества 👇`;
-
     const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
 
-    if (tg?.openTelegramLink) {
-      tg.openTelegramLink(shareUrl);
-    } else {
-      window.open(shareUrl, '_blank');
-    }
+    if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl);
+    else window.open(shareUrl, '_blank');
   });
 
   const submitProjBtn = document.getElementById('submitProjBtn');
@@ -2106,7 +2214,7 @@
     }
   });
 
-  // === AI-АГЕНТ: логика чата ===
+  // AI-агент чат
   const agentMessagesEl = document.getElementById('agent-messages');
   const agentInputEl = document.getElementById('agentInput');
   const agentSendBtn = document.getElementById('agentSendBtn');
@@ -2197,15 +2305,13 @@
   }
 
   const userLang = tg?.initDataUnsafe?.user?.language_code;
-  if (userLang === 'hy' || userLang === 'am') {
-    setLanguage('am');
-  } else if (userLang === 'ka' || userLang === 'ge') {
-    setLanguage('ge');
-  } else if (userLang === 'en') {
-    setLanguage('en');
-  } else {
-    setLanguage('ru');
-  }
+  if (userLang === 'hy' || userLang === 'am') setLanguage('am');
+  else if (userLang === 'ka' || userLang === 'ge') setLanguage('ge');
+  else if (userLang === 'en') setLanguage('en');
+  else setLanguage('ru');
+
+  // Первоначальная инициализация эффектов
+  applyTiltToAll();
 </script>
 
 </body>
