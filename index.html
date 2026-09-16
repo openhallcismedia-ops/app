@@ -32,7 +32,7 @@
       --spring-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    /* СВЕТЛАЯ ТЕМА: Монолитные плотные цвета и ярлыки без прозрачной каши */
+    /* Светлая тема (Clean iOS Style) */
     html.light-theme, body.light-theme {
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -92,7 +92,6 @@
       transition: background-color 0.35s ease, color 0.35s ease;
     }
 
-    /* Гарантированный фон, исключающий чёрную подложку Telegram */
     .fixed-app-background {
       position: fixed;
       inset: 0;
@@ -1331,7 +1330,6 @@
 </head>
 <body>
 
-<!-- Гарантированный фон без чёрных зазоров -->
 <div class="fixed-app-background"></div>
 
 <div class="bg-blob blob-1"></div>
@@ -1612,6 +1610,7 @@
   const tg = window.Telegram?.WebApp;
 
   let allProjectsData = [];
+  let lastKnownProjectsCount = 0;
   let currentFilterTag = 'all';
   let selectedFormTags = new Set();
   let currentTheme = localStorage.getItem('openhall_theme') || 'dark';
@@ -1652,7 +1651,6 @@
     applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
   }
 
-  // Применяем тему сразу при чтении
   applyTheme(currentTheme);
 
   function updateSafePadding() {
@@ -1827,7 +1825,7 @@
 
   const humanSvg = `
     <svg viewBox="0 0 24 24">
-      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
     </svg>
   `;
 
@@ -1969,6 +1967,8 @@
         return;
       }
 
+      lastKnownProjectsCount = projects.length;
+
       let displayNames = projects.map(p => p.name);
       let displayDescs = projects.map(p => p.description);
       if (currentLang !== 'ru') {
@@ -1991,6 +1991,28 @@
       feedContainer.innerHTML = `<div class="card"><p style="color:#ff5c5c;">Сервер просыпается... повторите через 15 секунд.</p></div>`;
     }
   }
+
+  // АВТООБНОВЛЕНИЕ ЛЕНТЫ В ФОНЕ (POLLING)
+  async function checkForFeedUpdates() {
+    try {
+      const res = await fetch(`${API_URL}/api/projects`);
+      const projects = await res.json();
+      if (!Array.isArray(projects)) return;
+
+      if (lastKnownProjectsCount > 0 && projects.length > lastKnownProjectsCount) {
+        lastKnownProjectsCount = projects.length;
+        await fetchFeed();
+        triggerHaptic('success');
+        if (typeof tg?.showAlert === 'function') {
+          tg.showAlert('🎉 Проект прошёл модерацию и добавлен в ленту Open Hall!');
+        }
+      } else {
+        lastKnownProjectsCount = projects.length;
+      }
+    } catch (e) {}
+  }
+
+  setInterval(checkForFeedUpdates, 6000);
 
   function toggleFormTag(tag, element) {
     triggerHaptic('light');
