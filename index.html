@@ -550,6 +550,7 @@
       transform-style: preserve-3d;
       perspective: 1000px;
       transition: transform 0.25s var(--spring-ease), border-color 0.25s ease, box-shadow 0.25s ease, background 0.35s ease;
+      will-change: transform;
     }
 
     .card::before {
@@ -603,7 +604,7 @@
       transition: all 0.2s ease;
     }
 
-    .tag:hover {
+    .tag.tag-interactive:hover {
       border-color: var(--emerald);
       color: var(--emerald);
     }
@@ -612,6 +613,38 @@
       background: #f1f5f9;
       border-color: #cbd5e1;
       color: #334155;
+    }
+
+    /* Reddit-стиль плашка автора */
+    .author-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--tag-bg);
+      border: 1px solid var(--tag-border);
+      padding: 4px 10px 4px 4px;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+    }
+    .author-badge:hover {
+      border-color: var(--emerald);
+    }
+    .author-avatar-bubble {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .author-name-text {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-main);
     }
 
     .profile-tier-card {
@@ -1088,10 +1121,11 @@
       white-space: nowrap;
     }
 
-    .reviews-modal-overlay {
+    /* Модальные окна шторок */
+    .app-modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.55);
       z-index: 2000;
       display: flex;
       align-items: flex-end;
@@ -1101,15 +1135,15 @@
       transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .reviews-modal-overlay.open {
+    .app-modal-overlay.open {
       opacity: 1;
       visibility: visible;
     }
 
-    .reviews-modal-sheet {
+    .app-modal-sheet {
       width: 100%;
       max-width: 480px;
-      max-height: 80vh;
+      max-height: 82vh;
       background: var(--modal-bg);
       border: 1px solid var(--card-border);
       border-bottom: none;
@@ -1122,11 +1156,11 @@
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
-    .reviews-modal-overlay.open .reviews-modal-sheet {
+    .app-modal-overlay.open .app-modal-sheet {
       transform: translateY(0);
     }
 
-    .reviews-modal-header {
+    .app-modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -1135,13 +1169,13 @@
       flex-shrink: 0;
     }
 
-    .reviews-modal-header h3 {
+    .app-modal-header h3 {
       font-size: 17px;
       font-weight: 800;
       color: var(--text-main);
     }
 
-    .reviews-modal-close {
+    .app-modal-close {
       background: var(--tag-bg);
       border: none;
       color: var(--text-sub);
@@ -1153,7 +1187,7 @@
       cursor: pointer;
     }
 
-    .reviews-modal-body {
+    .app-modal-body {
       overflow-y: auto;
       padding: 16px 20px 28px;
       -webkit-overflow-scrolling: touch;
@@ -1205,6 +1239,52 @@
     .review-date {
       font-size: 11px;
       color: var(--text-sub);
+    }
+
+    /* Reddit-стиль палитра и аватарки */
+    .avatar-preset-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+    .avatar-preset-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--tag-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      cursor: pointer;
+      background: var(--tag-bg);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .avatar-preset-btn.selected {
+      border-color: var(--emerald);
+      transform: scale(1.12);
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.4);
+    }
+    .color-preset-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .color-preset-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.2s ease;
+    }
+    .color-preset-dot.selected {
+      transform: scale(1.18);
+      border-color: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
 
     .agent-chat-card {
@@ -1343,7 +1423,7 @@
     <div class="preloader-bar-wrap">
       <div class="preloader-bar-fill"></div>
     </div>
-    <p class="preloader-text" id="preloader-status">Синхронизация</p>
+    <p class="preloader-text" id="t_preloader_status">Синхронизация</p>
   </div>
 </div>
 
@@ -1373,7 +1453,7 @@
     <p class="subtitle" id="t_feed_sub">Проекты на оценке у комьюнити</p>
 
     <div class="tags-filter-bar" id="tagsFilterBar">
-      <div class="filter-tag-chip active" onclick="filterByTag('all', this)">Все</div>
+      <div class="filter-tag-chip active" onclick="filterByTag('all', this)" id="t_tag_all">Все</div>
     </div>
 
     <div id="feed-list">
@@ -1496,18 +1576,54 @@
     <p class="subtitle" id="t_prof_sub">Личная статистика и статус в сообществе</p>
 
     <div class="card tilt-card profile-tier-card tier-obsidian" id="profileCard">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
-        <div>
-          <h3 id="user_display_name" style="font-size:18px;">Участник комьюнити</h3>
-          <span class="badge profile-status-badge" id="profileStatusBadge" style="margin-top:6px; display:inline-block;">Community Scout</span>
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div id="myProfileAvatarBubble" style="width:48px; height:48px; border-radius:50%; background:#10b981; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 4px 12px rgba(0,0,0,0.25);">🦊</div>
+          <div>
+            <h3 id="user_display_name" style="font-size:18px; margin-bottom:2px;">Участник комьюнити</h3>
+            <span class="badge profile-status-badge" id="profileStatusBadge" style="margin-top:2px; display:inline-block;">Community Scout</span>
+          </div>
         </div>
         <div id="tierIcon" style="font-size:22px; opacity:0.85;">✦</div>
       </div>
       
       <div class="project-tags">
-        <span class="tag" id="t_stat_reviews">Рецензий: —</span>
-        <span class="tag" id="t_stat_projects">Проектов: —</span>
+        <span class="tag tag-interactive" id="t_stat_reviews" onclick="openMyContentModal('reviews')">Рецензий: —</span>
+        <span class="tag tag-interactive" id="t_stat_projects" onclick="openMyContentModal('projects')">Проектов: —</span>
       </div>
+    </div>
+
+    <!-- Редактор кастомного Reddit-профиля -->
+    <div class="card tilt-card">
+      <h3 style="margin-bottom:6px;" id="t_custom_title">Кастомизация профиля</h3>
+      <p style="margin-bottom:12px; font-size:12px;" id="t_custom_desc">Выберите маскот, цвет и никнейм. Они будут видны на всех ваших проектах и рецензиях.</p>
+
+      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:8px;" id="t_custom_avatar_label">Выберите аватар</label>
+      <div class="avatar-preset-row" id="avatarPresetRow">
+        <div class="avatar-preset-btn selected" onclick="selectAvatarIcon('🦊', this)">🦊</div>
+        <div class="avatar-preset-btn" onclick="selectAvatarIcon('⚡️', this)">⚡️</div>
+        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🤖', this)">🤖</div>
+        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🚀', this)">🚀</div>
+        <div class="avatar-preset-btn" onclick="selectAvatarIcon('💎', this)">💎</div>
+        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🎯', this)">🎯</div>
+        <div class="avatar-preset-btn" onclick="selectAvatarIcon('👾', this)">👾</div>
+        <div class="avatar-preset-btn" onclick="selectAvatarIcon('👑', this)">👑</div>
+      </div>
+
+      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:8px;" id="t_custom_color_label">Цвет подложки</label>
+      <div class="color-preset-row" id="colorPresetRow">
+        <div class="color-preset-dot selected" style="background:#10b981;" onclick="selectAvatarBg('#10b981', this)"></div>
+        <div class="color-preset-dot" style="background:#0284c7;" onclick="selectAvatarBg('#0284c7', this)"></div>
+        <div class="color-preset-dot" style="background:#6366f1;" onclick="selectAvatarBg('#6366f1', this)"></div>
+        <div class="color-preset-dot" style="background:#ec4899;" onclick="selectAvatarBg('#ec4899', this)"></div>
+        <div class="color-preset-dot" style="background:#f59e0b;" onclick="selectAvatarBg('#f59e0b', this)"></div>
+        <div class="color-preset-dot" style="background:#64748b;" onclick="selectAvatarBg('#64748b', this)"></div>
+      </div>
+
+      <label for="customHandleInput" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;" id="t_custom_handle_label">Кастомный никнейм (например @alex_venture)</label>
+      <input type="text" id="customHandleInput" maxlength="30" placeholder="@nickname" style="margin-bottom:14px;">
+
+      <button class="btn-small ios-btn-tap" style="width:100%; padding:12px;" onclick="saveCustomProfile()" id="t_save_profile_btn">Сохранить профиль</button>
     </div>
 
     <div class="card tilt-card" style="margin-bottom:60px;">
@@ -1592,16 +1708,38 @@
   </button>
 </nav>
 
-<!-- МОДАЛЬНОЕ ОКНО РЕЦЕНЗИЙ -->
-<div id="reviews-modal" class="reviews-modal-overlay" onclick="if(event.target === this) closeReviews()">
-  <div class="reviews-modal-sheet">
-    <div class="reviews-modal-header">
+<!-- 1. МОДАЛЬНОЕ ОКНО РЕЦЕНЗИЙ -->
+<div id="reviews-modal" class="app-modal-overlay" onclick="if(event.target === this) closeReviews()">
+  <div class="app-modal-sheet">
+    <div class="app-modal-header">
       <h3 id="reviewsModalTitle">Рецензии</h3>
-      <button class="reviews-modal-close ios-btn-tap" onclick="closeReviews()">&times;</button>
+      <button class="app-modal-close ios-btn-tap" onclick="closeReviews()">&times;</button>
     </div>
-    <div id="reviews-modal-body" class="reviews-modal-body">
+    <div id="reviews-modal-body" class="app-modal-body">
       <p id="t_reviews_loading">Загрузка...</p>
     </div>
+  </div>
+</div>
+
+<!-- 2. МОДАЛЬНОЕ ОКНО «МОЙ КОНТЕНТ» -->
+<div id="my-content-modal" class="app-modal-overlay" onclick="if(event.target === this) closeMyContentModal()">
+  <div class="app-modal-sheet">
+    <div class="app-modal-header">
+      <h3 id="myContentModalTitle">Мои активности</h3>
+      <button class="app-modal-close ios-btn-tap" onclick="closeMyContentModal()">&times;</button>
+    </div>
+    <div id="my-content-modal-body" class="app-modal-body"></div>
+  </div>
+</div>
+
+<!-- 3. МОДАЛЬНОЕ ОКНО ПУБЛИЧНОГО ПРОФИЛЯ АВТОРА -->
+<div id="user-profile-modal" class="app-modal-overlay" onclick="if(event.target === this) closeUserProfileModal()">
+  <div class="app-modal-sheet">
+    <div class="app-modal-header">
+      <h3 id="userProfileModalTitle">Профиль автора</h3>
+      <button class="app-modal-close ios-btn-tap" onclick="closeUserProfileModal()">&times;</button>
+    </div>
+    <div id="user-profile-modal-body" class="app-modal-body"></div>
   </div>
 </div>
 
@@ -1614,6 +1752,9 @@
   let currentFilterTag = 'all';
   let selectedFormTags = new Set();
   let currentTheme = localStorage.getItem('openhall_theme') || 'dark';
+
+  let currentAvatarIcon = '🦊';
+  let currentAvatarBg = '#10b981';
 
   function applyTheme(theme) {
     currentTheme = theme;
@@ -1750,7 +1891,7 @@
   function initDoubleTap(card) {
     let lastTap = 0;
     card.addEventListener('touchend', (e) => {
-      if (e.target.closest('button, input, textarea, a, .read-reviews-btn, .tag')) return;
+      if (e.target.closest('button, input, textarea, a, .read-reviews-btn, .tag, .author-badge')) return;
       const now = Date.now();
       if (now - lastTap < 300) {
         const touch = e.changedTouches[0];
@@ -1782,7 +1923,7 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar')) return;
+    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet')) return;
     const diffX = e.changedTouches[0].clientX - touchStartX;
     const diffY = e.changedTouches[0].clientY - touchStartY;
 
@@ -1803,13 +1944,13 @@
   document.addEventListener('focusin', (e) => {
     if (e.target.matches('input, textarea')) {
       clearTimeout(navShowTimeout);
-      bottomNavEl.classList.add('nav-hidden');
+      bottomNavEl?.classList.add('nav-hidden');
     }
   });
   document.addEventListener('focusout', (e) => {
     if (e.target.matches('input, textarea')) {
       clearTimeout(navShowTimeout);
-      navShowTimeout = setTimeout(() => bottomNavEl.classList.remove('nav-hidden'), 200);
+      navShowTimeout = setTimeout(() => bottomNavEl?.classList.remove('nav-hidden'), 200);
     }
   });
 
@@ -1889,6 +2030,177 @@
     return div.innerHTML;
   }
 
+  function selectAvatarIcon(icon, el) {
+    triggerHaptic('light');
+    currentAvatarIcon = icon;
+    document.querySelectorAll('.avatar-preset-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    updateProfileAvatarPreview();
+  }
+
+  function selectAvatarBg(color, el) {
+    triggerHaptic('light');
+    currentAvatarBg = color;
+    document.querySelectorAll('.color-preset-dot').forEach(d => d.classList.remove('selected'));
+    el.classList.add('selected');
+    updateProfileAvatarPreview();
+  }
+
+  function updateProfileAvatarPreview() {
+    const bubble = document.getElementById('myProfileAvatarBubble');
+    if (bubble) {
+      bubble.textContent = currentAvatarIcon;
+      bubble.style.backgroundColor = currentAvatarBg;
+    }
+  }
+
+  async function saveCustomProfile() {
+    triggerHaptic('success');
+    const handleInput = document.getElementById('customHandleInput').value.trim();
+    try {
+      const res = await fetch(`${API_URL}/api/profile/custom`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          initData: tg?.initData || '',
+          custom_handle: handleInput,
+          avatar_icon: currentAvatarIcon,
+          avatar_bg: currentAvatarBg
+        })
+      });
+      const data = await res.json();
+      if (data.status === 'ok') {
+        alert('Профиль успешно обновлен!');
+        document.getElementById('user_display_name').textContent = data.user.custom_handle || data.user.name;
+        fetchFeed();
+      }
+    } catch (e) {
+      alert('Ошибка обновления профиля');
+    }
+  }
+
+  async function openMyContentModal(type) {
+    triggerHaptic('medium');
+    const modal = document.getElementById('my-content-modal');
+    const title = document.getElementById('myContentModalTitle');
+    const body = document.getElementById('my-content-modal-body');
+
+    modal.classList.add('open');
+    body.innerHTML = '<p>Загрузка...</p>';
+
+    title.textContent = (type === 'projects') ? 'Мои поданные проекты' : 'Мои оставленные рецензии';
+
+    try {
+      const res = await fetch(`${API_URL}/api/profile/my-content?type=${type}&initData=${encodeURIComponent(tg?.initData || '')}`);
+      const data = await res.json();
+      const items = data.items || [];
+
+      if (items.length === 0) {
+        body.innerHTML = `<p style="color:var(--text-sub);">Список пока пуст.</p>`;
+        return;
+      }
+
+      if (type === 'projects') {
+        body.innerHTML = items.map(p => {
+          const statusText = p.status === 'approved' ? '✅ Опубликован' : (p.status === 'rejected' ? '❌ Отклонен' : '⏳ На модерации');
+          return `
+            <div class="review-item">
+              <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                <h4 style="font-size:15px; font-weight:800;">${escapeHtml(p.name)}</h4>
+                <span style="font-size:11px; font-weight:700;">${statusText}</span>
+              </div>
+              <p style="font-size:12px; color:var(--text-sub); margin-bottom:8px;">${escapeHtml(p.description)}</p>
+              <div style="font-size:10px; color:var(--text-sub);">${new Date(p.created_at).toLocaleDateString()}</div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        body.innerHTML = items.map(r => `
+          <div class="review-item">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+              <h4 style="font-size:15px; font-weight:800;">${escapeHtml(r.project)}</h4>
+              <span style="font-size:14px; font-weight:800; color:var(--emerald);">${r.score} / 10</span>
+            </div>
+            <div style="font-size:11px; color:var(--cyan); margin-bottom:6px; font-weight:700;">${escapeHtml(r.verdict)}</div>
+            <p style="font-size:12px; color:var(--text-main); margin-bottom:6px;">${escapeHtml(r.comment || 'Без комментария')}</p>
+            <div style="font-size:10px; color:var(--text-sub);">${new Date(r.created_at).toLocaleDateString()}</div>
+          </div>
+        `).join('');
+      }
+    } catch (e) {
+      body.innerHTML = '<p style="color:#ef4444;">Ошибка загрузки</p>';
+    }
+  }
+
+  function closeMyContentModal() {
+    triggerHaptic('light');
+    document.getElementById('my-content-modal').classList.remove('open');
+  }
+
+  async function openUserProfile(userId) {
+    if (!userId) return;
+    triggerHaptic('medium');
+    const modal = document.getElementById('user-profile-modal');
+    const title = document.getElementById('userProfileModalTitle');
+    const body = document.getElementById('user-profile-modal-body');
+
+    modal.classList.add('open');
+    body.innerHTML = '<p>Загрузка профиля...</p>';
+
+    try {
+      const res = await fetch(`${API_URL}/api/user/${userId}`);
+      const data = await res.json();
+
+      title.textContent = `Профиль ${data.name}`;
+      const tierBadge = (data.reviews_count >= 10 || data.projects_count >= 1) ? '👑 Syndicate Partner' : ((data.reviews_count >= 3) ? '⚡️ Certified Reviewer' : '✦ Community Scout');
+
+      const projectsHtml = (data.projects || []).map(p => `
+        <div style="background:var(--tag-bg); padding:10px 12px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:700; font-size:13px;">${escapeHtml(p.name)}</div>
+          <div style="font-size:11px; color:var(--text-sub);">${escapeHtml(p.description)}</div>
+        </div>
+      `).join('') || '<div style="font-size:12px; color:var(--text-sub);">Нет опубликованных проектов</div>';
+
+      const reviewsHtml = (data.reviews || []).map(r => `
+        <div style="background:var(--tag-bg); padding:10px 12px; border-radius:12px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between;">
+            <span style="font-weight:700; font-size:13px;">${escapeHtml(r.project)}</span>
+            <span style="font-weight:800; color:var(--emerald); font-size:13px;">${r.score}/10</span>
+          </div>
+          <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">«${escapeHtml(r.comment || r.verdict)}»</div>
+        </div>
+      `).join('') || '<div style="font-size:12px; color:var(--text-sub);">Нет рецензий</div>';
+
+      body.innerHTML = `
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
+          <div style="width:52px; height:52px; border-radius:50%; background:${data.avatar_bg || '#10b981'}; display:flex; align-items:center; justify-content:center; font-size:26px; box-shadow:0 4px 14px rgba(0,0,0,0.3);">${data.avatar_icon || '👤'}</div>
+          <div>
+            <h3 style="font-size:18px; font-weight:800;">${escapeHtml(data.name)}</h3>
+            <span class="badge" style="display:inline-block; margin-top:4px; font-size:10px;">${tierBadge}</span>
+          </div>
+        </div>
+
+        <div class="project-tags" style="margin-bottom:18px;">
+          <span class="tag">Рецензий: ${data.reviews_count || 0}</span>
+          <span class="tag">Проектов: ${data.projects_count || 0}</span>
+        </div>
+
+        <h4 style="font-size:14px; margin-bottom:8px; font-weight:800;">Проекты автора</h4>
+        <div style="margin-bottom:16px;">${projectsHtml}</div>
+
+        <h4 style="font-size:14px; margin-bottom:8px; font-weight:800;">Последние оценки</h4>
+        <div>${reviewsHtml}</div>
+      `;
+    } catch (e) {
+      body.innerHTML = '<p style="color:#ef4444;">Не удалось загрузить профиль</p>';
+    }
+  }
+
+  function closeUserProfileModal() {
+    triggerHaptic('light');
+    document.getElementById('user-profile-modal').classList.remove('open');
+  }
+
   function updateTagsFilterBar(projects) {
     const bar = document.getElementById('tagsFilterBar');
     const tagsSet = new Set();
@@ -1901,7 +2213,7 @@
 
     const tagsArr = Array.from(tagsSet);
     bar.innerHTML = `
-      <div class="filter-tag-chip ${currentFilterTag === 'all' ? 'active' : ''}" onclick="filterByTag('all', this)">Все</div>
+      <div class="filter-tag-chip ${currentFilterTag === 'all' ? 'active' : ''}" onclick="filterByTag('all', this)" id="t_tag_all">${i18n[currentLang].tag_all}</div>
       ${tagsArr.map(t => `
         <div class="filter-tag-chip ${currentFilterTag === t ? 'active' : ''}" onclick="filterByTag('${escapeHtml(t).replace(/'/g, "\\'")}', this)">#${escapeHtml(t)}</div>
       `).join('')}
@@ -1931,14 +2243,22 @@
 
     feedContainer.innerHTML = projects.map((p, index) => {
       const tagsHtml = (p.tags || []).map(tag => `
-        <span class="tag" onclick="filterByTag('${escapeHtml(tag).replace(/'/g, "\\'")}', null)">#${escapeHtml(tag)}</span>
+        <span class="tag tag-interactive" onclick="filterByTag('${escapeHtml(tag).replace(/'/g, "\\'")}', null)">#${escapeHtml(tag)}</span>
       `).join('');
       const safeDisplayName = escapeHtml(p.displayName || p.name);
       const safeOriginalNameJs = escapeHtml(p.name).replace(/'/g, "\\'");
       const delay = Math.min(index * 60, 400);
 
+      const authorBadgeHtml = p.submitted_by ? `
+        <div class="author-badge ios-btn-tap" onclick="openUserProfile('${p.submitted_by}')">
+          <div class="author-avatar-bubble" style="background:${p.author_bg || '#059669'};">${p.author_avatar || '🚀'}</div>
+          <span class="author-name-text">${escapeHtml(p.author_name || 'Фаундер')}</span>
+        </div>
+      ` : '';
+
       return `
         <div class="card stagger-in" style="animation-delay:${delay}ms">
+          ${authorBadgeHtml}
           <h3>${safeDisplayName}</h3>
           <p>${escapeHtml(p.displayDesc || p.description)}</p>
           <div class="card-footer">
@@ -2128,8 +2448,16 @@
           ? `<div class="review-comment">${escapeHtml(displayComments[i])}</div>`
           : `<div class="review-comment" style="color:var(--text-sub); font-style:italic;">${i18n[currentLang].reviews_no_comment}</div>`;
 
+        const reviewerBadgeHtml = r.user_id ? `
+          <div class="author-badge ios-btn-tap" style="margin-bottom:6px;" onclick="openUserProfile('${r.user_id}')">
+            <div class="author-avatar-bubble" style="background:${r.author_bg || '#10b981'};">${r.author_avatar || '👤'}</div>
+            <span class="author-name-text">${escapeHtml(r.author_name)}</span>
+          </div>
+        ` : '';
+
         return `
           <div class="review-item">
+            ${reviewerBadgeHtml}
             <div class="review-item-header">
               <span class="review-score">${r.score} / 10</span>
               <span class="review-verdict">${escapeHtml(displayVerdicts[i])}</span>
@@ -2168,9 +2496,17 @@
     try {
       const res = await fetch(`${API_URL}/api/profile?initData=${encodeURIComponent(tg.initData)}`);
       const data = await res.json();
-      if (data.available) {
+      if (data.available && data.user) {
+        const u = data.user;
         profileStats.reviews_count = data.reviews_count || 0;
         profileStats.projects_submitted = data.projects_submitted || 0;
+
+        document.getElementById('user_display_name').textContent = u.custom_handle || u.name;
+        document.getElementById('customHandleInput').value = u.custom_handle || '';
+
+        currentAvatarIcon = u.avatar_icon || '🦊';
+        currentAvatarBg = u.avatar_bg || '#10b981';
+        updateProfileAvatarPreview();
 
         const card = document.getElementById('profileCard');
         const badge = document.getElementById('profileStatusBadge');
@@ -2198,9 +2534,6 @@
     }
     renderProfileStats();
   }
-
-  fetchFeed();
-  fetchProfile();
 
   let currentTab = 'feed';
   const tabIndexMap = { feed: 0, scoring: 1, top: 2, agent: 3, profile: 4 };
@@ -2265,6 +2598,7 @@
 
   const i18n = {
     ru: {
+      preloader: "Синхронизация",
       nav_feed: "Лента",
       nav_score: "Оценка",
       nav_top: "Топ",
@@ -2301,12 +2635,19 @@
       prof_sub: "Личная статистика и статус в сообществе",
       stat_reviews_label: "Рецензий",
       stat_projects_label: "Проектов подано",
+      custom_title: "Кастомизация профиля",
+      custom_desc: "Выберите маскот, цвет и никнейм. Они будут видны на всех ваших проектах и рецензиях.",
+      custom_avatar_label: "Выберите аватар",
+      custom_color_label: "Цвет подложки",
+      custom_handle_label: "Кастомный никнейм (например @alex_venture)",
+      save_profile_btn: "Сохранить профиль",
       submit_title: "Подать проект на аудит",
       submit_desc: "Хотите получить независимый скоринг и привлечь аудиторию? Отправьте заявку на добавление в витрину.",
       btn_submit_proj: "Опубликовать проект",
       form_name_label: "Название проекта",
       form_desc_label: "Описание",
       form_tags_label: "Выберите категории (до 4)",
+      tag_all: "Все",
       v_top: "Фаворит комьюнити",
       v_good: "Одобрено сообществом",
       v_mid: "Есть потенциал",
@@ -2318,6 +2659,7 @@
       reviews_error: "Не удалось загрузить рецензии. Попробуйте ещё раз."
     },
     en: {
+      preloader: "Syncing",
       nav_feed: "Feed",
       nav_score: "Review",
       nav_top: "Top",
@@ -2354,12 +2696,19 @@
       prof_sub: "Personal statistics and community standing",
       stat_reviews_label: "Reviews",
       stat_projects_label: "Projects submitted",
+      custom_title: "Profile Customization",
+      custom_desc: "Pick your mascot, background color, and handle. They appear on all your projects and reviews.",
+      custom_avatar_label: "Pick Avatar",
+      custom_color_label: "Background Color",
+      custom_handle_label: "Custom handle (e.g. @alex_venture)",
+      save_profile_btn: "Save Profile",
       submit_title: "Submit Project for Audit",
       submit_desc: "Want an independent score and broader audience? Apply for showcase inclusion.",
       btn_submit_proj: "Publish Project",
       form_name_label: "Project name",
       form_desc_label: "Description",
       form_tags_label: "Select categories (up to 4)",
+      tag_all: "All",
       v_top: "Community Favorite",
       v_good: "Community Approved",
       v_mid: "Shows Potential",
@@ -2371,6 +2720,7 @@
       reviews_error: "Couldn't load reviews. Please try again."
     },
     am: {
+      preloader: "Համաժամացում",
       nav_feed: "Լրահոս",
       nav_score: "Գնահատում",
       nav_top: "Թոփ",
@@ -2407,12 +2757,19 @@
       prof_sub: "Անձնական վիճակագրություն և կարգավիճակ",
       stat_reviews_label: "Ակնարկներ",
       stat_projects_label: "Ներկայացված նախագծեր",
+      custom_title: "Պրոֆիլի կարգավորում",
+      custom_desc: "Ընտրեք ավատարը և մականունը:",
+      custom_avatar_label: "Ընտրել ավատար",
+      custom_color_label: "Գույն",
+      custom_handle_label: "Մականուն",
+      save_profile_btn: "Պահպանել",
       submit_title: "Ներկայացնել նախագիծ",
       submit_desc: "Ցանկանո՞ւմ եք ստանալ գնահատական և ներգրավել լսարան:",
       btn_submit_proj: "Հրապարակել նախագիծը",
       form_name_label: "Նախագծի անվանումը",
       form_desc_label: "Նկարագրություն",
       form_tags_label: "Ընտրեք կատեգորիաներ (մինչև 4)",
+      tag_all: "Բոլորը",
       v_top: "Համայնքի ընտրյալ",
       v_good: "Համայնքի կողմից հավանված",
       v_mid: "Ունի ներուժ",
@@ -2460,12 +2817,19 @@
       prof_sub: "პირადი სტატისტიკა და სტატუსი საზოგადოებაში",
       stat_reviews_label: "შეფასებები",
       stat_projects_label: "წარდგენილი პროექტები",
+      custom_title: "პროფილის მორგება",
+      custom_desc: "აირჩიეთ ავატარი და მეტსახელი:",
+      custom_avatar_label: "ავატარი",
+      custom_color_label: "ფერი",
+      custom_handle_label: "მეტსახელი",
+      save_profile_btn: "შენახვა",
       submit_title: "პროექტის შეტანა აუდიტზე",
       submit_desc: "გსურთ მიიღოთ დამოუკიდებელი სქორინგი და მოიზიდოთ აუდიტორია?",
       btn_submit_proj: "პროექტის გამოქვეყნება",
       form_name_label: "პროექტის სახელი",
       form_desc_label: "აღწერა",
       form_tags_label: "აირჩიეთ კატეგორიები (4-მდე)",
+      tag_all: "ყველა",
       v_top: "საზოგადოების რჩეული",
       v_good: "საზოგადოების მიერ მოწონებული",
       v_mid: "აქვს პოტენციალი",
@@ -2501,6 +2865,7 @@
     });
 
     const t = i18n[lang];
+    document.getElementById('t_preloader_status').textContent = t.preloader;
     document.getElementById('t_nav_feed').textContent = t.nav_feed;
     document.getElementById('t_nav_score').textContent = t.nav_score;
     document.getElementById('t_nav_top').textContent = t.nav_top;
@@ -2514,6 +2879,9 @@
 
     document.getElementById('t_feed_title').textContent = t.feed_title;
     document.getElementById('t_feed_sub').textContent = t.feed_sub;
+    const tagAll = document.getElementById('t_tag_all');
+    if (tagAll) tagAll.textContent = t.tag_all;
+
     fetchFeed();
 
     updateScoreTitle();
@@ -2541,6 +2909,13 @@
     document.getElementById('t_prof_title').textContent = t.prof_title;
     document.getElementById('t_prof_sub').textContent = t.prof_sub;
     renderProfileStats();
+    document.getElementById('t_custom_title').textContent = t.custom_title;
+    document.getElementById('t_custom_desc').textContent = t.custom_desc;
+    document.getElementById('t_custom_avatar_label').textContent = t.custom_avatar_label;
+    document.getElementById('t_custom_color_label').textContent = t.custom_color_label;
+    document.getElementById('t_custom_handle_label').textContent = t.custom_handle_label;
+    document.getElementById('t_save_profile_btn').textContent = t.save_profile_btn;
+
     document.getElementById('t_submit_title').textContent = t.submit_title;
     document.getElementById('t_submit_desc').textContent = t.submit_desc;
     document.getElementById('t_form_name_label').textContent = t.form_name_label;
@@ -2805,6 +3180,8 @@
   else if (userLang === 'en') setLanguage('en');
   else setLanguage('ru');
 
+  fetchFeed();
+  fetchProfile();
   updateCommunityStrip();
   setInterval(updateCommunityStrip, 45000);
   applyTiltToAll();
