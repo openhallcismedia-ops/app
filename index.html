@@ -1134,6 +1134,10 @@
       transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
+    .app-modal-overlay.open .app-modal-sheet {
+      transform: translateY(0);
+    }
+
     .app-modal-overlay.open {
       opacity: 1;
       visibility: visible;
@@ -1153,10 +1157,6 @@
       box-shadow: 0 -10px 40px var(--shadow-color);
       transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease;
       padding-bottom: env(safe-area-inset-bottom, 0px);
-    }
-
-    .app-modal-overlay.open .app-modal-sheet {
-      transform: translateY(0);
     }
 
     .app-modal-header {
@@ -1591,7 +1591,6 @@
       </div>
     </div>
 
-    <!-- Редактор кастомного Reddit-профиля -->
     <div class="card tilt-card">
       <h3 style="margin-bottom:6px;" id="t_custom_title">Кастомизация профиля</h3>
       <p style="margin-bottom:12px; font-size:12px;" id="t_custom_desc">Выберите маскот, цвет и никнейм. Они будут видны на всех ваших проектах и рецензиях.</p>
@@ -2003,40 +2002,24 @@
     }, 350);
   }
 
-  // --- НАДЕЖНЫЙ КЛИЕНТСКИЙ ПЕРЕВОДЧИК ---
-  const clientTranslationCache = {};
-
-  async function translateSingleDirect(text, targetLang) {
-    if (!text || !text.trim() || targetLang === 'ru') return text;
-
-    const langIsoMap = { en: 'en', am: 'hy', hy: 'hy', ge: 'ka', ka: 'ka' };
-    const targetIso = langIsoMap[targetLang.toLowerCase()] || 'en';
-
-    const cacheKey = `${targetIso}_${text.trim()}`;
-    if (clientTranslationCache[cacheKey]) {
-      return clientTranslationCache[cacheKey];
-    }
-
-    try {
-      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetIso}&dt=t&q=${encodeURIComponent(text.trim())}`;
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-        if (data && Array.isArray(data[0])) {
-          const translated = data[0].map(item => item[0]).join('');
-          clientTranslationCache[cacheKey] = translated;
-          return translated;
-        }
-      }
-    } catch (e) {
-      console.warn('Translate error:', e);
-    }
-    return text;
-  }
-
+  // --- НАДЕЖНЫЙ ПЕРЕВОД ЧЕРЕЗ БЭКЕНД RENDER (БЕЗ CORS-ОШИБОК) ---
   async function translateTexts(texts, target) {
     if (target === 'ru' || !texts || texts.length === 0) return texts;
-    return Promise.all(texts.map(t => translateSingleDirect(t, target)));
+    try {
+      const res = await fetch(`${API_URL}/api/translate-batch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texts, target })
+      });
+      const data = await res.json();
+      if (data && Array.isArray(data.translations) && data.translations.length === texts.length) {
+        return data.translations;
+      }
+      return texts;
+    } catch (err) {
+      console.error('Ошибка перевода через бэкенд:', err);
+      return texts;
+    }
   }
 
   function escapeHtml(str) {
