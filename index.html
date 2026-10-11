@@ -1153,10 +1153,6 @@
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
-    .app-modal-overlay.open .app-modal-sheet {
-      transform: translateY(0);
-    }
-
     .app-modal-header {
       display: flex;
       justify-content: space-between;
@@ -1439,7 +1435,7 @@
     </div>
   </div>
 
-  <div class="community-strip-card">
+  <div class="community-strip-card" id="app-community-strip">
     <div class="community-avatars-row" id="communityAvatarsRow"></div>
   </div>
 
@@ -1998,7 +1994,6 @@
     }, 350);
   }
 
-  // Перевод динамических текстов проектов через серверный кэш
   async function translateTexts(texts, target) {
     if (target === 'ru' || !texts || texts.length === 0) return texts;
     try {
@@ -2549,13 +2544,11 @@
     document.querySelectorAll('.nav-btn')[tabIndexMap[tabId]].classList.add('active');
     moveNavIndicator(tabId);
 
-    const topBar = document.getElementById('app-top-bar');
-    const stripCard = document.querySelector('.community-strip-card');
+    // В шапке аватарки скрываем только для профиля, а кнопки языков и темы оставляем ВСЕГДА
+    const stripCard = document.getElementById('app-community-strip');
     if (tabId === 'profile') {
-      if (topBar) topBar.classList.add('hidden');
       if (stripCard) stripCard.style.display = 'none';
     } else {
-      if (topBar) topBar.classList.remove('hidden');
       if (stripCard) stripCard.style.display = 'block';
     }
 
@@ -2863,7 +2856,6 @@
     const t = i18n[lang];
     if (!t) return;
 
-    // Безопасное обновление элементов интерфейса
     const updateText = (id, text) => {
       const el = document.getElementById(id);
       if (el) el.textContent = text;
