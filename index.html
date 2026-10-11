@@ -32,7 +32,6 @@
       --spring-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    /* Светлая тема */
     html.light-theme, body.light-theme {
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -1120,7 +1119,6 @@
       white-space: nowrap;
     }
 
-    /* Модальные окна */
     .app-modal-overlay {
       position: fixed;
       inset: 0;
@@ -1132,10 +1130,6 @@
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .app-modal-overlay.open .app-modal-sheet {
-      transform: translateY(0);
     }
 
     .app-modal-overlay.open {
@@ -1157,6 +1151,10 @@
       box-shadow: 0 -10px 40px var(--shadow-color);
       transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease;
       padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .app-modal-overlay.open .app-modal-sheet {
+      transform: translateY(0);
     }
 
     .app-modal-header {
@@ -1705,7 +1703,7 @@
   </button>
 </nav>
 
-<!-- 1. МОДАЛЬНОЕ ОКНО РЕЦЕНЗИЙ -->
+<!-- МОДАЛЬНЫЕ ОКНА -->
 <div id="reviews-modal" class="app-modal-overlay" onclick="if(event.target === this) closeReviews()">
   <div class="app-modal-sheet">
     <div class="app-modal-header">
@@ -1718,7 +1716,6 @@
   </div>
 </div>
 
-<!-- 2. МОДАЛЬНОЕ ОКНО «МОЙ КОНТЕНТ» -->
 <div id="my-content-modal" class="app-modal-overlay" onclick="if(event.target === this) closeMyContentModal()">
   <div class="app-modal-sheet">
     <div class="app-modal-header">
@@ -1729,7 +1726,6 @@
   </div>
 </div>
 
-<!-- 3. МОДАЛЬНОЕ ОКНО ПУБЛИЧНОГО ПРОФИЛЯ АВТОРА -->
 <div id="user-profile-modal" class="app-modal-overlay" onclick="if(event.target === this) closeUserProfileModal()">
   <div class="app-modal-sheet">
     <div class="app-modal-header">
@@ -2002,7 +1998,7 @@
     }, 350);
   }
 
-  // --- НАДЕЖНЫЙ ПЕРЕВОД ЧЕРЕЗ БЭКЕНД RENDER (БЕЗ CORS-ОШИБОК) ---
+  // Перевод динамических текстов проектов через серверный кэш
   async function translateTexts(texts, target) {
     if (target === 'ru' || !texts || texts.length === 0) return texts;
     try {
@@ -2017,7 +2013,7 @@
       }
       return texts;
     } catch (err) {
-      console.error('Ошибка перевода через бэкенд:', err);
+      console.error('Ошибка перевода:', err);
       return texts;
     }
   }
@@ -2481,8 +2477,10 @@
     const t = i18n[currentLang];
     const r = profileStats.reviews_count;
     const p = profileStats.projects_submitted;
-    document.getElementById('t_stat_reviews').textContent = `${t.stat_reviews_label}: ${r === null ? '—' : r}`;
-    document.getElementById('t_stat_projects').textContent = `${t.stat_projects_label}: ${p === null ? '—' : p}`;
+    const revEl = document.getElementById('t_stat_reviews');
+    const projEl = document.getElementById('t_stat_projects');
+    if (revEl) revEl.textContent = `${t.stat_reviews_label}: ${r === null ? '—' : r}`;
+    if (projEl) projEl.textContent = `${t.stat_projects_label}: ${p === null ? '—' : p}`;
   }
 
   async function fetchProfile() {
@@ -2771,13 +2769,14 @@
       v_good: "Համայնքի կողմից հավանված",
       v_mid: "Ունի ներուժ",
       v_low: "Կարիք ունի լրամշակման",
-      read_reviews: "Читать отзывы →",
-      reviews_loading: "Загрузка рецензий...",
-      reviews_empty: "Пока никто не оставил рецензию на этот проект.",
-      reviews_no_comment: "Без комментария",
-      reviews_error: "Не удалось загрузить рецензии. Попробуйте ещё раз."
+      read_reviews: "Կարդալ ակնարկները →",
+      reviews_loading: "Ակնարկների բեռնում...",
+      reviews_empty: "Այս նախագծի համար դեռ ակնարկներ չկան:",
+      reviews_no_comment: "Առանց մեկնաբանության",
+      reviews_error: "Չհաջողվեց բեռնել ակնարկները:"
     },
     ge: {
+      preloader: "სინქრონიზაცია",
       nav_feed: "ლენტა",
       nav_score: "შეფასება",
       nav_top: "ტოპი",
@@ -2831,11 +2830,11 @@
       v_good: "საზოგადოების მიერ მოწონებული",
       v_mid: "აქვს პოტენციალი",
       v_low: "საჭიროებს დამუშავებას",
-      read_reviews: "Читать отзывы →",
-      reviews_loading: "Загрузка рецензий...",
-      reviews_empty: "Пока никто не оставил рецензию на этот проект.",
-      reviews_no_comment: "Без комментария",
-      reviews_error: "Не удалось загрузить рецензии. Попробуйте ещё раз."
+      read_reviews: "შეფასებების ნახვა →",
+      reviews_loading: "იტვირთება შეფასებები...",
+      reviews_empty: "ამ პროექტზე შეფასებები ჯერ არ არის.",
+      reviews_no_comment: "კომენტარის გარეშე",
+      reviews_error: "შეფასებების ჩატვირთვა ვერ მოხერხდა."
     }
   };
 
@@ -2862,65 +2861,76 @@
     });
 
     const t = i18n[lang];
-    document.getElementById('t_preloader_status').textContent = t.preloader;
-    document.getElementById('t_nav_feed').textContent = t.nav_feed;
-    document.getElementById('t_nav_score').textContent = t.nav_score;
-    document.getElementById('t_nav_top').textContent = t.nav_top;
-    document.getElementById('t_nav_prof').textContent = t.nav_prof;
-    document.getElementById('t_nav_agent').textContent = t.nav_agent;
-    document.getElementById('t_agent_title').textContent = t.agent_title;
-    document.getElementById('t_agent_sub').textContent = t.agent_sub;
-    document.getElementById('agentInput').placeholder = t.agent_placeholder;
-    const welcomeMsgEl = document.getElementById('agent-welcome-msg');
-    if (welcomeMsgEl) welcomeMsgEl.textContent = t.agent_welcome;
+    if (!t) return;
 
-    document.getElementById('t_feed_title').textContent = t.feed_title;
-    document.getElementById('t_feed_sub').textContent = t.feed_sub;
-    const tagAll = document.getElementById('t_tag_all');
-    if (tagAll) tagAll.textContent = t.tag_all;
+    // Безопасное обновление элементов интерфейса
+    const updateText = (id, text) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    };
 
-    fetchFeed();
+    updateText('t_preloader_status', t.preloader);
+    updateText('t_nav_feed', t.nav_feed);
+    updateText('t_nav_score', t.nav_score);
+    updateText('t_nav_top', t.nav_top);
+    updateText('t_nav_prof', t.nav_prof);
+    updateText('t_nav_agent', t.nav_agent);
+    updateText('t_agent_title', t.agent_title);
+    updateText('t_agent_sub', t.agent_sub);
+    
+    const agentInp = document.getElementById('agentInput');
+    if (agentInp) agentInp.placeholder = t.agent_placeholder;
 
-    updateScoreTitle();
-    document.getElementById('t_score_sub').textContent = t.score_sub;
-    document.getElementById('t_scoreLabel').textContent = t.scoreLabel;
-    document.getElementById('t_c1_title').textContent = t.c1_title;
-    document.getElementById('t_c1_desc').textContent = t.c1_desc;
-    document.getElementById('t_c2_title').textContent = t.c2_title;
-    document.getElementById('t_c2_desc').textContent = t.c2_desc;
-    document.getElementById('t_c3_title').textContent = t.c3_title;
-    document.getElementById('t_c3_desc').textContent = t.c3_desc;
-    document.getElementById('t_c4_title').textContent = t.c4_title;
-    document.getElementById('t_c4_desc').textContent = t.c4_desc;
-    document.getElementById('t_c5_title').textContent = t.c5_title;
-    document.getElementById('t_c5_desc').textContent = t.c5_desc;
-    document.getElementById('t_commentLabel').textContent = t.commentLabel;
-    document.getElementById('comment').placeholder = t.commentPlaceholder;
-    submitBtn.textContent = t.submitBtn;
-    shareBtn.textContent = `${t.share_btn} «${activeProject}»`;
+    updateText('agent-welcome-msg', t.agent_welcome);
+    updateText('t_feed_title', t.feed_title);
+    updateText('t_feed_sub', t.feed_sub);
+    updateText('t_tag_all', t.tag_all);
 
-    document.getElementById('t_top_title').textContent = t.top_title;
-    document.getElementById('t_top_sub').textContent = t.top_sub;
-    if (currentTab === 'top') fetchLeaderboard();
+    updateText('t_score_sub', t.score_sub);
+    updateText('t_scoreLabel', t.scoreLabel);
+    updateText('t_c1_title', t.c1_title);
+    updateText('t_c1_desc', t.c1_desc);
+    updateText('t_c2_title', t.c2_title);
+    updateText('t_c2_desc', t.c2_desc);
+    updateText('t_c3_title', t.c3_title);
+    updateText('t_c3_desc', t.c3_desc);
+    updateText('t_c4_title', t.c4_title);
+    updateText('t_c4_desc', t.c4_desc);
+    updateText('t_c5_title', t.c5_title);
+    updateText('t_c5_desc', t.c5_desc);
+    updateText('t_commentLabel', t.commentLabel);
+    
+    const commInp = document.getElementById('comment');
+    if (commInp) commInp.placeholder = t.commentPlaceholder;
 
-    document.getElementById('t_prof_title').textContent = t.prof_title;
-    document.getElementById('t_prof_sub').textContent = t.prof_sub;
+    if (submitBtn) submitBtn.textContent = t.submitBtn;
+    if (shareBtn) shareBtn.textContent = `${t.share_btn} «${activeProject}»`;
+
+    updateText('t_top_title', t.top_title);
+    updateText('t_top_sub', t.top_sub);
+    updateText('t_prof_title', t.prof_title);
+    updateText('t_prof_sub', t.prof_sub);
+    updateText('t_custom_title', t.custom_title);
+    updateText('t_custom_desc', t.custom_desc);
+    updateText('t_custom_avatar_label', t.custom_avatar_label);
+    updateText('t_custom_color_label', t.custom_color_label);
+    updateText('t_custom_handle_label', t.custom_handle_label);
+    updateText('t_save_profile_btn', t.save_profile_btn);
+    updateText('t_submit_title', t.submit_title);
+    updateText('t_submit_desc', t.submit_desc);
+    updateText('t_form_name_label', t.form_name_label);
+    updateText('t_form_desc_label', t.form_desc_label);
+    updateText('t_form_tags_label', t.form_tags_label);
+    
+    const submitProj = document.getElementById('submitProjBtn');
+    if (submitProj) submitProj.textContent = t.btn_submit_proj;
+
     renderProfileStats();
-    document.getElementById('t_custom_title').textContent = t.custom_title;
-    document.getElementById('t_custom_desc').textContent = t.custom_desc;
-    document.getElementById('t_custom_avatar_label').textContent = t.custom_avatar_label;
-    document.getElementById('t_custom_color_label').textContent = t.custom_color_label;
-    document.getElementById('t_custom_handle_label').textContent = t.custom_handle_label;
-    document.getElementById('t_save_profile_btn').textContent = t.save_profile_btn;
-
-    document.getElementById('t_submit_title').textContent = t.submit_title;
-    document.getElementById('t_submit_desc').textContent = t.submit_desc;
-    document.getElementById('t_form_name_label').textContent = t.form_name_label;
-    document.getElementById('t_form_desc_label').textContent = t.form_desc_label;
-    document.getElementById('t_form_tags_label').textContent = t.form_tags_label;
-    submitProjBtn.textContent = t.btn_submit_proj;
-
     calculate();
+    updateScoreTitle();
+
+    if (currentTab === 'top') fetchLeaderboard();
+    fetchFeed();
   }
 
   function calculate() {
