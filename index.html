@@ -809,7 +809,6 @@
       color: #334155;
     }
 
-    /* Индикатор текущего оцениваемого проекта */
     .scoring-target-badge {
       display: flex;
       align-items: center;
@@ -836,7 +835,7 @@
       justify-content: space-between;
       margin-bottom: 20px;
       box-shadow: 0 4px 16px var(--shadow-color);
-      transition: background 0.35s ease, border-color 0.35s ease;
+      transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
     }
 
     .score-banner.score-perfect {
@@ -858,6 +857,7 @@
       font-size: 16px;
       font-weight: 700;
       color: var(--cyan);
+      transition: color 0.25s ease;
     }
 
     body.light-theme .score-verdict {
@@ -878,7 +878,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
-      transition: transform 0.2s var(--spring-ease);
+      transition: transform 0.2s var(--spring-ease), filter 0.25s ease;
     }
 
     .big-num.pulse {
@@ -915,7 +915,7 @@
       min-width: 42px;
       text-align: center;
       display: inline-block;
-      transition: transform 0.18s var(--spring-ease);
+      transition: transform 0.18s var(--spring-ease), color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     }
 
     body.light-theme .crit-val {
@@ -942,6 +942,7 @@
       background: var(--track-bg);
       border-radius: 4px;
       outline: none;
+      transition: background 0.25s ease;
     }
 
     input[type=range]::-webkit-slider-thumb {
@@ -949,14 +950,15 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      background: var(--emerald);
+      background: var(--slider-thumb-color, var(--emerald));
       cursor: pointer;
       box-shadow: 0 0 10px rgba(0, 229, 153, 0.4);
       border: 2.5px solid #fff;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     body.light-theme input[type=range]::-webkit-slider-thumb {
-      background: #059669;
+      background: var(--slider-thumb-color, #059669);
       box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
     }
 
@@ -1701,9 +1703,18 @@
     <span class="nav-label" id="t_nav_top">Топ</span>
   </button>
 
-  <!-- Вкладка Чифа с енотом 🦝 -->
+  <!-- Векторная иконка Чифа в единой стилистике интерфейса -->
   <button class="nav-btn ios-btn-tap" onclick="switchTab('agent')">
-    <span style="font-size:22px; line-height:1; margin-bottom:2px; display:inline-block;">🦝</span>
+    <svg class="nav-icon" viewBox="0 0 24 24">
+      <path d="M4 8.5 7.5 4 10 7.5"></path>
+      <path d="M20 8.5 16.5 4 14 7.5"></path>
+      <path d="M3.5 14.5c0-4.42 3.8-8 8.5-8s8.5 3.58 8.5 8c0 4.2-3.4 7.5-8.5 7.5s-8.5-3.3-8.5-7.5Z"></path>
+      <path d="M7 11.5c1.8-1 4.5-.8 5 .8"></path>
+      <path d="M17 11.5c-1.8-1-4.5-.8-5 .8"></path>
+      <circle cx="8.5" cy="13.5" r="1.25" fill="currentColor"></circle>
+      <circle cx="15.5" cy="13.5" r="1.25" fill="currentColor"></circle>
+      <path d="m11 17 1 1 1-1"></path>
+    </svg>
     <span class="nav-label" id="t_nav_agent">Чиф</span>
   </button>
 
@@ -2960,6 +2971,14 @@
     fetchFeed();
   }
 
+  // Вспомогательная функция интерполяции цвета RGB
+  function interpolateColor(color1, color2, factor) {
+    const r = Math.round(color1[0] + factor * (color2[0] - color1[0]));
+    const g = Math.round(color1[1] + factor * (color2[1] - color1[1]));
+    const b = Math.round(color1[2] + factor * (color2[2] - color1[2]));
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
   function calculate() {
     let sum = 0;
     sliders.forEach(item => {
@@ -2968,27 +2987,70 @@
       sum += v;
     });
 
-    const avg = (sum / sliders.length).toFixed(1);
+    const avgNum = sum / sliders.length;
+    const avg = avgNum.toFixed(1);
     totalEl.textContent = avg;
 
     const t = i18n[currentLang];
+
+    // Динамический цвет выше порога 5.0 (от золотистого до розового)
+    let dynamicAccentColor = null;
+    let isGoldRose = false;
+
+    if (avgNum > 5.0) {
+      isGoldRose = true;
+      // Пропорция от 0 (на 5.0) до 1 (на 10.0)
+      const factor = Math.min(Math.max((avgNum - 5.0) / 5.0, 0), 1);
+      
+      // Золотистый янтарный: [245, 158, 11] (#f59e0b)
+      // Насыщенный розовый: [244, 63, 130] (#f43f82)
+      dynamicAccentColor = interpolateColor([245, 158, 11], [244, 63, 130], factor);
+      
+      // Обновляем ползунки и большие цифры
+      document.documentElement.style.setProperty('--slider-thumb-color', dynamicAccentColor);
+      totalEl.style.backgroundImage = `linear-gradient(135deg, ${dynamicAccentColor}, #ec4899)`;
+      scoreBannerBox.style.borderColor = dynamicAccentColor;
+      scoreBannerBox.style.boxShadow = `0 6px 24px rgba(244, 63, 130, ${(factor * 0.35).toFixed(2)})`;
+    } else {
+      document.documentElement.style.removeProperty('--slider-thumb-color');
+      totalEl.style.backgroundImage = 'var(--grad-main)';
+      scoreBannerBox.style.boxShadow = '0 4px 16px var(--shadow-color)';
+    }
+
     if (avg >= 9.0) {
       verdictEl.textContent = t.v_top;
-      verdictEl.style.color = 'var(--emerald)';
+      verdictEl.style.color = dynamicAccentColor || 'var(--emerald)';
       scoreBannerBox.classList.add('score-perfect');
     } else if (avg >= 7.0) {
       verdictEl.textContent = t.v_good;
-      verdictEl.style.color = 'var(--cyan)';
+      verdictEl.style.color = dynamicAccentColor || 'var(--cyan)';
       scoreBannerBox.classList.remove('score-perfect');
     } else if (avg >= 5.0) {
       verdictEl.textContent = t.v_mid;
-      verdictEl.style.color = 'var(--text-sub)';
+      verdictEl.style.color = dynamicAccentColor || 'var(--text-sub)';
       scoreBannerBox.classList.remove('score-perfect');
     } else {
       verdictEl.textContent = t.v_low;
       verdictEl.style.color = '#ef4444';
       scoreBannerBox.classList.remove('score-perfect');
+      scoreBannerBox.style.borderColor = 'var(--card-border)';
     }
+
+    // Подсветка плашек со значениями критериев
+    sliders.forEach(item => {
+      const v = Number(item.el.value);
+      if (v > 5.0) {
+        const factorItem = (v - 5.0) / 5.0;
+        const colorItem = interpolateColor([245, 158, 11], [244, 63, 130], factorItem);
+        item.valEl.style.color = colorItem;
+        item.valEl.style.borderColor = colorItem;
+        item.valEl.style.backgroundColor = `rgba(244, 63, 130, ${(factorItem * 0.15).toFixed(2)})`;
+      } else {
+        item.valEl.style.color = '';
+        item.valEl.style.borderColor = '';
+        item.valEl.style.backgroundColor = '';
+      }
+    });
   }
 
   function pulse(el) {
