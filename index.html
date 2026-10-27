@@ -809,6 +809,7 @@
       color: #334155;
     }
 
+    /* Индикатор текущего оцениваемого проекта */
     .scoring-target-badge {
       display: flex;
       align-items: center;
@@ -2971,7 +2972,6 @@
     fetchFeed();
   }
 
-  // Вспомогательная функция интерполяции цвета RGB
   function interpolateColor(color1, color2, factor) {
     const r = Math.round(color1[0] + factor * (color2[0] - color1[0]));
     const g = Math.round(color1[1] + factor * (color2[1] - color1[1]));
@@ -2993,27 +2993,25 @@
 
     const t = i18n[currentLang];
 
-    // Динамический цвет выше порога 5.0 (от золотистого до розового)
+    // Мягкий порог перехода: плавно раскрывается от 6.5 к 10.0
     let dynamicAccentColor = null;
-    let isGoldRose = false;
 
-    if (avgNum > 5.0) {
-      isGoldRose = true;
-      // Пропорция от 0 (на 5.0) до 1 (на 10.0)
-      const factor = Math.min(Math.max((avgNum - 5.0) / 5.0, 0), 1);
+    if (avgNum >= 6.5) {
+      // Плавная интерполяция от 0 (на 6.5) до 1 (на 10.0)
+      const factor = Math.min(Math.max((avgNum - 6.5) / 3.5, 0), 1);
       
-      // Золотистый янтарный: [245, 158, 11] (#f59e0b)
-      // Насыщенный розовый: [244, 63, 130] (#f43f82)
-      dynamicAccentColor = interpolateColor([245, 158, 11], [244, 63, 130], factor);
+      // Мягкое тёплое золото: [251, 191, 36] (#fbbf24)
+      // Благородный Rose Gold: [244, 114, 182] (#f472b6)
+      dynamicAccentColor = interpolateColor([251, 191, 36], [244, 114, 182], factor);
       
-      // Обновляем ползунки и большие цифры
       document.documentElement.style.setProperty('--slider-thumb-color', dynamicAccentColor);
-      totalEl.style.backgroundImage = `linear-gradient(135deg, ${dynamicAccentColor}, #ec4899)`;
+      totalEl.style.backgroundImage = `linear-gradient(135deg, ${dynamicAccentColor}, #f472b6)`;
       scoreBannerBox.style.borderColor = dynamicAccentColor;
-      scoreBannerBox.style.boxShadow = `0 6px 24px rgba(244, 63, 130, ${(factor * 0.35).toFixed(2)})`;
+      scoreBannerBox.style.boxShadow = `0 4px 20px rgba(244, 114, 182, ${(factor * 0.18).toFixed(2)})`;
     } else {
       document.documentElement.style.removeProperty('--slider-thumb-color');
       totalEl.style.backgroundImage = 'var(--grad-main)';
+      scoreBannerBox.style.borderColor = 'var(--card-border)';
       scoreBannerBox.style.boxShadow = '0 4px 16px var(--shadow-color)';
     }
 
@@ -3033,18 +3031,17 @@
       verdictEl.textContent = t.v_low;
       verdictEl.style.color = '#ef4444';
       scoreBannerBox.classList.remove('score-perfect');
-      scoreBannerBox.style.borderColor = 'var(--card-border)';
     }
 
-    // Подсветка плашек со значениями критериев
+    // Деликатная подсветка значений критериев без визуального шума
     sliders.forEach(item => {
       const v = Number(item.el.value);
-      if (v > 5.0) {
-        const factorItem = (v - 5.0) / 5.0;
-        const colorItem = interpolateColor([245, 158, 11], [244, 63, 130], factorItem);
+      if (v >= 7.0) {
+        const factorItem = (v - 7.0) / 3.0;
+        const colorItem = interpolateColor([251, 191, 36], [244, 114, 182], factorItem);
         item.valEl.style.color = colorItem;
         item.valEl.style.borderColor = colorItem;
-        item.valEl.style.backgroundColor = `rgba(244, 63, 130, ${(factorItem * 0.15).toFixed(2)})`;
+        item.valEl.style.backgroundColor = `rgba(244, 114, 182, ${(factorItem * 0.08).toFixed(2)})`;
       } else {
         item.valEl.style.color = '';
         item.valEl.style.borderColor = '';
