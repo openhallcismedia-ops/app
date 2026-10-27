@@ -809,7 +809,6 @@
       color: #334155;
     }
 
-    /* Индикатор текущего оцениваемого проекта */
     .scoring-target-badge {
       display: flex;
       align-items: center;
@@ -932,8 +931,18 @@
     .crit-desc {
       font-size: 12px;
       color: var(--text-sub);
-      margin-bottom: 14px;
+      margin-bottom: 10px;
       line-height: 1.4;
+    }
+
+    /* Подсказка текущего значения ползунка */
+    .slider-hint-text {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--emerald);
+      margin-top: 6px;
+      min-height: 16px;
+      transition: color 0.2s ease;
     }
 
     input[type=range] {
@@ -1513,6 +1522,7 @@
       </div>
       <div class="crit-desc" id="t_c1_desc">Оригинальность замысла и отличие от того, что уже есть на рынке.</div>
       <input type="range" id="c1" min="1" max="10" value="7">
+      <div class="slider-hint-text" id="hint1">Хорошая, понятная задумка</div>
     </div>
 
     <div class="card tilt-card">
@@ -1522,6 +1532,7 @@
       </div>
       <div class="crit-desc" id="t_c2_desc">Вкус, оформление, аккуратность и насколько приятно этим пользоваться.</div>
       <input type="range" id="c2" min="1" max="10" value="7">
+      <div class="slider-hint-text" id="hint2">Аккуратный интерфейс</div>
     </div>
 
     <div class="card tilt-card">
@@ -1531,6 +1542,7 @@
       </div>
       <div class="crit-desc" id="t_c3_desc">Насколько проект вовлекает людей и вызывает желание делиться с друзьями.</div>
       <input type="range" id="c3" min="1" max="10" value="7">
+      <div class="slider-hint-text" id="hint3">Вызывает интерес сообщества</div>
     </div>
 
     <div class="card tilt-card">
@@ -1540,6 +1552,7 @@
       </div>
       <div class="crit-desc" id="t_c4_desc">Это уже рабочий продукт/материал или пока только черновой набросок?</div>
       <input type="range" id="c4" min="1" max="10" value="7">
+      <div class="slider-hint-text" id="hint4">Работающая стабильная бета</div>
     </div>
 
     <div class="card tilt-card">
@@ -1549,6 +1562,7 @@
       </div>
       <div class="crit-desc" id="t_c5_desc">Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.</div>
       <input type="range" id="c5" min="1" max="10" value="7">
+      <div class="slider-hint-text" id="hint5">Хорошие перспективы роста</div>
     </div>
 
     <div class="card tilt-card">
@@ -2619,6 +2633,44 @@
     switchTab('scoring');
   }
 
+  // Текстовые подсказки для шкалы 1-10
+  const scoreHints = {
+    ru: [
+      "",
+      "Очень сыро, почти не работает",
+      "Слабая реализация",
+      "Много критических недочетов",
+      "Есть база, но пока сыровато",
+      "Базовый рабочий черновик",
+      "Нормально, крепкая середина",
+      "Хороший, качественный уровень",
+      "Отлично! Очень высокая планка",
+      "Практически безупречно",
+      "Шедевр / абсолютный эталон"
+    ],
+    en: [
+      "",
+      "Very rough / broken",
+      "Weak implementation",
+      "Many critical flaws",
+      "Early concept stage",
+      "Basic functional draft",
+      "Solid, good foundation",
+      "High quality execution",
+      "Impressive standard",
+      "Near perfection",
+      "Masterpiece / Benchmark"
+    ],
+    am: [
+      "", "Շատ թերի", "Թույլ", "Շատ բացթողումներ", "Սևագիր", "Միջին", 
+      "Բավարար", "Լավ մակարդակ", "Գերազանց", "Գրեթե կատարյալ", "Բացարձակ էտալոն"
+    ],
+    ge: [
+      "", "ძალიან სუსტი", "სუსტი", "ბევრი ხარვეზი", "საწყისი ეტაპი", "საბაზისო", 
+      "კარგი საფუძველი", "მაღალი ხარისხი", "შესანიშნავი", "თითქმის უნაკლო", "ეტალონი"
+    ]
+  };
+
   const i18n = {
     ru: {
       preloader: "Синхронизация",
@@ -2877,11 +2929,11 @@
   let currentLang = 'ru';
 
   const sliders = [
-    { el: document.getElementById('c1'), valEl: document.getElementById('val1') },
-    { el: document.getElementById('c2'), valEl: document.getElementById('val2') },
-    { el: document.getElementById('c3'), valEl: document.getElementById('val3') },
-    { el: document.getElementById('c4'), valEl: document.getElementById('val4') },
-    { el: document.getElementById('c5'), valEl: document.getElementById('val5') }
+    { el: document.getElementById('c1'), valEl: document.getElementById('val1'), hintEl: document.getElementById('hint1') },
+    { el: document.getElementById('c2'), valEl: document.getElementById('val2'), hintEl: document.getElementById('hint2') },
+    { el: document.getElementById('c3'), valEl: document.getElementById('val3'), hintEl: document.getElementById('hint3') },
+    { el: document.getElementById('c4'), valEl: document.getElementById('val4'), hintEl: document.getElementById('hint4') },
+    { el: document.getElementById('c5'), valEl: document.getElementById('val5'), hintEl: document.getElementById('hint5') }
   ];
 
   const totalEl = document.getElementById('totalScore');
@@ -2981,9 +3033,12 @@
 
   function calculate() {
     let sum = 0;
+    const hints = scoreHints[currentLang] || scoreHints['ru'];
+
     sliders.forEach(item => {
       const v = Number(item.el.value);
       item.valEl.textContent = v;
+      if (item.hintEl) item.hintEl.textContent = hints[v] || "";
       sum += v;
     });
 
@@ -2993,15 +3048,12 @@
 
     const t = i18n[currentLang];
 
-    // Плавный переход от Изумруда к Золоту (без розового)
+    // Мягкий переход в золотой акцент (без розового)
     let dynamicAccentColor = null;
 
     if (avgNum >= 7.0) {
-      // Фактор от 0 (на 7.0) до 1 (на 10.0)
       const factor = Math.min(Math.max((avgNum - 7.0) / 3.0, 0), 1);
-      
-      // Изумруд: [0, 229, 153] (#00e599)
-      // Чистое Золото: [255, 183, 3] (#ffb703)
+      // [0, 229, 153] (#00e599 Изумруд) -> [255, 183, 3] (#ffb703 Золото)
       dynamicAccentColor = interpolateColor([0, 229, 153], [255, 183, 3], factor);
       
       document.documentElement.style.setProperty('--slider-thumb-color', dynamicAccentColor);
@@ -3033,7 +3085,7 @@
       scoreBannerBox.classList.remove('score-perfect');
     }
 
-    // Деликатная подсветка критериев
+    // Подсветка подсказок и значений каждого критерия
     sliders.forEach(item => {
       const v = Number(item.el.value);
       if (v >= 8.0) {
@@ -3042,10 +3094,12 @@
         item.valEl.style.color = colorItem;
         item.valEl.style.borderColor = colorItem;
         item.valEl.style.backgroundColor = `rgba(255, 183, 3, ${(factorItem * 0.12).toFixed(2)})`;
+        if (item.hintEl) item.hintEl.style.color = colorItem;
       } else {
         item.valEl.style.color = '';
         item.valEl.style.borderColor = '';
         item.valEl.style.backgroundColor = '';
+        if (item.hintEl) item.hintEl.style.color = 'var(--emerald)';
       }
     });
   }
