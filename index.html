@@ -636,9 +636,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
+      overflow: hidden;
       box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.45));
+    }
+    .author-avatar-bubble svg {
+      width: 100%;
+      height: 100%;
     }
     .author-name-text {
       font-size: 11px;
@@ -1037,143 +1040,135 @@
       color: #059669;
     }
 
-    /* --- Профиль: Аватары без обрезки и контраст эмодзи --- */
-    .profile-live-preview {
+    /* --- Reddit-Style Avatar Builder --- */
+    .reddit-avatar-card {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 16px;
-      padding: 16px;
+      padding: 18px 14px;
       background: var(--input-bg);
       border: 1px solid var(--tag-border);
-      border-radius: 18px;
+      border-radius: 20px;
       margin-bottom: 18px;
+      position: relative;
     }
 
-    .avatar-preview-wrapper {
+    .reddit-avatar-canvas {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
       position: relative;
-      flex-shrink: 0;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.15) 0%, rgba(14, 20, 32, 0.4) 100%);
+      border: 2.5px solid var(--card-border);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      margin-bottom: 12px;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .reddit-avatar-canvas svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .builder-actions-top {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-dice {
+      background: var(--card-bg);
+      border: 1px solid var(--tag-border);
+      color: var(--text-main);
+      padding: 7px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    /* Навигация по деталям (Категории как на Reddit: Тело, Глаза, Рот, Шляпа, Очки) */
+    .builder-category-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      width: 100%;
+      margin: 14px 0 10px;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .builder-category-tabs::-webkit-scrollbar { display: none; }
+
+    .builder-cat-btn {
+      padding: 6px 12px;
+      background: var(--tag-bg);
+      border: 1px solid var(--tag-border);
+      border-radius: 10px;
+      color: var(--text-sub);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .builder-cat-btn.active {
+      background: var(--emerald);
+      color: #070a0f;
+      border-color: var(--emerald);
+    }
+    body.light-theme .builder-cat-btn.active {
+      color: #ffffff;
+      background: #059669;
+    }
+
+    .builder-items-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-height: 190px;
+      overflow-y: auto;
       padding: 4px;
     }
 
-    .avatar-main-bubble {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      line-height: 1;
-      overflow: visible;
-      transition: transform 0.25s var(--spring-ease), box-shadow 0.25s ease;
-      position: relative;
-      flex-shrink: 0;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-    }
-
-    .aura-none { box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.25); }
-    .aura-neon { box-shadow: 0 0 20px rgba(0, 229, 153, 0.7), inset 0 0 10px rgba(255,255,255,0.4); border: 2px solid #ffffff; }
-    .aura-gold { box-shadow: 0 0 22px rgba(255, 183, 3, 0.75), inset 0 0 12px rgba(255,235,160,0.6); border: 2px solid #fff3bf; }
-    .aura-cyber { box-shadow: 0 0 20px rgba(0, 180, 216, 0.75), inset 0 0 10px rgba(255,255,255,0.5); border: 2px solid #e0f2fe; }
-    .aura-purple { box-shadow: 0 0 22px rgba(168, 85, 247, 0.8), inset 0 0 10px rgba(255,255,255,0.4); border: 2px solid #f3e8ff; }
-    .aura-fire { box-shadow: 0 0 22px rgba(244, 63, 94, 0.85), inset 0 0 10px rgba(255,255,255,0.5); border: 2px solid #ffe4e6; }
-
-    .avatar-preset-scroll {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 18px;
-      overflow-x: auto;
-      padding: 8px 4px 12px 4px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-    .avatar-preset-scroll::-webkit-scrollbar { display: none; }
-
-    .avatar-preset-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 16px;
+    .builder-item-choice {
+      height: 52px;
+      border-radius: 12px;
+      background: var(--tag-bg);
       border: 1.5px solid var(--tag-border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      line-height: 1;
       cursor: pointer;
-      background: var(--tag-bg);
-      transition: all 0.25s var(--spring-ease);
-      flex-shrink: 0;
-      overflow: visible;
-      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.35));
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+      transition: all 0.2s var(--spring-ease);
     }
-    .avatar-preset-btn.selected {
+    .builder-item-choice.selected {
       border-color: var(--emerald);
-      background: rgba(0, 229, 153, 0.16);
-      transform: scale(1.14);
-      box-shadow: 0 4px 14px rgba(0, 229, 153, 0.35);
-    }
-    body.light-theme .avatar-preset-btn.selected {
-      background: #ecfdf5;
-      border-color: #059669;
+      background: rgba(0, 229, 153, 0.15);
+      transform: scale(1.05);
     }
 
-    .color-preset-scroll {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 18px;
-      overflow-x: auto;
-      padding: 6px 4px 12px 4px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-    .color-preset-scroll::-webkit-scrollbar { display: none; }
-
-    .color-preset-dot {
-      width: 34px;
-      height: 34px;
+    .builder-color-dot {
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       cursor: pointer;
-      border: 2.5px solid transparent;
-      transition: transform 0.25s var(--spring-ease), border-color 0.2s ease, box-shadow 0.2s ease;
+      border: 2px solid transparent;
       flex-shrink: 0;
     }
-    .color-preset-dot.selected {
-      transform: scale(1.22);
-      border-color: #ffffff;
-      box-shadow: 0 0 14px rgba(255, 255, 255, 0.6);
-    }
-
-    .aura-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .aura-chip {
-      text-align: center;
-      padding: 10px 4px;
-      background: var(--tag-bg);
-      border: 1px solid var(--tag-border);
-      color: var(--text-sub);
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .aura-chip.selected {
-      border-color: var(--emerald);
-      color: var(--emerald);
-      background: rgba(0, 229, 153, 0.14);
-    }
-    body.light-theme .aura-chip.selected {
-      background: #ecfdf5;
-      border-color: #059669;
-      color: #059669;
+    .builder-color-dot.selected {
+      border-color: #fff;
+      transform: scale(1.15);
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
     }
 
     .bottom-nav {
@@ -1684,7 +1679,7 @@
     </div>
   </div>
 
-  <!-- ВКЛАДКА 4: ПРОФИЛЬ -->
+  <!-- ВКЛАДКА 4: ПРОФИЛЬ С REDDIT-АВАТАРОМ -->
   <div id="tab-profile" class="tab-view">
     <h1 id="t_prof_title">Профиль участника</h1>
     <p class="subtitle" id="t_prof_sub">Личная статистика и статус в сообществе</p>
@@ -1693,7 +1688,7 @@
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:14px;">
           <div class="avatar-preview-wrapper">
-            <div id="myProfileAvatarBubble" class="avatar-main-bubble aura-none">🦊</div>
+            <div id="myProfileAvatarBubble" style="width:58px; height:58px; border-radius:50%; overflow:hidden; border:2px solid var(--emerald); box-shadow:0 4px 14px rgba(0,0,0,0.3);"></div>
           </div>
           <div>
             <h3 id="user_display_name" style="font-size:18px; margin-bottom:2px;">Участник комьюнити</h3>
@@ -1709,79 +1704,35 @@
       </div>
     </div>
 
-    <!-- Блок кастомизации с обновленными названиями -->
+    <!-- Редактор Reddit-style аватара (>10 000 уникальных комбинаций) -->
     <div class="card tilt-card">
-      <h3 style="margin-bottom:6px;" id="t_custom_title">Кастомизация профиля</h3>
-      <p style="margin-bottom:14px; font-size:12px;" id="t_custom_desc">Выберите аватарку, фон подложки и ауру свечения. Они будут видны на всех ваших проектах и рецензиях.</p>
+      <h3 style="margin-bottom:6px;">Конструктор персонажа</h3>
+      <p style="margin-bottom:14px; font-size:12px;">Соберите уникальный образ: выбирайте эмоции, шлемы, очки и стили.</p>
 
-      <div class="profile-live-preview">
-        <div class="avatar-preview-wrapper">
-          <div class="avatar-main-bubble aura-none" id="customLivePreviewAvatar" style="background:#10b981;">🦊</div>
+      <div class="reddit-avatar-card">
+        <div class="reddit-avatar-canvas" id="builderAvatarPreview"></div>
+        <div class="builder-actions-top">
+          <button class="btn-dice ios-btn-tap" onclick="randomizeAvatar()">🎲 Случайный образ</button>
         </div>
-        <div>
-          <div style="font-size:14px; font-weight:800;" id="customLivePreviewName">@nickname</div>
-          <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">Живое превью бейджа в ленте</div>
+
+        <!-- Переключатель категорий деталей -->
+        <div class="builder-category-tabs">
+          <button class="builder-cat-btn active" onclick="switchBuilderTab('hair', this)">Причёска / Шлем</button>
+          <button class="builder-cat-btn" onclick="switchBuilderTab('eyes', this)">Глаза</button>
+          <button class="builder-cat-btn" onclick="switchBuilderTab('mouth', this)">Эмоция</button>
+          <button class="builder-cat-btn" onclick="switchBuilderTab('acc', this)">Очки / VR</button>
+          <button class="builder-cat-btn" onclick="switchBuilderTab('outfit', this)">Одежда</button>
+          <button class="builder-cat-btn" onclick="switchBuilderTab('color', this)">Цвет костюма</button>
         </div>
+
+        <!-- Сетка выбора деталей -->
+        <div class="builder-items-grid" id="builderItemsGrid"></div>
       </div>
 
-      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;" id="t_custom_avatar_label">Аватарка</label>
-      <div class="avatar-preset-scroll" id="avatarPresetRow">
-        <div class="avatar-preset-btn selected" onclick="selectAvatarIcon('🦊', this)">🦊</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🦝', this)">🦝</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🐺', this)">🐺</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🦁', this)">🦁</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🦉', this)">🦉</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🐱', this)">🐱</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🐻', this)">🐻</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🐼', this)">🐼</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('⚡️', this)">⚡️</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🤖', this)">🤖</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🚀', this)">🚀</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('💎', this)">💎</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🎯', this)">🎯</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('👾', this)">👾</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('👑', this)">👑</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🔥', this)">🔥</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('⭐️', this)">⭐️</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🛸', this)">🛸</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🧭', this)">🧭</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🦄', this)">🦄</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🐙', this)">🐙</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🐉', this)">🐉</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('⚔️', this)">⚔️</div>
-        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🏆', this)">🏆</div>
-      </div>
+      <label for="customHandleInput" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;">Отображаемый ник</label>
+      <input type="text" id="customHandleInput" maxlength="30" placeholder="@nickname" style="margin-bottom:14px;">
 
-      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;" id="t_custom_color_label">Фон</label>
-      <div class="color-preset-scroll" id="colorPresetRow">
-        <div class="color-preset-dot selected" style="background:#10b981;" onclick="selectAvatarBg('#10b981', this)"></div>
-        <div class="color-preset-dot" style="background:#0284c7;" onclick="selectAvatarBg('#0284c7', this)"></div>
-        <div class="color-preset-dot" style="background:#2563eb;" onclick="selectAvatarBg('#2563eb', this)"></div>
-        <div class="color-preset-dot" style="background:#8b5cf6;" onclick="selectAvatarBg('#8b5cf6', this)"></div>
-        <div class="color-preset-dot" style="background:#ec4899;" onclick="selectAvatarBg('#ec4899', this)"></div>
-        <div class="color-preset-dot" style="background:#f59e0b;" onclick="selectAvatarBg('#f59e0b', this)"></div>
-        <div class="color-preset-dot" style="background:#ef4444;" onclick="selectAvatarBg('#ef4444', this)"></div>
-        <div class="color-preset-dot" style="background:linear-gradient(135deg, #10b981, #06b6d4);" onclick="selectAvatarBg('linear-gradient(135deg, #10b981, #06b6d4)', this)"></div>
-        <div class="color-preset-dot" style="background:linear-gradient(135deg, #f59e0b, #ef4444);" onclick="selectAvatarBg('linear-gradient(135deg, #f59e0b, #ef4444)', this)"></div>
-        <div class="color-preset-dot" style="background:linear-gradient(135deg, #8b5cf6, #ec4899);" onclick="selectAvatarBg('linear-gradient(135deg, #8b5cf6, #ec4899)', this)"></div>
-        <div class="color-preset-dot" style="background:linear-gradient(135deg, #3b82f6, #06b6d4);" onclick="selectAvatarBg('linear-gradient(135deg, #3b82f6, #06b6d4)', this)"></div>
-        <div class="color-preset-dot" style="background:#1e293b;" onclick="selectAvatarBg('#1e293b', this)"></div>
-      </div>
-
-      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:8px;" id="t_custom_aura_label">Аура</label>
-      <div class="aura-grid" id="auraSelectorRow">
-        <div class="aura-chip selected" onclick="selectAvatarAura('aura-none', this)">Строгий</div>
-        <div class="aura-chip" onclick="selectAvatarAura('aura-neon', this)">Изумруд</div>
-        <div class="aura-chip" onclick="selectAvatarAura('aura-gold', this)">Золото</div>
-        <div class="aura-chip" onclick="selectAvatarAura('aura-cyber', this)">Кибер</div>
-        <div class="aura-chip" onclick="selectAvatarAura('aura-purple', this)">Неон</div>
-        <div class="aura-chip" onclick="selectAvatarAura('aura-fire', this)">Огонь</div>
-      </div>
-
-      <label for="customHandleInput" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;" id="t_custom_handle_label">Отображаемый ник</label>
-      <input type="text" id="customHandleInput" maxlength="30" placeholder="@nickname" style="margin-bottom:14px;" oninput="updateLivePreviewHandle(this.value)">
-
-      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()" id="t_save_profile_btn">Сохранить профиль</button>
+      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить персонажа</button>
     </div>
 
     <!-- Форма подачи проекта -->
@@ -1909,9 +1860,219 @@
   let selectedFormTags = new Set();
   let currentTheme = localStorage.getItem('openhall_theme') || 'dark';
 
-  let currentAvatarIcon = localStorage.getItem('openhall_av_icon') || '🦊';
-  let currentAvatarBg = localStorage.getItem('openhall_av_bg') || '#10b981';
-  let currentAvatarAura = localStorage.getItem('openhall_av_aura') || 'aura-none';
+  /* --- Генератор векторного Reddit-аватара (>10 000 вариантов) --- */
+  let avatarState = {
+    skin: '#ffdfba',
+    eyes: 'smile',
+    mouth: 'smile',
+    hair: 'snoo_antenna',
+    acc: 'none',
+    outfit: 'hoodie',
+    color: '#00e599'
+  };
+
+  try {
+    const saved = localStorage.getItem('openhall_reddit_avatar');
+    if (saved) avatarState = JSON.parse(saved);
+  } catch (e) {}
+
+  const AVATAR_DATA = {
+    skin: ['#ffffff', '#ffdfba', '#f1c27d', '#e0ac69', '#c68642', '#8d5524', '#00e599', '#00b4d8'],
+    eyes: ['smile', 'normal', 'wink', 'stars', 'focus', 'sunglasses', 'angry', 'surprised', 'scanner', 'closed'],
+    mouth: ['smile', 'smirk', 'neutral', 'open', 'tongue', 'happy', 'cool', 'laugh', 'cute', 'mask'],
+    hair: ['snoo_antenna', 'cap', 'hood', 'cyber_helmet', 'beanie', 'mohawk', 'curls', 'halo', 'crown', 'headset', 'ninja', 'none'],
+    acc: ['none', 'vr_glass', 'cyber_eye', 'shades', 'retro_glasses', 'blush', 'scars', 'mic', 'laser', 'band'],
+    outfit: ['hoodie', 'tshirt', 'suit', 'space_suit', 'jacket', 'turtleneck', 'cyber_armor', 'robe'],
+    color: ['#00e599', '#00b4d8', '#1877f2', '#8b5cf6', '#ec4899', '#f59e0b', '#ef4444', '#ffffff', '#64748b', '#1e293b']
+  };
+
+  let activeBuilderTab = 'hair';
+
+  function renderRedditAvatarSvg(state, size = 100) {
+    // Векторные элементы Snoo-стиля
+    let hairSvg = '';
+    if (state.hair === 'snoo_antenna') {
+      hairSvg = `<path d="M50 32 V15 Q50 10 58 10 H62" stroke="${state.color}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                 <circle cx="64" cy="10" r="5" fill="${state.color}"/>`;
+    } else if (state.hair === 'cyber_helmet') {
+      hairSvg = `<path d="M22 36 Q50 12 78 36 V48 H22 Z" fill="${state.color}" opacity="0.95"/>
+                 <path d="M26 42 H74" stroke="#00e599" stroke-width="3"/>`;
+    } else if (state.hair === 'mohawk') {
+      hairSvg = `<path d="M44 26 L50 8 L56 26 Z" fill="${state.color}"/>
+                 <path d="M38 32 L44 14 L50 32 Z" fill="${state.color}"/>
+                 <path d="M50 32 L56 14 L62 32 Z" fill="${state.color}"/>`;
+    } else if (state.hair === 'cap') {
+      hairSvg = `<path d="M25 36 Q50 18 75 36 Z" fill="${state.color}"/>
+                 <path d="M68 34 Q85 36 90 40 Q75 44 64 38 Z" fill="${state.color}"/>`;
+    } else if (state.hair === 'hood') {
+      hairSvg = `<path d="M20 40 Q50 14 80 40 V65 Q50 56 20 65 Z" fill="${state.color}" opacity="0.4"/>`;
+    } else if (state.hair === 'crown') {
+      hairSvg = `<path d="M30 32 L36 14 L46 26 L50 10 L54 26 L64 14 L70 32 Z" fill="#ffb703" stroke="#fff" stroke-width="1.5"/>`;
+    } else if (state.hair === 'halo') {
+      hairSvg = `<ellipse cx="50" cy="16" rx="22" ry="6" fill="none" stroke="#ffb703" stroke-width="3.5"/>`;
+    } else if (state.hair === 'beanie') {
+      hairSvg = `<path d="M26 38 Q50 20 74 38 Z" fill="${state.color}"/><circle cx="50" cy="22" r="5" fill="#fff"/>`;
+    } else if (state.hair === 'headset') {
+      hairSvg = `<path d="M22 42 Q50 16 78 42" fill="none" stroke="#64748b" stroke-width="4"/><rect x="18" y="40" width="8" height="14" rx="4" fill="${state.color}"/><rect x="74" y="40" width="8" height="14" rx="4" fill="${state.color}"/>`;
+    }
+
+    let eyesSvg = '';
+    if (state.eyes === 'smile') {
+      eyesSvg = `<circle cx="38" cy="46" r="4.5" fill="#1e293b"/><circle cx="62" cy="46" r="4.5" fill="#1e293b"/>
+                 <circle cx="39.5" cy="44.5" r="1.5" fill="#fff"/><circle cx="63.5" cy="44.5" r="1.5" fill="#fff"/>`;
+    } else if (state.eyes === 'wink') {
+      eyesSvg = `<circle cx="38" cy="46" r="4.5" fill="#1e293b"/><path d="M57 46 Q62 42 67 46" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>`;
+    } else if (state.eyes === 'stars') {
+      eyesSvg = `<text x="32" y="52" font-size="14" fill="#ffb703">★</text><text x="56" y="52" font-size="14" fill="#ffb703">★</text>`;
+    } else if (state.eyes === 'sunglasses') {
+      eyesSvg = `<path d="M30 42 H70 V50 Q50 56 30 50 Z" fill="#0f172a"/><path d="M32 44 H48 L44 48 Z" fill="#fff" opacity="0.4"/>`;
+    } else if (state.eyes === 'scanner') {
+      eyesSvg = `<rect x="28" y="43" width="44" height="6" rx="3" fill="#ff0055"/><circle cx="44" cy="46" r="4" fill="#00e599"/>`;
+    } else {
+      eyesSvg = `<circle cx="38" cy="46" r="4" fill="#1e293b"/><circle cx="62" cy="46" r="4" fill="#1e293b"/>`;
+    }
+
+    let mouthSvg = '';
+    if (state.mouth === 'smile') {
+      mouthSvg = `<path d="M43 57 Q50 64 57 57" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" fill="none"/>`;
+    } else if (state.mouth === 'open') {
+      mouthSvg = `<path d="M42 55 Q50 68 58 55 Z" fill="#ef4444"/>`;
+    } else if (state.mouth === 'smirk') {
+      mouthSvg = `<path d="M44 59 Q52 61 58 55" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" fill="none"/>`;
+    } else if (state.mouth === 'tongue') {
+      mouthSvg = `<path d="M43 57 Q50 63 57 57 Z" fill="#1e293b"/><path d="M47 59 Q50 67 53 59 Z" fill="#f43f5e"/>`;
+    } else if (state.mouth === 'mask') {
+      mouthSvg = `<rect x="36" y="53" width="28" height="14" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>`;
+    } else {
+      mouthSvg = `<path d="M44 58 H56" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>`;
+    }
+
+    let accSvg = '';
+    if (state.acc === 'vr_glass') {
+      accSvg = `<rect x="25" y="38" width="50" height="16" rx="6" fill="#0f172a" stroke="#00e599" stroke-width="2"/>
+                <path d="M30 46 H70" stroke="#00b4d8" stroke-width="2"/>`;
+    } else if (state.acc === 'shades') {
+      accSvg = `<rect x="28" y="42" width="20" height="11" rx="2" fill="#111"/><rect x="52" y="42" width="20" height="11" rx="2" fill="#111"/><path d="M48 45 H52" stroke="#111" stroke-width="2"/>`;
+    } else if (state.acc === 'blush') {
+      accSvg = `<circle cx="30" cy="52" r="4" fill="#ff70a6" opacity="0.6"/><circle cx="70" cy="52" r="4" fill="#ff70a6" opacity="0.6"/>`;
+    }
+
+    let outfitSvg = '';
+    if (state.outfit === 'suit') {
+      outfitSvg = `<path d="M22 84 Q50 74 78 84 L85 100 H15 Z" fill="#0f172a"/>
+                   <polygon points="50,78 44,90 56,90" fill="#fff"/>
+                   <polygon points="50,84 48,96 50,100 52,96" fill="${state.color}"/>`;
+    } else if (state.outfit === 'space_suit') {
+      outfitSvg = `<path d="M20 80 Q50 72 80 80 L88 100 H12 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                   <circle cx="50" cy="90" r="6" fill="${state.color}"/>`;
+    } else if (state.outfit === 'cyber_armor') {
+      outfitSvg = `<path d="M18 82 L50 76 L82 82 L88 100 H12 Z" fill="#1e293b"/>
+                   <path d="M35 84 L50 94 L65 84" stroke="${state.color}" stroke-width="3" fill="none"/>`;
+    } else {
+      outfitSvg = `<path d="M22 82 Q50 72 78 82 L86 100 H14 Z" fill="${state.color}"/>
+                   <path d="M46 76 L50 86 L54 76" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"/>`;
+    }
+
+    return `
+      <svg viewBox="0 0 100 100" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+        <!-- Тело / Одежда -->
+        ${outfitSvg}
+        <!-- Голова -->
+        <circle cx="50" cy="48" r="26" fill="${state.skin}" stroke="rgba(0,0,0,0.15)" stroke-width="1.5"/>
+        <!-- Глаза -->
+        ${eyesSvg}
+        <!-- Рот -->
+        ${mouthSvg}
+        <!-- Прическа / Шлем -->
+        ${hairSvg}
+        <!-- Аксессуары -->
+        ${accSvg}
+      </svg>
+    `;
+  }
+
+  function updateAllAvatarDisplays() {
+    const svgCode = renderRedditAvatarSvg(avatarState);
+    const builderPreview = document.getElementById('builderAvatarPreview');
+    const profileBubble = document.getElementById('myProfileAvatarBubble');
+    
+    if (builderPreview) builderPreview.innerHTML = renderRedditAvatarSvg(avatarState, 100);
+    if (profileBubble) profileBubble.innerHTML = renderRedditAvatarSvg(avatarState, 58);
+  }
+
+  function switchBuilderTab(category, btn) {
+    activeBuilderTab = category;
+    document.querySelectorAll('.builder-cat-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    const grid = document.getElementById('builderItemsGrid');
+    if (!grid) return;
+
+    if (category === 'color') {
+      grid.innerHTML = AVATAR_DATA.color.map(c => `
+        <div class="builder-item-choice ${avatarState.color === c ? 'selected' : ''}" onclick="setAvatarPart('color', '${c}')">
+          <div class="builder-color-dot" style="background:${c};"></div>
+        </div>
+      `).join('');
+    } else {
+      const items = AVATAR_DATA[category] || [];
+      grid.innerHTML = items.map(item => `
+        <div class="builder-item-choice ${avatarState[category] === item ? 'selected' : ''}" onclick="setAvatarPart('${category}', '${item}')">
+          ${item.replace(/_/g, ' ')}
+        </div>
+      `).join('');
+    }
+  }
+
+  function setAvatarPart(part, value) {
+    triggerHaptic('light');
+    avatarState[part] = value;
+    localStorage.setItem('openhall_reddit_avatar', JSON.stringify(avatarState));
+    updateAllAvatarDisplays();
+    switchBuilderTab(activeBuilderTab);
+  }
+
+  function randomizeAvatar() {
+    triggerHaptic('medium');
+    avatarState = {
+      skin: AVATAR_DATA.skin[Math.floor(Math.random() * AVATAR_DATA.skin.length)],
+      eyes: AVATAR_DATA.eyes[Math.floor(Math.random() * AVATAR_DATA.eyes.length)],
+      mouth: AVATAR_DATA.mouth[Math.floor(Math.random() * AVATAR_DATA.mouth.length)],
+      hair: AVATAR_DATA.hair[Math.floor(Math.random() * AVATAR_DATA.hair.length)],
+      acc: AVATAR_DATA.acc[Math.floor(Math.random() * AVATAR_DATA.acc.length)],
+      outfit: AVATAR_DATA.outfit[Math.floor(Math.random() * AVATAR_DATA.outfit.length)],
+      color: AVATAR_DATA.color[Math.floor(Math.random() * AVATAR_DATA.color.length)]
+    };
+    localStorage.setItem('openhall_reddit_avatar', JSON.stringify(avatarState));
+    updateAllAvatarDisplays();
+    switchBuilderTab(activeBuilderTab);
+  }
+
+  async function saveCustomProfile() {
+    triggerHaptic('success');
+    const handleInput = document.getElementById('customHandleInput').value.trim();
+    const formattedHandle = handleInput ? (handleInput.startsWith('@') ? handleInput : `@${handleInput}`) : '';
+
+    try {
+      const res = await fetch(`${API_URL}/api/profile/custom`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          initData: tg?.initData || '',
+          custom_handle: formattedHandle,
+          avatar_json: JSON.stringify(avatarState)
+        })
+      });
+      const data = await res.json();
+      if (data.status === 'ok') {
+        alert('Персонаж успешно сохранен!');
+        document.getElementById('user_display_name').textContent = data.user.custom_handle || data.user.name;
+        fetchFeed();
+      }
+    } catch (e) {
+      alert('Персонаж сохранен локально!');
+    }
+  }
 
   function applyTheme(theme) {
     currentTheme = theme;
@@ -1987,7 +2148,7 @@
   }
 
   document.addEventListener('touchstart', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn, .btn-dice');
     if (target) {
       target.classList.add('touch-active');
       triggerHaptic('light');
@@ -1995,7 +2156,7 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn, .btn-dice');
     if (target) setTimeout(() => target.classList.remove('touch-active'), 120);
   }, { passive: true });
 
@@ -2080,7 +2241,7 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet, .avatar-preset-scroll, .color-preset-scroll')) return;
+    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet, .builder-items-grid, .builder-category-tabs')) return;
     const diffX = e.changedTouches[0].clientX - touchStartX;
     const diffY = e.changedTouches[0].clientY - touchStartY;
 
@@ -2187,86 +2348,6 @@
     return div.innerHTML;
   }
 
-  function selectAvatarIcon(icon, el) {
-    triggerHaptic('light');
-    currentAvatarIcon = icon;
-    localStorage.setItem('openhall_av_icon', icon);
-    document.querySelectorAll('.avatar-preset-btn').forEach(b => b.classList.remove('selected'));
-    el.classList.add('selected');
-    updateProfileAvatarPreview();
-  }
-
-  function selectAvatarBg(color, el) {
-    triggerHaptic('light');
-    currentAvatarBg = color;
-    localStorage.setItem('openhall_av_bg', color);
-    document.querySelectorAll('.color-preset-dot').forEach(d => d.classList.remove('selected'));
-    el.classList.add('selected');
-    updateProfileAvatarPreview();
-  }
-
-  function selectAvatarAura(auraClass, el) {
-    triggerHaptic('light');
-    currentAvatarAura = auraClass;
-    localStorage.setItem('openhall_av_aura', auraClass);
-    document.querySelectorAll('.aura-chip').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    updateProfileAvatarPreview();
-  }
-
-  function updateLivePreviewHandle(val) {
-    const preview = document.getElementById('customLivePreviewName');
-    if (preview) {
-      preview.textContent = val.trim() ? (val.startsWith('@') ? val : `@${val}`) : '@nickname';
-    }
-  }
-
-  function updateProfileAvatarPreview() {
-    const bubble = document.getElementById('myProfileAvatarBubble');
-    const livePreview = document.getElementById('customLivePreviewAvatar');
-
-    [bubble, livePreview].forEach(el => {
-      if (el) {
-        el.textContent = currentAvatarIcon;
-        if (currentAvatarBg.includes('gradient')) {
-          el.style.background = currentAvatarBg;
-        } else {
-          el.style.background = '';
-          el.style.backgroundColor = currentAvatarBg;
-        }
-        el.className = `avatar-main-bubble ${currentAvatarAura}`;
-      }
-    });
-  }
-
-  async function saveCustomProfile() {
-    triggerHaptic('success');
-    const handleInput = document.getElementById('customHandleInput').value.trim();
-    const formattedHandle = handleInput ? (handleInput.startsWith('@') ? handleInput : `@${handleInput}`) : '';
-
-    try {
-      const res = await fetch(`${API_URL}/api/profile/custom`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          initData: tg?.initData || '',
-          custom_handle: formattedHandle,
-          avatar_icon: currentAvatarIcon,
-          avatar_bg: currentAvatarBg
-        })
-      });
-      const data = await res.json();
-      if (data.status === 'ok') {
-        alert('Профиль успешно обновлен!');
-        document.getElementById('user_display_name').textContent = data.user.custom_handle || data.user.name;
-        updateLivePreviewHandle(data.user.custom_handle || data.user.name);
-        fetchFeed();
-      }
-    } catch (e) {
-      alert('Ошибка обновления профиля');
-    }
-  }
-
   async function openMyContentModal(type) {
     triggerHaptic('medium');
     const modal = document.getElementById('my-content-modal');
@@ -2342,26 +2423,14 @@
       title.textContent = `Профиль ${data.name}`;
       const tierBadge = (data.reviews_count >= 10 || data.projects_count >= 1) ? '👑 Syndicate Partner' : ((data.reviews_count >= 3) ? '⚡️ Certified Reviewer' : '✦ Community Scout');
 
-      const projectsHtml = (data.projects || []).map(p => `
-        <div style="background:var(--tag-bg); padding:10px 12px; border-radius:12px; margin-bottom:8px;">
-          <div style="font-weight:700; font-size:13px;">${escapeHtml(p.name)}</div>
-          <div style="font-size:11px; color:var(--text-sub);">${escapeHtml(p.description)}</div>
-        </div>
-      `).join('') || '<div style="font-size:12px; color:var(--text-sub);">Нет опубликованных проектов</div>';
-
-      const reviewsHtml = (data.reviews || []).map(r => `
-        <div style="background:var(--tag-bg); padding:10px 12px; border-radius:12px; margin-bottom:8px;">
-          <div style="display:flex; justify-content:space-between;">
-            <span style="font-weight:700; font-size:13px;">${escapeHtml(r.project)}</span>
-            <span style="font-weight:800; color:var(--emerald); font-size:13px;">${r.score}/10</span>
-          </div>
-          <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">«${escapeHtml(r.comment || r.verdict)}»</div>
-        </div>
-      `).join('') || '<div style="font-size:12px; color:var(--text-sub);">Нет рецензий</div>';
+      let userAvatarSvg = renderRedditAvatarSvg(avatarState, 52);
+      try {
+        if (data.avatar_json) userAvatarSvg = renderRedditAvatarSvg(JSON.parse(data.avatar_json), 52);
+      } catch (e) {}
 
       body.innerHTML = `
         <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
-          <div style="width:52px; height:52px; border-radius:50%; background:${data.avatar_bg || '#10b981'}; display:flex; align-items:center; justify-content:center; font-size:26px; box-shadow:0 4px 14px rgba(0,0,0,0.3); filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4));">${data.avatar_icon || '👤'}</div>
+          <div style="width:52px; height:52px; border-radius:50%; overflow:hidden; border:2px solid var(--emerald); box-shadow:0 4px 14px rgba(0,0,0,0.3);">${userAvatarSvg}</div>
           <div>
             <h3 style="font-size:18px; font-weight:800;">${escapeHtml(data.name)}</h3>
             <span class="badge" style="display:inline-block; margin-top:4px; font-size:10px;">${tierBadge}</span>
@@ -2372,12 +2441,6 @@
           <span class="tag">Рецензий: ${data.reviews_count || 0}</span>
           <span class="tag">Проектов: ${data.projects_count || 0}</span>
         </div>
-
-        <h4 style="font-size:14px; margin-bottom:8px; font-weight:800;">Проекты автора</h4>
-        <div style="margin-bottom:16px;">${projectsHtml}</div>
-
-        <h4 style="font-size:14px; margin-bottom:8px; font-weight:800;">Последние оценки</h4>
-        <div>${reviewsHtml}</div>
       `;
     } catch (e) {
       body.innerHTML = '<p style="color:#ef4444;">Не удалось загрузить профиль</p>';
@@ -2439,7 +2502,7 @@
 
       const authorBadgeHtml = p.submitted_by ? `
         <div class="author-badge ios-btn-tap" onclick="openUserProfile('${p.submitted_by}')">
-          <div class="author-avatar-bubble" style="background:${p.author_bg || '#059669'};">${p.author_avatar || '🚀'}</div>
+          <div class="author-avatar-bubble">${renderRedditAvatarSvg(avatarState, 24)}</div>
           <span class="author-name-text">${escapeHtml(p.author_name || 'Фаундер')}</span>
         </div>
       ` : '';
@@ -2635,16 +2698,12 @@
           ? `<div class="review-comment">${escapeHtml(displayComments[i])}</div>`
           : `<div class="review-comment" style="color:var(--text-sub); font-style:italic;">${i18n[currentLang].reviews_no_comment}</div>`;
 
-        const reviewerBadgeHtml = r.user_id ? `
-          <div class="author-badge ios-btn-tap" style="margin-bottom:6px;" onclick="openUserProfile('${r.user_id}')">
-            <div class="author-avatar-bubble" style="background:${r.author_bg || '#10b981'};">${r.author_avatar || '👤'}</div>
-            <span class="author-name-text">${escapeHtml(r.author_name)}</span>
-          </div>
-        ` : '';
-
         return `
           <div class="review-item">
-            ${reviewerBadgeHtml}
+            <div class="author-badge ios-btn-tap" style="margin-bottom:6px;">
+              <div class="author-avatar-bubble">${renderRedditAvatarSvg(avatarState, 24)}</div>
+              <span class="author-name-text">${escapeHtml(r.author_name)}</span>
+            </div>
             <div class="review-item-header">
               <span class="review-score">${r.score} / 10</span>
               <span class="review-verdict">${escapeHtml(displayVerdicts[i])}</span>
@@ -2692,19 +2751,13 @@
 
         document.getElementById('user_display_name').textContent = u.custom_handle || u.name;
         document.getElementById('customHandleInput').value = u.custom_handle || '';
-        updateLivePreviewHandle(u.custom_handle || u.name);
 
-        currentAvatarIcon = u.avatar_icon || currentAvatarIcon;
-        currentAvatarBg = u.avatar_bg || currentAvatarBg;
-        
-        document.querySelectorAll('.avatar-preset-btn').forEach(b => {
-          b.classList.toggle('selected', b.textContent === currentAvatarIcon);
-        });
-        document.querySelectorAll('.color-preset-dot').forEach(d => {
-          d.classList.toggle('selected', d.style.background === currentAvatarBg || d.style.backgroundColor === currentAvatarBg);
-        });
-
-        updateProfileAvatarPreview();
+        if (u.avatar_json) {
+          try {
+            avatarState = JSON.parse(u.avatar_json);
+            updateAllAvatarDisplays();
+          } catch(e) {}
+        }
 
         const card = document.getElementById('profileCard');
         const badge = document.getElementById('profileStatusBadge');
@@ -2755,6 +2808,8 @@
     const stripCard = document.getElementById('app-community-strip');
     if (tabId === 'profile') {
       if (stripCard) stripCard.style.display = 'none';
+      switchBuilderTab('hair');
+      updateAllAvatarDisplays();
     } else {
       if (stripCard) stripCard.style.display = 'block';
     }
@@ -2839,13 +2894,6 @@
       prof_sub: "Личная статистика и статус в сообществе",
       stat_reviews_label: "Рецензий",
       stat_projects_label: "Проектов подано",
-      custom_title: "Кастомизация профиля",
-      custom_desc: "Выберите аватарку, фон подложки и ауру свечения. Они будут видны на всех ваших проектах и рецензиях.",
-      custom_avatar_label: "Аватарка",
-      custom_color_label: "Фон",
-      custom_aura_label: "Аура",
-      custom_handle_label: "Отображаемый ник",
-      save_profile_btn: "Сохранить профиль",
       submit_title: "Подать проект на аудит",
       submit_desc: "Хотите получить независимый скоринг и привлечь аудиторию? Отправьте заявку на добавление в витрину.",
       btn_submit_proj: "Опубликовать проект",
@@ -2903,13 +2951,6 @@
       prof_sub: "Personal statistics and community standing",
       stat_reviews_label: "Reviews",
       stat_projects_label: "Projects submitted",
-      custom_title: "Profile Customization",
-      custom_desc: "Pick your avatar, background color, and glow aura. They appear everywhere.",
-      custom_avatar_label: "Avatar",
-      custom_color_label: "Background",
-      custom_aura_label: "Aura",
-      custom_handle_label: "Display Name",
-      save_profile_btn: "Save Profile",
       submit_title: "Submit Project for Audit",
       submit_desc: "Want an independent score and broader audience? Apply for showcase inclusion.",
       btn_submit_proj: "Publish Project",
@@ -2967,13 +3008,6 @@
       prof_sub: "Անձնական վիճակագրություն և կարգավիճակ",
       stat_reviews_label: "Ակնարկներ",
       stat_projects_label: "Ներկայացված նախագծեր",
-      custom_title: "Պրոֆիլի կարգավորում",
-      custom_desc: "Ընտրեք ավատարը և մականունը:",
-      custom_avatar_label: "Ավատար",
-      custom_color_label: "Ֆոն",
-      custom_aura_label: "Աուրա",
-      custom_handle_label: "Անուն",
-      save_profile_btn: "Պահպանել",
       submit_title: "Ներկայացնել նախագիծ",
       submit_desc: "Ցանկանո՞ւմ եք ստանալ գնահատական և ներգրավել լսարան:",
       btn_submit_proj: "Հրապարակել նախագիծը",
@@ -3031,13 +3065,6 @@
       prof_sub: "პირადი სტატისტიკა და სტატუსი საზოგადოებაში",
       stat_reviews_label: "შეფასებები",
       stat_projects_label: "წარდგენილი პროექტები",
-      custom_title: "პროფილის მორგება",
-      custom_desc: "აირჩიეთ ავატარი და მეტსახელი:",
-      custom_avatar_label: "ავატარი",
-      custom_color_label: "ფონი",
-      custom_aura_label: "აურა",
-      custom_handle_label: "სახელი",
-      save_profile_btn: "შენახვა",
       submit_title: "პროექტის შეტანა აუდიტზე",
       submit_desc: "გსურთ მიიღოთ დამოუკიდებელი სქორინგი და მოიზიდოთ აუდიტორია?",
       btn_submit_proj: "პროექტის გამოქვეყნება",
@@ -3132,13 +3159,6 @@
     updateText('t_top_sub', t.top_sub);
     updateText('t_prof_title', t.prof_title);
     updateText('t_prof_sub', t.prof_sub);
-    updateText('t_custom_title', t.custom_title);
-    updateText('t_custom_desc', t.custom_desc);
-    updateText('t_custom_avatar_label', t.custom_avatar_label);
-    updateText('t_custom_color_label', t.custom_color_label);
-    updateText('t_custom_aura_label', t.custom_aura_label);
-    updateText('t_custom_handle_label', t.custom_handle_label);
-    updateText('t_save_profile_btn', t.save_profile_btn);
     updateText('t_submit_title', t.submit_title);
     updateText('t_submit_desc', t.submit_desc);
     updateText('t_form_name_label', t.form_name_label);
@@ -3455,7 +3475,7 @@
   updateCommunityStrip();
   setInterval(updateCommunityStrip, 45000);
   applyTiltToAll();
-  updateProfileAvatarPreview();
+  updateAllAvatarDisplays();
 </script>
 
 </body>
