@@ -1041,136 +1041,69 @@
       color: #059669;
     }
 
-    /* --- Конструктор Енота Чифа (Пухлый Chibi-Style из референса) --- */
-    .chief-avatar-card {
+    /* --- Галерея 15 Енотов Чифов --- */
+    .chief-avatar-box {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 18px 14px;
+      padding: 20px 14px;
       background: var(--input-bg);
       border: 1px solid var(--tag-border);
       border-radius: 20px;
       margin-bottom: 18px;
-      position: relative;
     }
 
-    .chief-avatar-canvas {
+    .chief-avatar-preview {
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      position: relative;
       background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(14, 20, 32, 0.7) 100%);
-      border: 2px solid var(--card-border);
+      border: 2.5px solid var(--emerald);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
       margin-bottom: 14px;
-      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
-    .chief-avatar-canvas svg {
+    .chief-avatar-preview svg {
       width: 100%;
       height: 100%;
     }
 
-    .builder-actions-top {
-      display: flex;
-      gap: 8px;
-      width: 100%;
-      justify-content: center;
-    }
-
-    .btn-dice {
-      background: var(--card-bg);
-      border: 1px solid var(--tag-border);
-      color: var(--text-main);
-      padding: 8px 16px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-    }
-
-    .builder-category-tabs {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      width: 100%;
-      margin: 16px 0 10px;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
-    .builder-category-tabs::-webkit-scrollbar { display: none; }
-
-    .builder-cat-btn {
-      padding: 7px 14px;
-      background: var(--tag-bg);
-      border: 1px solid var(--tag-border);
-      border-radius: 10px;
-      color: var(--text-sub);
-      font-size: 11px;
-      font-weight: 700;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-    .builder-cat-btn.active {
-      background: var(--emerald);
-      color: #070a0f;
-      border-color: var(--emerald);
-    }
-    body.light-theme .builder-cat-btn.active {
-      color: #ffffff;
-      background: #059669;
-    }
-
-    .builder-items-grid {
+    .chief-gallery-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 8px;
       width: 100%;
-      max-height: 190px;
-      overflow-y: auto;
-      padding: 4px;
+      margin-top: 14px;
     }
 
-    .builder-item-choice {
-      height: 52px;
-      border-radius: 12px;
+    .chief-item-card {
+      aspect-ratio: 1;
+      border-radius: 14px;
       background: var(--tag-bg);
       border: 1.5px solid var(--tag-border);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--text-main);
-      text-align: center;
-      padding: 4px;
       transition: all 0.2s var(--spring-ease);
-    }
-    .builder-item-choice.selected {
-      border-color: var(--emerald);
-      background: rgba(0, 229, 153, 0.16);
-      transform: scale(1.05);
+      padding: 2px;
+      overflow: hidden;
     }
 
-    .builder-color-dot {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid transparent;
-      flex-shrink: 0;
+    .chief-item-card svg {
+      width: 100%;
+      height: 100%;
     }
-    .builder-color-dot.selected {
-      border-color: #fff;
-      transform: scale(1.15);
-      box-shadow: 0 0 10px rgba(255,255,255,0.6);
+
+    .chief-item-card.selected {
+      border-color: var(--emerald);
+      background: rgba(0, 229, 153, 0.16);
+      transform: scale(1.08);
+      box-shadow: 0 4px 12px rgba(0, 229, 153, 0.3);
     }
 
     .bottom-nav {
@@ -1565,10 +1498,6 @@
         <div class="skeleton-bar" style="width: 85%;"></div>
         <div class="skeleton-bar" style="width: 70%;"></div>
       </div>
-      <div class="card skeleton-card">
-        <div class="skeleton-bar" style="width: 40%;"></div>
-        <div class="skeleton-bar" style="width: 80%;"></div>
-      </div>
     </div>
   </div>
 
@@ -1654,47 +1583,37 @@
   <div id="tab-top" class="tab-view">
     <h1 id="t_top_title">Рейтинг проектов</h1>
     <p class="subtitle" id="t_top_sub">Лидеры по оценкам участников комьюнити</p>
-
-    <div id="leaderboard-list">
-      <div class="card skeleton-card">
-        <div class="skeleton-bar" style="width: 60%;"></div>
-      </div>
-      <div class="card skeleton-card">
-        <div class="skeleton-bar" style="width: 45%;"></div>
-      </div>
-    </div>
+    <div id="leaderboard-list"></div>
   </div>
 
-  <!-- ВКЛАДКА: ЧИФ (AI-ПОМОЩНИК) -->
+  <!-- ВКЛАДКА: ЧИФ -->
   <div id="tab-agent" class="tab-view">
     <h1 id="t_agent_title">Чиф 🦝</h1>
     <p class="subtitle" id="t_agent_sub">AI-помощник Open Hall</p>
 
     <div class="agent-chat-card">
       <div id="agent-messages" class="agent-messages">
-        <div class="agent-msg agent-msg-bot" id="agent-welcome-msg">Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Расскажу как работает скоринг, оценю твою идею или помогу грамотно заполнить заявку на добавление проекта. Спрашивай!</div>
+        <div class="agent-msg agent-msg-bot" id="agent-welcome-msg">Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Спрашивай о проектах, оценках или подаче!</div>
       </div>
       <div class="agent-input-row">
         <textarea id="agentInput" rows="1" placeholder="Спросить у Чифа..."></textarea>
-        <button id="agentSendBtn" class="agent-send-btn ios-btn-tap" aria-label="Отправить">➤</button>
+        <button id="agentSendBtn" class="agent-send-btn ios-btn-tap">➤</button>
       </div>
     </div>
   </div>
 
-  <!-- ВКЛАДКА 4: ПРОФИЛЬ С ЧИФОМ (РЕДИЗАЙН ИЗ РЕФЕРЕНСА) -->
+  <!-- ВКЛАДКА 4: ПРОФИЛЬ -->
   <div id="tab-profile" class="tab-view">
     <h1 id="t_prof_title">Профиль участника</h1>
-    <p class="subtitle" id="t_prof_sub">Личная статистика и статус в сообществе</p>
+    <p class="subtitle" id="t_prof_sub">Личная статистика и выбор персонажа</p>
 
     <div class="card tilt-card profile-tier-card tier-obsidian" id="profileCard">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:14px;">
-          <div class="avatar-preview-wrapper">
-            <div id="myProfileAvatarBubble" style="width:62px; height:62px; border-radius:50%; overflow:hidden; border:2.5px solid var(--emerald); box-shadow:0 6px 18px rgba(0,0,0,0.35); background: var(--input-bg);"></div>
-          </div>
+          <div class="author-avatar-bubble" style="width:64px; height:64px; border:2.5px solid var(--emerald);" id="myProfileAvatarBubble"></div>
           <div>
             <h3 id="user_display_name" style="font-size:18px; margin-bottom:2px;">Участник комьюнити</h3>
-            <span class="badge profile-status-badge" id="profileStatusBadge" style="margin-top:2px; display:inline-block;">Community Scout</span>
+            <span class="badge" id="profileStatusBadge" style="margin-top:2px; display:inline-block;">Community Scout</span>
           </div>
         </div>
         <div id="tierIcon" style="font-size:22px; opacity:0.85;">✦</div>
@@ -1706,35 +1625,26 @@
       </div>
     </div>
 
-    <!-- Конструктор Енота Чифа в Chibi 2D стиле -->
+    <!-- Галерея 15 Енотов Чифов из референса -->
     <div class="card tilt-card">
-      <h3 style="margin-bottom:6px;">Кастомизация Чифа</h3>
-      <p style="margin-bottom:14px; font-size:12px;">Соберите своего уникального пухлого енота: меняйте окрас, шляпы, очки и костюмы.</p>
+      <h3 style="margin-bottom:6px;">Выберите своего Чифа</h3>
+      <p style="margin-bottom:14px; font-size:12px;">15 каноничных образов енота. Нажмите на любого, чтобы примерить его на свой профиль.</p>
 
-      <div class="chief-avatar-card">
-        <div class="chief-avatar-canvas" id="builderAvatarPreview"></div>
-        <div class="builder-actions-top">
-          <button class="btn-dice ios-btn-tap" onclick="randomizeChiefAvatar()">🎲 Случайный Чиф</button>
-        </div>
+      <div class="chief-avatar-box">
+        <div class="chief-avatar-preview" id="chiefBigPreview"></div>
+        <div style="font-size:14px; font-weight:800; color:var(--text-main);" id="chiefCurrentName">Чиф Ковбой</div>
+        <div style="font-size:11px; color:var(--text-sub); margin-top:2px;" id="chiefCurrentDesc">Шляпа рейнджера и повязка на глаз[cite: 1]</div>
 
-        <div class="builder-category-tabs">
-          <button class="builder-cat-btn active" onclick="switchChiefTab('fur', this)">Окрас</button>
-          <button class="builder-cat-btn" onclick="switchChiefTab('hat', this)">Шляпы</button>
-          <button class="builder-cat-btn" onclick="switchChiefTab('eyes', this)">Очки / Визор</button>
-          <button class="builder-cat-btn" onclick="switchChiefTab('outfit', this)">Одежда / Пояс</button>
-          <button class="builder-cat-btn" onclick="switchChiefTab('color', this)">Цвет</button>
-        </div>
-
-        <div class="builder-items-grid" id="builderItemsGrid"></div>
+        <div class="chief-gallery-grid" id="chiefGalleryGrid"></div>
       </div>
 
       <label for="customHandleInput" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;">Отображаемый ник</label>
       <input type="text" id="customHandleInput" maxlength="30" placeholder="@nickname" style="margin-bottom:14px;">
 
-      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить персонажа</button>
+      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить профиль</button>
     </div>
 
-    <!-- Форма подачи проекта -->
+    <!-- Подача проекта -->
     <div class="card tilt-card" style="margin-bottom:30px;">
       <h3 id="t_submit_title">Подать проект на аудит</h3>
       <p id="t_submit_desc">Хотите получить независимый скоринг и привлечь аудиторию? Отправьте заявку на добавление в витрину.</p>
@@ -1766,52 +1676,23 @@
   <div id="nav-indicator" class="nav-indicator"></div>
 
   <button class="nav-btn ios-btn-tap active" onclick="switchTab('feed')">
-    <svg class="nav-icon" viewBox="0 0 24 24">
-      <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
-      <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
-      <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
-      <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
-    </svg>
+    <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
     <span class="nav-label" id="t_nav_feed">Лента</span>
   </button>
-
   <button class="nav-btn ios-btn-tap" onclick="switchTab('scoring')">
-    <svg class="nav-icon" viewBox="0 0 24 24">
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-    </svg>
+    <svg class="nav-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
     <span class="nav-label" id="t_nav_score">Оценка</span>
   </button>
-
   <button class="nav-btn ios-btn-tap" onclick="switchTab('top')">
-    <svg class="nav-icon" viewBox="0 0 24 24">
-      <path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"></path>
-      <path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"></path>
-      <path d="M4 22h16"></path>
-      <path d="M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34"></path>
-      <path d="M6 3h12v7a6 6 0 0 1-12 0V3z"></path>
-    </svg>
+    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/><path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"/><path d="M4 22h16"/><path d="M6 3h12v7a6 6 0 0 1-12 0V3z"/></svg>
     <span class="nav-label" id="t_nav_top">Топ</span>
   </button>
-
   <button class="nav-btn ios-btn-tap" onclick="switchTab('agent')">
-    <svg class="nav-icon" viewBox="0 0 24 24">
-      <path d="M4 8.5 7.5 4 10 7.5"></path>
-      <path d="M20 8.5 16.5 4 14 7.5"></path>
-      <path d="M3.5 14.5c0-4.42 3.8-8 8.5-8s8.5 3.58 8.5 8c0 4.2-3.4 7.5-8.5 7.5s-8.5-3.3-8.5-7.5Z"></path>
-      <path d="M7 11.5c1.8-1 4.5-.8 5 .8"></path>
-      <path d="M17 11.5c-1.8-1-4.5-.8-5 .8"></path>
-      <circle cx="8.5" cy="13.5" r="1.25" fill="currentColor"></circle>
-      <circle cx="15.5" cy="13.5" r="1.25" fill="currentColor"></circle>
-      <path d="m11 17 1 1 1-1"></path>
-    </svg>
+    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 8.5 7.5 4 10 7.5"/><path d="M20 8.5 16.5 4 14 7.5"/><path d="M3.5 14.5c0-4.42 3.8-8 8.5-8s8.5 3.58 8.5 8c0 4.2-3.4 7.5-8.5 7.5s-8.5-3.3-8.5-7.5Z"/><circle cx="8.5" cy="13.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="13.5" r="1.25" fill="currentColor"/></svg>
     <span class="nav-label" id="t_nav_agent">Чиф</span>
   </button>
-
   <button class="nav-btn ios-btn-tap" onclick="switchTab('profile')">
-    <svg class="nav-icon" viewBox="0 0 24 24">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-      <circle cx="12" cy="7" r="4"></circle>
-    </svg>
+    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     <span class="nav-label" id="t_nav_prof">Профиль</span>
   </button>
 </nav>
@@ -1858,338 +1739,162 @@
   let currentFilterTag = 'all';
   let selectedFormTags = new Set();
   let currentTheme = localStorage.getItem('openhall_theme') || 'dark';
+  let currentLang = 'ru';
 
-  /* --- Енот Чиф: Отрисовка по референсу (Пухляш 2D) --- */
-  let chiefAvatar = {
-    fur: '#8c95a6',     // Базовый серо-голубой тон шерсти
-    belly: '#fbf5e6',   // Теплый пухлый животик
-    dark: '#3f4452',    // Полоски и маска
-    hat: 'none',        // Головной убор
-    eyes: 'glasses',    // Очки / глаза
-    outfit: 'belt_bag', // Пояс / жилетка
-    color: '#38bdf8'    // Акцентный цвет
-  };
+  let currentTab = 'feed';
+  let activeProject = 'Open Hall Bot';
+  let projectChosen = false;
+  let currentChiefId = localStorage.getItem('openhall_chosen_chief') || 'cowboy';
 
-  try {
-    const saved = localStorage.getItem('openhall_chubby_chief');
-    if (saved) chiefAvatar = JSON.parse(saved);
-  } catch (e) {}
+  // 15 Каноничных Енотов из референса
+  const RACCOON_CHARACTERS = [
+    { id: 'cowboy', name: 'Чиф Ковбой', desc: 'Шляпа рейнджера и повязка на глаз', hat: 'cowboy', eyes: 'eyepatch', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
+    { id: 'steampunk', name: 'Чиф Стимпанк', desc: 'Круглые медные очки и кожаный пояс', hat: 'derby', eyes: 'steampunk_glasses', vest: 'belt', fur: '#8c95a6', belly: '#fbf5e6' },
+    { id: 'viking', name: 'Чиф Викинг', desc: 'Шлем с рогами и набедренная повязка', hat: 'viking', eyes: 'normal', vest: 'skirt', fur: '#8c95a6', belly: '#fbf5e6' },
+    { id: 'gentleman', name: 'Чиф Джентльмен', desc: 'Раскрытый зонтик и золотой амулет', hat: 'umbrella', eyes: 'normal', vest: 'pink_cape', fur: '#8c95a6', belly: '#fbf5e6' },
+    { id: 'santa', name: 'Чиф Праздничный', desc: 'Колпак Санты с белым помпоном', hat: 'santa', eyes: 'normal', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
+    { id: 'adventurer', name: 'Чиф Авантюрист', desc: 'Синий жилет с эмблемой черепа', hat: 'none', eyes: 'normal', vest: 'blue_skull', fur: '#8c95a6', belly: '#fbf5e6' },
+    { id: 'explorer', name: 'Чиф Следопыт', desc: 'Оранжевый жилет с пряжкой', hat: 'none', eyes: 'normal', vest: 'orange_vest', fur: '#8c95a6', belly: '#fbf5e6' },
+    { id: 'diver', name: 'Чиф Водолаз', desc: 'Розовая маска-визор для плавания', hat: 'none', eyes: 'pink_visor', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
+    { id: 'cyclist', name: 'Чиф Спортсмен', desc: 'Розовые очки авиаторы на резинке', hat: 'goggles_head', eyes: 'normal', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
+    { id: 'hipster', name: 'Чиф Профессор', desc: 'Синий берет и круглые очки', hat: 'blue_cap', eyes: 'round_shades', vest: 'none', fur: '#9d91ba', belly: '#fbf5e6' },
+    { id: 'propeller', name: 'Чиф Вертушка', desc: 'Кепка с пропеллером и очки-жалюзи', hat: 'propeller', eyes: 'blinds', vest: 'none', fur: '#9d91ba', belly: '#fbf5e6' },
+    { id: 'chieftain', name: 'Чиф Вождь', desc: 'Сине-зеленый плюмаж из перьев', hat: 'feathers', eyes: 'normal', vest: 'sash', fur: '#9d91ba', belly: '#fbf5e6' },
+    { id: 'sleepy', name: 'Чиф Соня', desc: 'Повязка для сна на глазах', hat: 'none', eyes: 'sleep_mask', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
+    { id: 'dizzy', name: 'Чиф Оглушённый', desc: 'Звёзды над головой и спиральки в глазах', hat: 'stars_head', eyes: 'spiral', vest: 'orange_collar', fur: '#8c95a6', belly: '#fbf5e6' },
+    { id: 'pure', name: 'Чиф Классик', desc: 'Оригинальный пухлый енот Чиф', hat: 'none', eyes: 'normal', vest: 'belt_simple', fur: '#8c95a6', belly: '#fbf5e6' }
+  ];
 
-  const CHIEF_PRESETS = {
-    fur: [
-      { id: '#8c95a6', dark: '#3f4452', name: 'Классик' },
-      { id: '#9ca3af', dark: '#1f2937', name: 'Графит' },
-      { id: '#b0a4d0', dark: '#4c3a69', name: 'Лаванда' },
-      { id: '#d9a07a', dark: '#5c3317', name: 'Рыжий' },
-      { id: '#6ee7b7', dark: '#064e3b', name: 'Изумруд' },
-      { id: '#7dd3fc', dark: '#0c4a6e', name: 'Кибер' },
-      { id: '#e2e8f0', dark: '#64748b', name: 'Снежок' }
-    ],
-    hat: [
-      { id: 'none', name: 'Без шапки' },
-      { id: 'cowboy', name: 'Ковбой' },
-      { id: 'viking', name: 'Викинг' },
-      { id: 'santa', name: 'Колпак' },
-      { id: 'beret', name: 'Берет' },
-      { id: 'beanie', name: 'Кепка' },
-      { id: 'propeller', name: 'Пропеллер' },
-      { id: 'feathers', name: 'Перья' },
-      { id: 'halo', name: 'Нимб' }
-    ],
-    eyes: [
-      { id: 'normal', name: 'Точки' },
-      { id: 'glasses', name: 'Круглые очки' },
-      { id: 'visor', name: 'Маска для сна' },
-      { id: 'goggles', name: 'Стимпанк' },
-      { id: 'blinds', name: 'Жалюзи' },
-      { id: 'eyepatch', name: 'Пират' }
-    ],
-    outfit: [
-      { id: 'none', name: 'Без одежды' },
-      { id: 'vest', name: 'Жилетка' },
-      { id: 'vest_open', name: 'Куртка' },
-      { id: 'belt_buckle', name: 'Пояс с пряжкой' },
-      { id: 'belt_bag', name: 'Пояс искателя' },
-      { id: 'cape_amulet', name: 'Амулет' }
-    ],
-    color: ['#38bdf8', '#f59e0b', '#10b981', '#f43f5e', '#8b5cf6', '#ea580c', '#ffffff', '#1e293b']
-  };
-
-  let activeChiefTab = 'fur';
-
-  function renderChubbyChiefSvg(c, size = 100) {
-    // 1. Полосатый пухлый хвост сбоку
-    const tailSvg = `
-      <!-- Хвост -->
-      <path d="M38 72 C22 74, 8 68, 12 55 C16 46, 26 50, 42 62 Z" fill="${c.fur}" stroke="#2a2e39" stroke-width="2.5" stroke-linejoin="round"/>
-      <!-- Полоски на хвосте -->
-      <path d="M14 54 C17 50, 22 52, 26 57" stroke="${c.dark}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-      <path d="M22 61 C26 58, 30 60, 34 66" stroke="${c.dark}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  function getRaccoonSvg(r, size = 100) {
+    const tail = `
+      <path d="M38 72 C22 74, 8 68, 12 55 C16 46, 26 50, 42 62 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M14 54 C17 50, 22 52, 26 57" stroke="#373c48" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <path d="M22 61 C26 58, 30 60, 34 66" stroke="#373c48" stroke-width="4.5" fill="none" stroke-linecap="round"/>
     `;
-
-    // 2. Ушки енота с черным контуром и белой каёмкой
-    const earsSvg = `
-      <path d="M42 28 C39 16, 46 12, 50 20 Z" fill="${c.fur}" stroke="#2a2e39" stroke-width="2.2" stroke-linejoin="round"/>
+    const ears = `
+      <path d="M42 27 C39 16, 46 12, 50 20 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.2"/>
       <path d="M43 25 C41 18, 46 16, 48 22 Z" fill="#ffffff"/>
-      <path d="M68 28 C71 16, 64 12, 60 20 Z" fill="${c.fur}" stroke="#2a2e39" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M68 27 C71 16, 64 12, 60 20 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.2"/>
       <path d="M67 25 C69 18, 64 16, 62 22 Z" fill="#ffffff"/>
     `;
+    const body = `<path d="M45 28 C35 34, 34 64, 40 76 C46 84, 68 84, 74 76 C80 64, 76 34, 65 28 C58 24, 52 24, 45 28 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.5"/>`;
+    const mask = `<path d="M42 36 C38 42, 40 50, 48 48 C51 45, 52 42, 55 42 C58 42, 59 45, 62 48 C70 50, 72 42, 68 36 C63 32, 47 32, 42 36 Z" fill="#373c48" stroke="#2a2e39" stroke-width="1.5"/>`;
+    const belly = `<path d="M46 54 C40 58, 42 78, 54 81 C66 84, 72 74, 70 58 C68 48, 52 46, 46 54 Z" fill="${r.belly}" stroke="#2a2e39" stroke-width="2"/>`;
 
-    // 3. Тело-фасолина (главная пухлая тушка)
-    const bodySvg = `
-      <path d="M45 28 C35 34, 34 64, 40 76 C46 84, 68 84, 74 76 C80 64, 76 34, 65 28 C58 24, 52 24, 45 28 Z" fill="${c.fur}" stroke="#2a2e39" stroke-width="2.5" stroke-linejoin="round"/>
-      <!-- Тень снизу тушки -->
-      <path d="M42 74 C48 83, 66 83, 72 74 C66 79, 48 79, 42 74 Z" fill="rgba(0,0,0,0.15)"/>
-    `;
-
-    // 4. Характерная маска енота на мордочке
-    const maskSvg = `
-      <path d="M42 36 C38 42, 40 50, 48 48 C51 45, 52 42, 55 42 C58 42, 59 45, 62 48 C70 50, 72 42, 68 36 C63 32, 47 32, 42 36 Z" fill="${c.dark}" stroke="#2a2e39" stroke-width="1.5" stroke-linejoin="round"/>
-    `;
-
-    // 5. Большой пухлый животик кремового цвета
-    const bellySvg = `
-      <path d="M46 54 C40 58, 42 78, 54 81 C66 84, 72 74, 70 58 C68 48, 52 46, 46 54 Z" fill="${c.belly}" stroke="#2a2e39" stroke-width="2"/>
-    `;
-
-    // 6. Глазки-бусинки и носик
     let eyesSvg = '';
-    if (c.eyes === 'glasses') {
-      eyesSvg = `
-        <!-- Круглые ретро-очки -->
-        <circle cx="48" cy="43" r="6.5" fill="rgba(255,255,255,0.45)" stroke="#eab308" stroke-width="2.2"/>
-        <circle cx="62" cy="43" r="6.5" fill="rgba(255,255,255,0.45)" stroke="#eab308" stroke-width="2.2"/>
-        <line x1="54.5" y1="43" x2="55.5" y2="43" stroke="#eab308" stroke-width="2.2"/>
-        <circle cx="48" cy="43" r="2" fill="#1e293b"/>
-        <circle cx="62" cy="43" r="2" fill="#1e293b"/>
-      `;
-    } else if (c.eyes === 'visor') {
-      eyesSvg = `
-        <!-- Мягкая розовая/неоновая маска-визор -->
-        <path d="M42 39 C40 37, 70 37, 68 39 C72 44, 70 48, 64 48 C58 48, 52 46, 46 48 C40 48, 38 44, 42 39 Z" fill="${c.color}" stroke="#2a2e39" stroke-width="2"/>
-        <circle cx="46" cy="43" r="1.5" fill="#fff" opacity="0.8"/>
-        <circle cx="64" cy="43" r="1.5" fill="#fff" opacity="0.8"/>
-      `;
-    } else if (c.eyes === 'goggles') {
-      eyesSvg = `
-        <ellipse cx="48" cy="43" rx="6" ry="6" fill="#f43f5e" stroke="#2a2e39" stroke-width="2.2"/>
-        <ellipse cx="62" cy="43" rx="6" ry="6" fill="#f43f5e" stroke="#2a2e39" stroke-width="2.2"/>
-        <line x1="54" y1="43" x2="56" y2="43" stroke="#2a2e39" stroke-width="2.5"/>
-        <circle cx="46.5" cy="41.5" r="1.5" fill="#fff"/>
-        <circle cx="60.5" cy="41.5" r="1.5" fill="#fff"/>
-      `;
-    } else if (c.eyes === 'blinds') {
-      eyesSvg = `
-        <rect x="42" y="38" width="13" height="10" rx="2" fill="#f97316" stroke="#2a2e39" stroke-width="1.8"/>
-        <rect x="56" y="38" width="13" height="10" rx="2" fill="#f97316" stroke="#2a2e39" stroke-width="1.8"/>
-        <line x1="42" y1="42" x2="55" y2="42" stroke="#fff" stroke-width="1.5"/>
-        <line x1="56" y1="42" x2="69" y2="42" stroke="#fff" stroke-width="1.5"/>
-        <line x1="53" y1="41" x2="58" y2="41" stroke="#2a2e39" stroke-width="2"/>
-      `;
-    } else if (c.eyes === 'eyepatch') {
-      eyesSvg = `
-        <circle cx="48" cy="43" r="5.5" fill="#111827" stroke="#2a2e39" stroke-width="1.8"/>
-        <line x1="41" y1="36" x2="68" y2="48" stroke="#111827" stroke-width="1.8"/>
-        <circle cx="62" cy="43" r="2.2" fill="#1e293b"/>
-      `;
+    if (r.eyes === 'eyepatch') {
+      eyesSvg = `<circle cx="48" cy="43" r="5.5" fill="#111827" stroke="#2a2e39" stroke-width="1.8"/><line x1="41" y1="36" x2="68" y2="48" stroke="#111827" stroke-width="1.8"/><circle cx="62" cy="43" r="2.4" fill="#1e293b"/>`;
+    } else if (r.eyes === 'steampunk_glasses') {
+      eyesSvg = `<circle cx="48" cy="43" r="6.5" fill="rgba(255,255,255,0.4)" stroke="#eab308" stroke-width="2.2"/><circle cx="62" cy="43" r="6.5" fill="rgba(255,255,255,0.4)" stroke="#eab308" stroke-width="2.2"/><line x1="54.5" y1="43" x2="55.5" y2="43" stroke="#eab308" stroke-width="2.2"/><circle cx="48" cy="43" r="2" fill="#1e293b"/><circle cx="62" cy="43" r="2" fill="#1e293b"/>`;
+    } else if (r.eyes === 'pink_visor' || r.eyes === 'sleep_mask') {
+      eyesSvg = `<path d="M41 40 Q55 38 69 40 Q71 47 64 48 Q55 46 46 48 Q39 47 41 40 Z" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><circle cx="45" cy="43" r="1.5" fill="#fff" opacity="0.8"/><circle cx="65" cy="43" r="1.5" fill="#fff" opacity="0.8"/>`;
+    } else if (r.eyes === 'blinds') {
+      eyesSvg = `<rect x="42" y="38" width="13" height="10" rx="2" fill="#f97316" stroke="#2a2e39" stroke-width="1.8"/><rect x="56" y="38" width="13" height="10" rx="2" fill="#f97316" stroke="#2a2e39" stroke-width="1.8"/><line x1="42" y1="42" x2="55" y2="42" stroke="#fff" stroke-width="1.5"/><line x1="56" y1="42" x2="69" y2="42" stroke="#fff" stroke-width="1.5"/>`;
+    } else if (r.eyes === 'round_shades') {
+      eyesSvg = `<circle cx="48" cy="43" r="6" fill="#1e293b" stroke="#2a2e39" stroke-width="2"/><circle cx="62" cy="43" r="6" fill="#1e293b" stroke="#2a2e39" stroke-width="2"/><line x1="54" y1="43" x2="56" y2="43" stroke="#2a2e39" stroke-width="2"/>`;
+    } else if (r.eyes === 'spiral') {
+      eyesSvg = `<circle cx="48" cy="43" r="3.5" fill="none" stroke="#1e293b" stroke-width="1.8"/><circle cx="62" cy="43" r="3.5" fill="none" stroke="#1e293b" stroke-width="1.8"/>`;
     } else {
-      eyesSvg = `
-        <!-- Обычные аккуратные глазки-бусинки -->
-        <circle cx="48" cy="43" r="2.4" fill="#1e293b"/>
-        <circle cx="62" cy="43" r="2.4" fill="#1e293b"/>
-        <circle cx="47.5" cy="42" r="0.8" fill="#ffffff"/>
-        <circle cx="61.5" cy="42" r="0.8" fill="#ffffff"/>
-      `;
+      eyesSvg = `<circle cx="48" cy="43" r="2.4" fill="#1e293b"/><circle cx="47.5" cy="42" r="0.8" fill="#fff"/><circle cx="62" cy="43" r="2.4" fill="#1e293b"/><circle cx="61.5" cy="42" r="0.8" fill="#fff"/>`;
     }
 
-    // Носик и ротик
-    const faceFeatures = `
+    const noseMouth = `
       <ellipse cx="55" cy="46" rx="2.2" ry="1.6" fill="#1e293b"/>
       <path d="M53.5 48.5 Q55 50.5 56.5 48.5" stroke="#1e293b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="44" cy="79" rx="4" ry="2.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2"/>
+      <ellipse cx="66" cy="79" rx="4" ry="2.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2"/>
+      <ellipse cx="38" cy="56" rx="3.5" ry="5.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2" transform="rotate(-15 38 56)"/>
+      <ellipse cx="72" cy="56" rx="3.5" ry="5.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2" transform="rotate(15 72 56)"/>
     `;
 
-    // 7. Лапки (маленькие круглые лапки снизу и по бокам)
-    const pawsSvg = `
-      <ellipse cx="44" cy="79" rx="4" ry="2.5" fill="${c.fur}" stroke="#2a2e39" stroke-width="2"/>
-      <ellipse cx="66" cy="79" rx="4" ry="2.5" fill="${c.fur}" stroke="#2a2e39" stroke-width="2"/>
-      <ellipse cx="38" cy="56" rx="3.5" ry="5.5" fill="${c.fur}" stroke="#2a2e39" stroke-width="2" transform="rotate(-15 38 56)"/>
-      <ellipse cx="72" cy="56" rx="3.5" ry="5.5" fill="${c.fur}" stroke="#2a2e39" stroke-width="2" transform="rotate(15 72 56)"/>
-    `;
-
-    // 8. Одежда / Пояс / Жилетка
-    let outfitSvg = '';
-    if (c.outfit === 'vest') {
-      outfitSvg = `
-        <path d="M42 56 C40 68, 43 78, 49 78 C47 70, 48 62, 50 56 Z" fill="${c.color}" stroke="#2a2e39" stroke-width="2"/>
-        <path d="M68 56 C70 68, 67 78, 61 78 C63 70, 62 62, 60 56 Z" fill="${c.color}" stroke="#2a2e39" stroke-width="2"/>
-        <!-- Воротничок -->
-        <path d="M46 54 L52 60" stroke="#f59e0b" stroke-width="2"/>
-        <path d="M64 54 L58 60" stroke="#f59e0b" stroke-width="2"/>
-      `;
-    } else if (c.outfit === 'vest_open') {
-      outfitSvg = `
-        <path d="M41 54 C39 64, 42 74, 46 76 C45 68, 47 62, 48 54 Z" fill="#f97316" stroke="#2a2e39" stroke-width="2"/>
-        <path d="M69 54 C71 64, 68 74, 64 76 C65 68, 63 62, 62 54 Z" fill="#f97316" stroke="#2a2e39" stroke-width="2"/>
-      `;
-    } else if (c.outfit === 'belt_buckle') {
-      outfitSvg = `
-        <path d="M42 69 C48 74, 62 74, 68 69 L69 74 C62 79, 48 79, 41 74 Z" fill="#1e293b" stroke="#2a2e39" stroke-width="2"/>
-        <rect x="52" y="69.5" width="6" height="5.5" rx="1.5" fill="#38bdf8" stroke="#2a2e39" stroke-width="1.5"/>
-      `;
-    } else if (c.outfit === 'belt_bag') {
-      outfitSvg = `
-        <path d="M42 70 C48 74, 62 74, 68 70 L69 75 C62 79, 48 79, 41 75 Z" fill="#78350f" stroke="#2a2e39" stroke-width="2"/>
-        <circle cx="55" cy="73" r="3" fill="#f59e0b" stroke="#2a2e39" stroke-width="1.5"/>
-      `;
-    } else if (c.outfit === 'cape_amulet') {
-      outfitSvg = `
-        <path d="M46 52 C50 56, 60 56, 64 52 L62 56 C58 60, 52 60, 48 56 Z" fill="#f43f5e" stroke="#2a2e39" stroke-width="1.8"/>
-        <circle cx="55" cy="57" r="4.5" fill="#fbbf24" stroke="#2a2e39" stroke-width="1.8"/>
-      `;
+    let vestSvg = '';
+    if (r.vest === 'blue_skull') {
+      vestSvg = `<path d="M41 54 C39 66, 42 78, 50 78 C48 68, 49 60, 50 54 Z" fill="#0284c7" stroke="#2a2e39" stroke-width="2"/><path d="M69 54 C71 66, 68 78, 60 78 C62 68, 61 60, 60 54 Z" fill="#0284c7" stroke="#2a2e39" stroke-width="2"/><circle cx="55" cy="66" r="4.5" fill="#f43f5e"/><text x="52.5" y="69" font-size="8" fill="#fff">☠</text>`;
+    } else if (r.vest === 'orange_vest') {
+      vestSvg = `<path d="M41 54 C39 66, 42 78, 50 78 C48 68, 49 60, 50 54 Z" fill="#ea580c" stroke="#2a2e39" stroke-width="2"/><path d="M69 54 C71 66, 68 78, 60 78 C62 68, 61 60, 60 54 Z" fill="#ea580c" stroke="#2a2e39" stroke-width="2"/><path d="M42 70 C48 74, 62 74, 68 70 L69 75 C62 79, 48 79, 41 75 Z" fill="#0284c7" stroke="#2a2e39" stroke-width="2"/><rect x="52" y="70" width="6" height="5.5" rx="1.5" fill="#facc15" stroke="#2a2e39" stroke-width="1.5"/>`;
+    } else if (r.vest === 'pink_cape') {
+      vestSvg = `<path d="M45 53 C49 57, 61 57, 65 53 L63 58 C59 62, 51 62, 47 58 Z" fill="#f472b6" stroke="#2a2e39" stroke-width="1.8"/><circle cx="55" cy="59" r="4.5" fill="#fbbf24" stroke="#2a2e39" stroke-width="1.8"/>`;
+    } else if (r.vest === 'belt' || r.vest === 'belt_simple') {
+      vestSvg = `<path d="M42 69 C48 74, 62 74, 68 69 L69 74 C62 79, 48 79, 41 74 Z" fill="#1e293b" stroke="#2a2e39" stroke-width="2"/><circle cx="55" cy="73" r="3" fill="#f59e0b" stroke="#2a2e39" stroke-width="1.5"/>`;
+    } else if (r.vest === 'skirt') {
+      vestSvg = `<path d="M42 71 C48 75, 62 75, 68 71 L69 77 C62 82, 48 82, 41 77 Z" fill="#78350f" stroke="#2a2e39" stroke-width="2"/>`;
+    } else if (r.vest === 'sash') {
+      vestSvg = `<path d="M43 70 C48 74, 62 74, 67 70 L68 75 C62 79, 48 79, 42 75 Z" fill="#d97706" stroke="#2a2e39" stroke-width="2"/><circle cx="64" cy="74" r="3" fill="#fff" stroke="#2a2e39" stroke-width="1.5"/>`;
     }
 
-    // 9. Головные уборы из референса
     let hatSvg = '';
-    if (c.hat === 'cowboy') {
-      hatSvg = `
-        <ellipse cx="55" cy="27" rx="19" ry="5.5" fill="#92400e" stroke="#2a2e39" stroke-width="2.2" transform="rotate(-5 55 27)"/>
-        <path d="M45 25 C45 15, 63 15, 63 25 Z" fill="#b45309" stroke="#2a2e39" stroke-width="2.2"/>
-        <ellipse cx="54" cy="22" rx="4" ry="1.5" fill="#78350f"/>
-      `;
-    } else if (c.hat === 'viking') {
-      hatSvg = `
-        <path d="M46 27 C46 17, 64 17, 64 27 Z" fill="#f59e0b" stroke="#2a2e39" stroke-width="2.2"/>
-        <rect x="44" y="25" width="22" height="4" rx="2" fill="#78350f" stroke="#2a2e39" stroke-width="1.5"/>
-        <!-- Рога -->
-        <path d="M44 26 C38 24, 38 18, 40 16 C42 20, 46 22, 46 26 Z" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>
-        <path d="M66 26 C72 24, 72 18, 70 16 C68 20, 64 22, 64 26 Z" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>
-      `;
-    } else if (c.hat === 'santa') {
-      hatSvg = `
-        <path d="M45 26 C48 10, 72 12, 70 26 Z" fill="#ea580c" stroke="#2a2e39" stroke-width="2.2"/>
-        <path d="M68 20 Q76 26 74 34" stroke="#ea580c" stroke-width="6" stroke-linecap="round"/>
-        <circle cx="74" cy="35" r="3.5" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>
-        <rect x="44" y="24" width="23" height="4.5" rx="2" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>
-      `;
-    } else if (c.hat === 'beanie') {
-      hatSvg = `
-        <path d="M44 27 C44 17, 66 17, 66 27 Z" fill="${c.color}" stroke="#2a2e39" stroke-width="2.2"/>
-        <path d="M64 25 C74 24, 77 28, 72 30 Z" fill="${c.color}" stroke="#2a2e39" stroke-width="1.8"/>
-      `;
-    } else if (c.hat === 'propeller') {
-      hatSvg = `
-        <path d="M47 26 C47 19, 63 19, 63 26 Z" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/>
-        <line x1="55" y1="19" x2="55" y2="15" stroke="#2a2e39" stroke-width="2"/>
-        <line x1="48" y1="15" x2="62" y2="15" stroke="#eab308" stroke-width="3" stroke-linecap="round"/>
-      `;
-    } else if (c.hat === 'beret') {
-      hatSvg = `
-        <path d="M45 28 C40 18, 68 16, 68 28 Z" fill="#3b82f6" stroke="#2a2e39" stroke-width="2.2" transform="rotate(-8 55 24)"/>
-        <circle cx="53" cy="18" r="2" fill="#1d4ed8"/>
-      `;
-    } else if (c.hat === 'feathers') {
-      hatSvg = `
-        <ellipse cx="55" cy="27" rx="14" ry="2.5" fill="#10b981" stroke="#2a2e39" stroke-width="1.8"/>
-        <path d="M52 26 C50 14, 56 12, 54 26 Z" fill="#3b82f6" stroke="#2a2e39" stroke-width="1.8"/>
-        <path d="M56 26 C56 16, 62 14, 58 26 Z" fill="#38bdf8" stroke="#2a2e39" stroke-width="1.8"/>
-      `;
-    } else if (c.hat === 'halo') {
-      hatSvg = `
-        <ellipse cx="55" cy="16" rx="15" ry="4.5" fill="none" stroke="#facc15" stroke-width="3" filter="drop-shadow(0 0 4px #facc15)"/>
-      `;
+    if (r.hat === 'cowboy') {
+      hatSvg = `<ellipse cx="55" cy="27" rx="19" ry="5.5" fill="#92400e" stroke="#2a2e39" stroke-width="2.2" transform="rotate(-5 55 27)"/><path d="M45 25 C45 15, 63 15, 63 25 Z" fill="#b45309" stroke="#2a2e39" stroke-width="2.2"/>`;
+    } else if (r.hat === 'viking') {
+      hatSvg = `<path d="M46 27 C46 17, 64 17, 64 27 Z" fill="#f59e0b" stroke="#2a2e39" stroke-width="2.2"/><path d="M44 26 C38 24, 38 18, 40 16 C42 20, 46 22, 46 26 Z" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/><path d="M66 26 C72 24, 72 18, 70 16 C68 20, 64 22, 64 26 Z" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>`;
+    } else if (r.hat === 'santa') {
+      hatSvg = `<path d="M45 26 C48 10, 72 12, 70 26 Z" fill="#ea580c" stroke="#2a2e39" stroke-width="2.2"/><path d="M68 20 Q76 26 74 34" stroke="#ea580c" stroke-width="6" stroke-linecap="round"/><circle cx="74" cy="35" r="3.5" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/><rect x="44" y="24" width="23" height="4.5" rx="2" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>`;
+    } else if (r.hat === 'umbrella') {
+      hatSvg = `<path d="M35 24 Q55 6 75 24 Z" fill="#78716c" stroke="#2a2e39" stroke-width="2"/><line x1="55" y1="24" x2="55" y2="46" stroke="#2a2e39" stroke-width="2.5"/>`;
+    } else if (r.hat === 'propeller') {
+      hatSvg = `<path d="M47 26 C47 19, 63 19, 63 26 Z" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><line x1="55" y1="19" x2="55" y2="15" stroke="#2a2e39" stroke-width="2"/><line x1="48" y1="15" x2="62" y2="15" stroke="#eab308" stroke-width="3" stroke-linecap="round"/>`;
+    } else if (r.hat === 'feathers') {
+      hatSvg = `<ellipse cx="55" cy="27" rx="14" ry="2.5" fill="#10b981" stroke="#2a2e39" stroke-width="1.8"/><path d="M52 26 C50 14, 56 12, 54 26 Z" fill="#3b82f6" stroke="#2a2e39" stroke-width="1.8"/><path d="M56 26 C56 16, 62 14, 58 26 Z" fill="#38bdf8" stroke="#2a2e39" stroke-width="1.8"/>`;
+    } else if (r.hat === 'derby') {
+      hatSvg = `<ellipse cx="55" cy="27" rx="15" ry="3.5" fill="#b45309" stroke="#2a2e39" stroke-width="2"/><path d="M47 26 C47 18, 63 18, 63 26 Z" fill="#d97706" stroke="#2a2e39" stroke-width="2"/>`;
+    } else if (r.hat === 'blue_cap') {
+      hatSvg = `<path d="M45 28 C40 18, 68 16, 68 28 Z" fill="#3b82f6" stroke="#2a2e39" stroke-width="2.2" transform="rotate(-8 55 24)"/><circle cx="53" cy="18" r="2" fill="#1d4ed8"/>`;
+    } else if (r.hat === 'goggles_head') {
+      hatSvg = `<ellipse cx="48" cy="22" rx="6" ry="6" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><ellipse cx="62" cy="22" rx="6" ry="6" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><line x1="42" y1="23" x2="68" y2="23" stroke="#2563eb" stroke-width="2.5"/>`;
+    } else if (r.hat === 'stars_head') {
+      hatSvg = `<ellipse cx="55" cy="18" rx="18" ry="4" fill="none" stroke="#fff" stroke-width="2" opacity="0.8"/><text x="50" y="16" font-size="12" fill="#ffb703">★</text>`;
     }
 
     return `
       <svg viewBox="0 0 110 110" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
-        <!-- Тень под енотом -->
         <ellipse cx="56" cy="84" rx="20" ry="4" fill="rgba(0,0,0,0.3)"/>
-        ${tailSvg}
-        ${earsSvg}
-        ${bodySvg}
-        ${maskSvg}
-        ${bellySvg}
-        ${pawsSvg}
-        ${outfitSvg}
+        ${tail}
+        ${ears}
+        ${body}
+        ${mask}
+        ${belly}
+        ${vestSvg}
+        ${noseMouth}
         ${eyesSvg}
-        ${faceFeatures}
         ${hatSvg}
       </svg>
     `;
   }
 
-  function updateChiefAvatarDisplays() {
-    const builderPreview = document.getElementById('builderAvatarPreview');
-    const profileBubble = document.getElementById('myProfileAvatarBubble');
-    
-    if (builderPreview) builderPreview.innerHTML = renderChubbyChiefSvg(chiefAvatar, 120);
-    if (profileBubble) profileBubble.innerHTML = renderChubbyChiefSvg(chiefAvatar, 62);
-  }
-
-  function switchChiefTab(category, btn) {
-    activeChiefTab = category;
-    document.querySelectorAll('.builder-cat-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-
-    const grid = document.getElementById('builderItemsGrid');
+  function renderChiefGallery() {
+    const grid = document.getElementById('chiefGalleryGrid');
     if (!grid) return;
 
-    if (category === 'color') {
-      grid.innerHTML = CHIEF_PRESETS.color.map(col => `
-        <div class="builder-item-choice ${chiefAvatar.color === col ? 'selected' : ''}" onclick="setChiefPart('color', '${col}')">
-          <div class="builder-color-dot" style="background:${col};"></div>
-        </div>
-      `).join('');
-    } else if (category === 'fur') {
-      grid.innerHTML = CHIEF_PRESETS.fur.map(item => `
-        <div class="builder-item-choice ${chiefAvatar.fur === item.id ? 'selected' : ''}" onclick="setChiefFur('${item.id}', '${item.dark}')">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div style="width:16px; height:16px; border-radius:50%; background:${item.id}; border:1.5px solid ${item.dark};"></div>
-            <span>${item.name}</span>
-          </div>
-        </div>
-      `).join('');
-    } else {
-      const items = CHIEF_PRESETS[category] || [];
-      grid.innerHTML = items.map(item => `
-        <div class="builder-item-choice ${chiefAvatar[category] === item.id ? 'selected' : ''}" onclick="setChiefPart('${category}', '${item.id}')">
-          ${item.name}
-        </div>
-      `).join('');
-    }
+    grid.innerHTML = RACCOON_CHARACTERS.map(c => `
+      <div class="chief-item-card ios-btn-tap ${c.id === currentChiefId ? 'selected' : ''}" onclick="selectChief('${c.id}')">
+        ${getRaccoonSvg(c, 52)}
+      </div>
+    `).join('');
+
+    updateCurrentChiefDisplay();
   }
 
-  function setChiefFur(fur, dark) {
+  function selectChief(id) {
+    currentChiefId = id;
+    localStorage.setItem('openhall_chosen_chief', id);
+    document.querySelectorAll('.chief-item-card').forEach((el, idx) => {
+      el.classList.toggle('selected', RACCOON_CHARACTERS[idx].id === id);
+    });
+    updateCurrentChiefDisplay();
     triggerHaptic('light');
-    chiefAvatar.fur = fur;
-    chiefAvatar.dark = dark;
-    localStorage.setItem('openhall_chubby_chief', JSON.stringify(chiefAvatar));
-    updateChiefAvatarDisplays();
-    switchChiefTab('fur');
   }
 
-  function setChiefPart(part, value) {
-    triggerHaptic('light');
-    chiefAvatar[part] = value;
-    localStorage.setItem('openhall_chubby_chief', JSON.stringify(chiefAvatar));
-    updateChiefAvatarDisplays();
-    switchChiefTab(activeChiefTab);
-  }
+  function updateCurrentChiefDisplay() {
+    const c = RACCOON_CHARACTERS.find(it => it.id === currentChiefId) || RACCOON_CHARACTERS[0];
+    const bigPreview = document.getElementById('chiefBigPreview');
+    const profileBubble = document.getElementById('myProfileAvatarBubble');
+    const nameEl = document.getElementById('chiefCurrentName');
+    const descEl = document.getElementById('chiefCurrentDesc');
 
-  function randomizeChiefAvatar() {
-    triggerHaptic('medium');
-    const randomFur = CHIEF_PRESETS.fur[Math.floor(Math.random() * CHIEF_PRESETS.fur.length)];
-    chiefAvatar = {
-      fur: randomFur.id,
-      belly: '#fbf5e6',
-      dark: randomFur.dark,
-      hat: CHIEF_PRESETS.hat[Math.floor(Math.random() * CHIEF_PRESETS.hat.length)].id,
-      eyes: CHIEF_PRESETS.eyes[Math.floor(Math.random() * CHIEF_PRESETS.eyes.length)].id,
-      outfit: CHIEF_PRESETS.outfit[Math.floor(Math.random() * CHIEF_PRESETS.outfit.length)].id,
-      color: CHIEF_PRESETS.color[Math.floor(Math.random() * CHIEF_PRESETS.color.length)]
-    };
-    localStorage.setItem('openhall_chubby_chief', JSON.stringify(chiefAvatar));
-    updateChiefAvatarDisplays();
-    switchChiefTab(activeChiefTab);
+    if (bigPreview) bigPreview.innerHTML = getRaccoonSvg(c, 120);
+    if (profileBubble) profileBubble.innerHTML = getRaccoonSvg(c, 64);
+    if (nameEl) nameEl.textContent = c.name;
+    if (descEl) descEl.textContent = c.desc;
   }
 
   async function saveCustomProfile() {
@@ -2204,1031 +1909,16 @@
         body: JSON.stringify({
           initData: tg?.initData || '',
           custom_handle: formattedHandle,
-          avatar_json: JSON.stringify(chiefAvatar)
+          avatar_json: currentChiefId
         })
       });
-      const data = await res.json();
-      if (data.status === 'ok') {
-        alert('Чиф успешно сохранен!');
-        document.getElementById('user_display_name').textContent = data.user.custom_handle || data.user.name;
-        fetchFeed();
-      }
+      alert('Профиль и персонаж успешно сохранены!');
+      if (formattedHandle) document.getElementById('user_display_name').textContent = formattedHandle;
+      fetchFeed();
     } catch (e) {
-      alert('Чиф сохранен локально!');
+      alert('Персонаж сохранен локально!');
     }
   }
-
-  function applyTheme(theme) {
-    currentTheme = theme;
-    localStorage.setItem('openhall_theme', theme);
-    const toggleBtn = document.getElementById('themeToggleBtn');
-    const metaTheme = document.getElementById('meta-theme-color');
-
-    if (theme === 'light') {
-      document.documentElement.classList.add('light-theme');
-      document.body.classList.add('light-theme');
-      if (toggleBtn) toggleBtn.textContent = '🌙';
-      if (metaTheme) metaTheme.setAttribute('content', '#f8fafc');
-
-      if (tg) {
-        if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#f8fafc');
-        if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#f8fafc');
-        if (typeof tg.setBottomBarColor === 'function') tg.setBottomBarColor('#f8fafc');
-      }
-    } else {
-      document.documentElement.classList.remove('light-theme');
-      document.body.classList.remove('light-theme');
-      if (toggleBtn) toggleBtn.textContent = '☀️';
-      if (metaTheme) metaTheme.setAttribute('content', '#070a0f');
-
-      if (tg) {
-        if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#070a0f');
-        if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#070a0f');
-        if (typeof tg.setBottomBarColor === 'function') tg.setBottomBarColor('#070a0f');
-      }
-    }
-  }
-
-  function toggleAppTheme() {
-    triggerHaptic('medium');
-    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
-  }
-
-  applyTheme(currentTheme);
-
-  function updateSafePadding() {
-    if (!tg) return;
-    const safeTop = (tg.safeAreaInset && tg.safeAreaInset.top) || 0;
-    const contentTop = (tg.contentSafeAreaInset && tg.contentSafeAreaInset.top) || 0;
-    const computed = safeTop + contentTop;
-    const finalTop = computed > 0 ? (computed + 16) : 140;
-    document.body.style.paddingTop = finalTop + 'px';
-  }
-
-  if (tg) {
-    tg.ready();
-    tg.expand();
-    if (typeof tg.requestFullscreen === 'function') {
-      try { tg.requestFullscreen(); } catch (e) {}
-    }
-    updateSafePadding();
-    if (typeof tg.onEvent === 'function') {
-      tg.onEvent('fullscreenChanged', updateSafePadding);
-      tg.onEvent('safeAreaChanged', updateSafePadding);
-      tg.onEvent('contentSafeAreaChanged', updateSafePadding);
-      tg.onEvent('viewportChanged', updateSafePadding);
-    }
-    [100, 300, 600, 1000, 1800].forEach(delay => setTimeout(updateSafePadding, delay));
-    if (typeof tg.disableVerticalSwipes === 'function') tg.disableVerticalSwipes();
-  }
-
-  function triggerHaptic(type = 'light') {
-    if (tg?.HapticFeedback) {
-      if (type === 'medium') tg.HapticFeedback.impactOccurred('medium');
-      else if (type === 'heavy') tg.HapticFeedback.impactOccurred('heavy');
-      else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
-      else tg.HapticFeedback.impactOccurred('light');
-    }
-  }
-
-  document.addEventListener('touchstart', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn, .btn-dice');
-    if (target) {
-      target.classList.add('touch-active');
-      triggerHaptic('light');
-    }
-  }, { passive: true });
-
-  document.addEventListener('touchend', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn, .btn-dice');
-    if (target) setTimeout(() => target.classList.remove('touch-active'), 120);
-  }, { passive: true });
-
-  document.addEventListener('touchcancel', () => {
-    document.querySelectorAll('.touch-active').forEach(el => el.classList.remove('touch-active'));
-  }, { passive: true });
-
-  function init3DTilt(card) {
-    let bounds;
-    function updateBounds() { bounds = card.getBoundingClientRect(); }
-
-    function handleMove(e) {
-      if (!bounds) updateBounds();
-      const touch = e.touches ? e.touches[0] : e;
-      const x = touch.clientX - bounds.left;
-      const y = touch.clientY - bounds.top;
-
-      const centerX = bounds.width / 2;
-      const centerY = bounds.height / 2;
-
-      const rotateX = ((y - centerY) / centerY) * -5;
-      const rotateY = ((x - centerX) / centerX) * 5;
-
-      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.01, 1.01, 1.01)`;
-      card.style.setProperty('--mouse-x', `${(x / bounds.width) * 100}%`);
-      card.style.setProperty('--mouse-y', `${(y / bounds.height) * 100}%`);
-    }
-
-    function handleLeave() {
-      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-      card.style.setProperty('--mouse-x', `50%`);
-      card.style.setProperty('--mouse-y', `20%`);
-    }
-
-    card.addEventListener('touchstart', updateBounds, { passive: true });
-    card.addEventListener('touchmove', handleMove, { passive: true });
-    card.addEventListener('touchend', handleLeave, { passive: true });
-    card.addEventListener('touchcancel', handleLeave, { passive: true });
-  }
-
-  function applyTiltToAll() {
-    document.querySelectorAll('.card').forEach(c => {
-      if (!c.dataset.tiltInit) {
-        c.dataset.tiltInit = 'true';
-        init3DTilt(c);
-      }
-    });
-  }
-
-  function initDoubleTap(card) {
-    let lastTap = 0;
-    card.addEventListener('touchend', (e) => {
-      if (e.target.closest('button, input, textarea, a, .read-reviews-btn, .tag, .author-badge')) return;
-      const now = Date.now();
-      if (now - lastTap < 300) {
-        const touch = e.changedTouches[0];
-        const rect = card.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
-
-        const heart = document.createElement('div');
-        heart.className = 'reaction-heart';
-        heart.innerHTML = '✦';
-        heart.style.left = `${x}px`;
-        heart.style.top = `${y}px`;
-        card.appendChild(heart);
-
-        triggerHaptic('medium');
-        setTimeout(() => heart.remove(), 750);
-      }
-      lastTap = now;
-    });
-  }
-
-  const tabsOrder = ['feed', 'scoring', 'top', 'agent', 'profile'];
-  let touchStartX = 0;
-  let touchStartY = 0;
-
-  document.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
-  document.addEventListener('touchend', (e) => {
-    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet, .builder-items-grid, .builder-category-tabs')) return;
-    const diffX = e.changedTouches[0].clientX - touchStartX;
-    const diffY = e.changedTouches[0].clientY - touchStartY;
-
-    if (Math.abs(diffX) > 65 && Math.abs(diffY) < 45) {
-      const curIndex = tabsOrder.indexOf(currentTab);
-      if (diffX < 0 && curIndex < tabsOrder.length - 1) {
-        triggerHaptic('light');
-        switchTab(tabsOrder[curIndex + 1]);
-      } else if (diffX > 0 && curIndex > 0) {
-        triggerHaptic('light');
-        switchTab(tabsOrder[curIndex - 1]);
-      }
-    }
-  }, { passive: true });
-
-  const bottomNavEl = document.querySelector('.bottom-nav');
-  let navShowTimeout;
-  document.addEventListener('focusin', (e) => {
-    if (e.target.matches('input, textarea')) {
-      clearTimeout(navShowTimeout);
-      bottomNavEl?.classList.add('nav-hidden');
-    }
-  });
-  document.addEventListener('focusout', (e) => {
-    if (e.target.matches('input, textarea')) {
-      clearTimeout(navShowTimeout);
-      navShowTimeout = setTimeout(() => bottomNavEl?.classList.remove('nav-hidden'), 200);
-    }
-  });
-
-  function hidePreloader() {
-    const preloader = document.getElementById('app-preloader');
-    if (preloader) {
-      preloader.classList.add('hidden');
-      setTimeout(() => preloader.remove(), 500);
-    }
-  }
-  window.addEventListener('load', () => setTimeout(hidePreloader, 600));
-  setTimeout(hidePreloader, 3000);
-
-  const humanSvg = `
-    <svg viewBox="0 0 24 24">
-      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-    </svg>
-  `;
-
-  async function updateCommunityStrip() {
-    const row = document.getElementById('communityAvatarsRow');
-    let userSlot = 24;
-
-    try {
-      const res = await fetch(`${API_URL}/api/community/strip`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ initData: tg?.initData || '' })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        userSlot = data.userSlot;
-      }
-    } catch (e) {}
-
-    let nodesHtml = '';
-    for (let i = 1; i <= 50; i++) {
-      const isMe = (i === userSlot);
-      nodesHtml += `
-        <div class="user-node ${isMe ? 'user-gold' : ''}" id="${isMe ? 'myGoldSlot' : ''}">
-          ${humanSvg}
-        </div>
-      `;
-    }
-    row.innerHTML = nodesHtml;
-
-    setTimeout(() => {
-      const mySlot = document.getElementById('myGoldSlot');
-      if (mySlot) {
-        mySlot.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      }
-    }, 350);
-  }
-
-  async function translateTexts(texts, target) {
-    if (target === 'ru' || !texts || texts.length === 0) return texts;
-    try {
-      const res = await fetch(`${API_URL}/api/translate-batch`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ texts, target })
-      });
-      const data = await res.json();
-      if (data && Array.isArray(data.translations) && data.translations.length === texts.length) {
-        return data.translations;
-      }
-      return texts;
-    } catch (err) {
-      console.error('Ошибка перевода:', err);
-      return texts;
-    }
-  }
-
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str || '';
-    return div.innerHTML;
-  }
-
-  async function openMyContentModal(type) {
-    triggerHaptic('medium');
-    const modal = document.getElementById('my-content-modal');
-    const title = document.getElementById('myContentModalTitle');
-    const body = document.getElementById('my-content-modal-body');
-
-    modal.classList.add('open');
-    body.innerHTML = '<p>Загрузка...</p>';
-
-    title.textContent = (type === 'projects') ? 'Мои поданные проекты' : 'Мои оставленные рецензии';
-
-    try {
-      const res = await fetch(`${API_URL}/api/profile/my-content?type=${type}&initData=${encodeURIComponent(tg?.initData || '')}`);
-      const data = await res.json();
-      const items = data.items || [];
-
-      if (items.length === 0) {
-        body.innerHTML = `<p style="color:var(--text-sub);">Список пока пуст.</p>`;
-        return;
-      }
-
-      if (type === 'projects') {
-        body.innerHTML = items.map(p => {
-          const statusText = p.status === 'approved' ? '✅ Опубликован' : (p.status === 'rejected' ? '❌ Отклонен' : '⏳ На модерации');
-          return `
-            <div class="review-item">
-              <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-                <h4 style="font-size:15px; font-weight:800;">${escapeHtml(p.name)}</h4>
-                <span style="font-size:11px; font-weight:700;">${statusText}</span>
-              </div>
-              <p style="font-size:12px; color:var(--text-sub); margin-bottom:8px;">${escapeHtml(p.description)}</p>
-              <div style="font-size:10px; color:var(--text-sub);">${new Date(p.created_at).toLocaleDateString()}</div>
-            </div>
-          `;
-        }).join('');
-      } else {
-        body.innerHTML = items.map(r => `
-          <div class="review-item">
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-              <h4 style="font-size:15px; font-weight:800;">${escapeHtml(r.project)}</h4>
-              <span style="font-size:14px; font-weight:800; color:var(--emerald);">${r.score} / 10</span>
-            </div>
-            <div style="font-size:11px; color:var(--cyan); margin-bottom:6px; font-weight:700;">${escapeHtml(r.verdict)}</div>
-            <p style="font-size:12px; color:var(--text-main); margin-bottom:6px;">${escapeHtml(r.comment || 'Без комментария')}</p>
-            <div style="font-size:10px; color:var(--text-sub);">${new Date(r.created_at).toLocaleDateString()}</div>
-          </div>
-        `).join('');
-      }
-    } catch (e) {
-      body.innerHTML = '<p style="color:#ef4444;">Ошибка загрузки</p>';
-    }
-  }
-
-  function closeMyContentModal() {
-    triggerHaptic('light');
-    document.getElementById('my-content-modal').classList.remove('open');
-  }
-
-  async function openUserProfile(userId) {
-    if (!userId) return;
-    triggerHaptic('medium');
-    const modal = document.getElementById('user-profile-modal');
-    const title = document.getElementById('userProfileModalTitle');
-    const body = document.getElementById('user-profile-modal-body');
-
-    modal.classList.add('open');
-    body.innerHTML = '<p>Загрузка профиля...</p>';
-
-    try {
-      const res = await fetch(`${API_URL}/api/user/${userId}`);
-      const data = await res.json();
-
-      title.textContent = `Профиль ${data.name}`;
-      const tierBadge = (data.reviews_count >= 10 || data.projects_count >= 1) ? '👑 Syndicate Partner' : ((data.reviews_count >= 3) ? '⚡️ Certified Reviewer' : '✦ Community Scout');
-
-      let userChiefSvg = renderChubbyChiefSvg(chiefAvatar, 52);
-      try {
-        if (data.avatar_json) userChiefSvg = renderChubbyChiefSvg(JSON.parse(data.avatar_json), 52);
-      } catch (e) {}
-
-      body.innerHTML = `
-        <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
-          <div style="width:52px; height:52px; border-radius:50%; overflow:hidden; border:2px solid var(--emerald); box-shadow:0 4px 14px rgba(0,0,0,0.3);">${userChiefSvg}</div>
-          <div>
-            <h3 style="font-size:18px; font-weight:800;">${escapeHtml(data.name)}</h3>
-            <span class="badge" style="display:inline-block; margin-top:4px; font-size:10px;">${tierBadge}</span>
-          </div>
-        </div>
-
-        <div class="project-tags" style="margin-bottom:18px;">
-          <span class="tag">Рецензий: ${data.reviews_count || 0}</span>
-          <span class="tag">Проектов: ${data.projects_count || 0}</span>
-        </div>
-      `;
-    } catch (e) {
-      body.innerHTML = '<p style="color:#ef4444;">Не удалось загрузить профиль</p>';
-    }
-  }
-
-  function closeUserProfileModal() {
-    triggerHaptic('light');
-    document.getElementById('user-profile-modal').classList.remove('open');
-  }
-
-  function updateTagsFilterBar(projects) {
-    const bar = document.getElementById('tagsFilterBar');
-    const tagsSet = new Set();
-
-    projects.forEach(p => {
-      (p.tags || []).forEach(t => {
-        if (t && t.trim()) tagsSet.add(t.trim());
-      });
-    });
-
-    const tagsArr = Array.from(tagsSet);
-    bar.innerHTML = `
-      <div class="filter-tag-chip ${currentFilterTag === 'all' ? 'active' : ''}" onclick="filterByTag('all', this)" id="t_tag_all">${i18n[currentLang].tag_all}</div>
-      ${tagsArr.map(t => `
-        <div class="filter-tag-chip ${currentFilterTag === t ? 'active' : ''}" onclick="filterByTag('${escapeHtml(t).replace(/'/g, "\\'")}', this)">#${escapeHtml(t)}</div>
-      `).join('')}
-    `;
-  }
-
-  function filterByTag(tag, element) {
-    triggerHaptic('light');
-    currentFilterTag = tag;
-    document.querySelectorAll('.filter-tag-chip').forEach(el => el.classList.remove('active'));
-    if (element) element.classList.add('active');
-    renderFeedList();
-  }
-
-  function renderFeedList() {
-    const feedContainer = document.getElementById('feed-list');
-    let projects = allProjectsData;
-
-    if (currentFilterTag !== 'all') {
-      projects = projects.filter(p => (p.tags || []).includes(currentFilterTag));
-    }
-
-    if (!projects || projects.length === 0) {
-      feedContainer.innerHTML = `<div class="card"><p>В этой категории пока нет проектов.</p></div>`;
-      return;
-    }
-
-    feedContainer.innerHTML = projects.map((p, index) => {
-      const tagsHtml = (p.tags || []).map(tag => `
-        <span class="tag tag-interactive" onclick="filterByTag('${escapeHtml(tag).replace(/'/g, "\\'")}', null)">#${escapeHtml(tag)}</span>
-      `).join('');
-      const safeDisplayName = escapeHtml(p.displayName || p.name);
-      const safeOriginalNameJs = escapeHtml(p.name).replace(/'/g, "\\'");
-      const delay = Math.min(index * 60, 400);
-
-      const authorBadgeHtml = p.submitted_by ? `
-        <div class="author-badge ios-btn-tap" onclick="openUserProfile('${p.submitted_by}')">
-          <div class="author-avatar-bubble">${renderChubbyChiefSvg(chiefAvatar, 28)}</div>
-          <span class="author-name-text">${escapeHtml(p.author_name || 'Фаундер')}</span>
-        </div>
-      ` : '';
-
-      return `
-        <div class="card stagger-in" style="animation-delay:${delay}ms">
-          ${authorBadgeHtml}
-          <h3>${safeDisplayName}</h3>
-          <p>${escapeHtml(p.displayDesc || p.description)}</p>
-          <div class="card-footer">
-            <div class="project-tags">${tagsHtml}</div>
-            <button class="btn-small ios-btn-tap" onclick="startScoring('${safeOriginalNameJs}')">${i18n[currentLang].btn_eval}</button>
-          </div>
-          <div style="margin-top:14px; text-align:right;">
-            <span class="read-reviews-btn ios-btn-tap" onclick="openReviews('${safeOriginalNameJs}')">${i18n[currentLang].read_reviews}</span>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    applyTiltToAll();
-    document.querySelectorAll('#feed-list .card').forEach(initDoubleTap);
-  }
-
-  async function fetchFeed() {
-    const feedContainer = document.getElementById('feed-list');
-    try {
-      const res = await fetch(`${API_URL}/api/projects`);
-      const projects = await res.json();
-
-      if (!projects || projects.length === 0) {
-        feedContainer.innerHTML = `<div class="card"><p>Пока нет опубликованных проектов.</p></div>`;
-        return;
-      }
-
-      lastKnownProjectsCount = projects.length;
-
-      let displayNames = projects.map(p => p.name);
-      let displayDescs = projects.map(p => p.description);
-      if (currentLang !== 'ru') {
-        [displayNames, displayDescs] = await Promise.all([
-          translateTexts(displayNames, currentLang),
-          translateTexts(displayDescs, currentLang)
-        ]);
-      }
-
-      allProjectsData = projects.map((p, i) => ({
-        ...p,
-        displayName: displayNames[i],
-        displayDesc: displayDescs[i]
-      }));
-
-      updateTagsFilterBar(allProjectsData);
-      renderFeedList();
-    } catch (err) {
-      console.error("Ошибка загрузки ленты:", err);
-      feedContainer.innerHTML = `<div class="card"><p style="color:#ff5c5c;">Сервер просыпается... повторите через 15 секунд.</p></div>`;
-    }
-  }
-
-  async function checkForFeedUpdates() {
-    try {
-      const res = await fetch(`${API_URL}/api/projects`);
-      const projects = await res.json();
-      if (!Array.isArray(projects)) return;
-
-      if (lastKnownProjectsCount > 0 && projects.length > lastKnownProjectsCount) {
-        lastKnownProjectsCount = projects.length;
-        await fetchFeed();
-        triggerHaptic('success');
-        if (typeof tg?.showAlert === 'function') {
-          tg.showAlert('🎉 Проект прошёл модерацию и добавлен в ленту Open Hall!');
-        }
-      } else {
-        lastKnownProjectsCount = projects.length;
-      }
-    } catch (e) {}
-  }
-
-  setInterval(checkForFeedUpdates, 6000);
-
-  function toggleFormTag(tag, element) {
-    triggerHaptic('light');
-    if (selectedFormTags.has(tag)) {
-      selectedFormTags.delete(tag);
-      element.classList.remove('selected');
-    } else {
-      if (selectedFormTags.size >= 4) {
-        alert('Можно выбрать максимум 4 категории.');
-        return;
-      }
-      selectedFormTags.add(tag);
-      element.classList.add('selected');
-    }
-  }
-
-  async function fetchLeaderboard() {
-    const listContainer = document.getElementById('leaderboard-list');
-    try {
-      const res = await fetch(`${API_URL}/api/leaderboard`);
-      const items = await res.json();
-
-      if (!items || items.length === 0) {
-        listContainer.innerHTML = `
-          <div class="rank-item">
-            <div class="rank-info">
-              <div class="rank-title">Пока нет оценок</div>
-              <div class="rank-cat">Будьте первым, кто оценит проект!</div>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      let displayNames = items.map(it => it.project_name);
-      if (currentLang !== 'ru') {
-        displayNames = await translateTexts(displayNames, currentLang);
-      }
-
-      listContainer.innerHTML = items.map((item, index) => {
-        const rankNum = String(index + 1).padStart(2, '0');
-        const delay = Math.min(index * 60, 400);
-        const safeDisplayName = escapeHtml(displayNames[index]);
-        const safeOriginalNameJs = escapeHtml(item.project_name).replace(/'/g, "\\'");
-        return `
-          <div class="rank-item ios-btn-tap stagger-in" style="animation-delay:${delay}ms;" onclick="openReviews('${safeOriginalNameJs}')">
-            <span class="rank-num">${rankNum}</span>
-            <div class="rank-info">
-              <div class="rank-title">${safeDisplayName}</div>
-              <div class="rank-cat">Голосов: ${item.total_votes}</div>
-            </div>
-            <span class="rank-score">${item.avg_score}</span>
-          </div>
-        `;
-      }).join('');
-    } catch (err) {
-      console.error("Ошибка загрузки лидерборда:", err);
-      listContainer.innerHTML = `
-        <div class="rank-item">
-          <div class="rank-info">
-            <div class="rank-title" style="color:#ff5c5c;">Сервер просыпается...</div>
-            <div class="rank-cat">Повторите через 15 секунд</div>
-          </div>
-        </div>
-      `;
-    }
-  }
-
-  const reviewsModal = document.getElementById('reviews-modal');
-  const reviewsModalBody = document.getElementById('reviews-modal-body');
-
-  function formatReviewDate(iso) {
-    try {
-      const d = new Date(iso);
-      return d.toLocaleDateString(currentLang === 'ru' ? 'ru-RU' : 'en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-    } catch (e) {
-      return '';
-    }
-  }
-
-  async function openReviews(projectName) {
-    triggerHaptic('medium');
-    reviewsModalBody.innerHTML = `<p>${i18n[currentLang].reviews_loading}</p>`;
-    reviewsModal.classList.add('open');
-
-    if (currentLang !== 'ru') {
-      const [translatedTitle] = await translateTexts([projectName], currentLang);
-      document.getElementById('reviewsModalTitle').textContent = translatedTitle;
-    } else {
-      document.getElementById('reviewsModalTitle').textContent = projectName;
-    }
-
-    try {
-      const res = await fetch(`${API_URL}/api/reviews?project=${encodeURIComponent(projectName)}`);
-      const reviews = await res.json();
-
-      if (!reviews || reviews.length === 0) {
-        reviewsModalBody.innerHTML = `<p>${i18n[currentLang].reviews_empty}</p>`;
-        return;
-      }
-
-      let displayComments = reviews.map(r => r.comment || '');
-      let displayVerdicts = reviews.map(r => r.verdict || '');
-      if (currentLang !== 'ru') {
-        [displayComments, displayVerdicts] = await Promise.all([
-          translateTexts(displayComments, currentLang),
-          translateTexts(displayVerdicts, currentLang)
-        ]);
-      }
-
-      reviewsModalBody.innerHTML = reviews.map((r, i) => {
-        const commentHtml = displayComments[i]
-          ? `<div class="review-comment">${escapeHtml(displayComments[i])}</div>`
-          : `<div class="review-comment" style="color:var(--text-sub); font-style:italic;">${i18n[currentLang].reviews_no_comment}</div>`;
-
-        return `
-          <div class="review-item">
-            <div class="author-badge ios-btn-tap" style="margin-bottom:6px;">
-              <div class="author-avatar-bubble">${renderChubbyChiefSvg(chiefAvatar, 28)}</div>
-              <span class="author-name-text">${escapeHtml(r.author_name)}</span>
-            </div>
-            <div class="review-item-header">
-              <span class="review-score">${r.score} / 10</span>
-              <span class="review-verdict">${escapeHtml(displayVerdicts[i])}</span>
-            </div>
-            ${commentHtml}
-            <div class="review-date">${formatReviewDate(r.created_at)}</div>
-          </div>
-        `;
-      }).join('');
-    } catch (err) {
-      console.error('Ошибка загрузки рецензий:', err);
-      reviewsModalBody.innerHTML = `<p style="color:#ff5c5c;">${i18n[currentLang].reviews_error}</p>`;
-    }
-  }
-
-  function closeReviews() {
-    triggerHaptic('light');
-    reviewsModal.classList.remove('open');
-  }
-
-  let profileStats = { reviews_count: null, projects_submitted: null };
-
-  function renderProfileStats() {
-    const t = i18n[currentLang];
-    const r = profileStats.reviews_count;
-    const p = profileStats.projects_submitted;
-    const revEl = document.getElementById('t_stat_reviews');
-    const projEl = document.getElementById('t_stat_projects');
-    if (revEl) revEl.textContent = `${t.stat_reviews_label}: ${r === null ? '—' : r}`;
-    if (projEl) projEl.textContent = `${t.stat_projects_label}: ${p === null ? '—' : p}`;
-  }
-
-  async function fetchProfile() {
-    if (!tg?.initData) {
-      renderProfileStats();
-      return;
-    }
-    try {
-      const res = await fetch(`${API_URL}/api/profile?initData=${encodeURIComponent(tg.initData)}`);
-      const data = await res.json();
-      if (data.available && data.user) {
-        const u = data.user;
-        profileStats.reviews_count = data.reviews_count || 0;
-        profileStats.projects_submitted = data.projects_submitted || 0;
-
-        document.getElementById('user_display_name').textContent = u.custom_handle || u.name;
-        document.getElementById('customHandleInput').value = u.custom_handle || '';
-
-        if (u.avatar_json) {
-          try {
-            chiefAvatar = JSON.parse(u.avatar_json);
-            updateChiefAvatarDisplays();
-          } catch(e) {}
-        }
-
-        const card = document.getElementById('profileCard');
-        const badge = document.getElementById('profileStatusBadge');
-        const icon = document.getElementById('tierIcon');
-        const count = profileStats.reviews_count;
-
-        card.classList.remove('tier-obsidian', 'tier-emerald', 'tier-gold');
-
-        if (count >= 10 || profileStats.projects_submitted >= 1) {
-          card.classList.add('tier-gold');
-          badge.textContent = 'Syndicate Partner';
-          icon.textContent = '👑';
-        } else if (count >= 3) {
-          card.classList.add('tier-emerald');
-          badge.textContent = 'Certified Reviewer';
-          icon.textContent = '⚡️';
-        } else {
-          card.classList.add('tier-obsidian');
-          badge.textContent = 'Community Scout';
-          icon.textContent = '✦';
-        }
-      }
-    } catch (err) {
-      console.error('Ошибка загрузки статистики профиля:', err);
-    }
-    renderProfileStats();
-  }
-
-  let currentTab = 'feed';
-  const tabIndexMap = { feed: 0, scoring: 1, top: 2, agent: 3, profile: 4 };
-
-  function moveNavIndicator(tabId) {
-    const indicator = document.getElementById('nav-indicator');
-    if (!indicator) return;
-    const index = tabIndexMap[tabId] || 0;
-    indicator.style.transform = `translateX(${index * 100}%)`;
-  }
-
-  function switchTab(tabId) {
-    currentTab = tabId;
-    document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-
-    document.getElementById(`tab-${tabId}`).classList.add('active');
-    document.querySelectorAll('.nav-btn')[tabIndexMap[tabId]].classList.add('active');
-    moveNavIndicator(tabId);
-
-    const stripCard = document.getElementById('app-community-strip');
-    if (tabId === 'profile') {
-      if (stripCard) stripCard.style.display = 'none';
-      switchChiefTab('fur');
-      updateChiefAvatarDisplays();
-    } else {
-      if (stripCard) stripCard.style.display = 'block';
-    }
-
-    window.scrollTo(0, 0);
-
-    if (tabId === 'top') fetchLeaderboard();
-    if (tabId === 'profile') fetchProfile();
-    applyTiltToAll();
-  }
-
-  let activeProject = 'Open Hall Bot';
-  let projectChosen = false;
-
-  async function updateScoreTitle() {
-    const titleEl = document.getElementById('t_score_title');
-    const targetEl = document.getElementById('scoringTargetName');
-    const t = i18n[currentLang];
-    
-    if (targetEl) targetEl.textContent = activeProject;
-
-    if (!projectChosen) {
-      titleEl.textContent = t.score_title;
-      return;
-    }
-    if (currentLang === 'ru') {
-      titleEl.textContent = activeProject;
-      return;
-    }
-    const [translated] = await translateTexts([activeProject], currentLang);
-    titleEl.textContent = translated;
-  }
-
-  function startScoring(projName) {
-    activeProject = projName;
-    projectChosen = true;
-    updateScoreTitle();
-    shareBtn.style.display = 'none';
-    const submitBtn = document.getElementById('submitBtn');
-    if (submitBtn) submitBtn.textContent = `${i18n[currentLang].submitBtn}: «${activeProject}»`;
-    switchTab('scoring');
-  }
-
-  const i18n = {
-    ru: {
-      preloader: "Синхронизация",
-      nav_feed: "Лента",
-      nav_score: "Оценка",
-      nav_top: "Топ",
-      nav_prof: "Профиль",
-      nav_agent: "Чиф",
-      agent_title: "Чиф 🦝",
-      agent_sub: "AI-помощник Open Hall",
-      agent_placeholder: "Спросить у Чифа...",
-      agent_welcome: "Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Расскажу как работает скоринг, оценю твою идею или помогу грамотно заполнить заявку на добавление проекта. Спрашивай!",
-      agent_error: "Не удалось получить ответ. Попробуйте ещё раз.",
-      feed_title: "Лента проектов",
-      feed_sub: "Проекты на оценке у комьюнити",
-      btn_eval: "Оценить",
-      score_title: "Рецензия проекта",
-      score_sub: "Оценка от участников сообщества по 5 критериям",
-      evaluating_label: "Оцениваемый бот",
-      change_project_btn: "Выбрать другой",
-      scoreLabel: "Вердикт участников",
-      c1_title: "1. Концепция и новизна",
-      c1_desc: "Оригинальность замысла и отличие от того, что уже есть на рынке.",
-      c2_title: "2. Визуал и удобство",
-      c2_desc: "Вкус, оформление, аккуратность и насколько приятно этим пользоваться.",
-      c3_title: "3. Интерес аудитории",
-      c3_desc: "Насколько проект вовлекает людей и вызывает желание делиться с друзьями.",
-      c4_title: "4. Уровень готовности",
-      c4_desc: "Это уже рабочий продукт/материал или пока только черновой набросок?",
-      c5_title: "5. Потенциал масштаба",
-      c5_desc: "Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.",
-      commentLabel: "Заметка к оценке (необязательно)",
-      commentPlaceholder: "В чем главные плюсы и что авторам стоит доработать?",
-      submitBtn: "Оставить рецензию",
-      share_btn: "Поделиться оценкой",
-      top_title: "Рейтинг проектов",
-      top_sub: "Лидеры по оценкам участников комьюнити",
-      prof_title: "Профиль участника",
-      prof_sub: "Личная статистика и статус в сообществе",
-      stat_reviews_label: "Рецензий",
-      stat_projects_label: "Проектов подано",
-      submit_title: "Подать проект на аудит",
-      submit_desc: "Хотите получить независимый скоринг и привлечь аудиторию? Отправьте заявку на добавление в витрину.",
-      btn_submit_proj: "Опубликовать проект",
-      form_name_label: "Название проекта",
-      form_desc_label: "Описание",
-      form_tags_label: "Выберите категории (до 4)",
-      tag_all: "Все",
-      v_top: "Фаворит комьюнити",
-      v_good: "Одобрено сообществом",
-      v_mid: "Есть потенциал",
-      v_low: "Нужна доработка",
-      read_reviews: "Читать отзывы →",
-      reviews_loading: "Загрузка рецензий...",
-      reviews_empty: "Пока никто не оставил рецензию на этот проект.",
-      reviews_no_comment: "Без комментария",
-      reviews_error: "Не удалось загрузить рецензии. Попробуйте ещё раз."
-    },
-    en: {
-      preloader: "Syncing",
-      nav_feed: "Feed",
-      nav_score: "Review",
-      nav_top: "Top",
-      nav_prof: "Profile",
-      nav_agent: "Chief",
-      agent_title: "Chief 🦝",
-      agent_sub: "Open Hall AI Assistant",
-      agent_placeholder: "Ask Chief anything...",
-      agent_welcome: "Hi! I'm Chief 🦝, your smart guide to Open Hall. I will help you with project scoring, analyze startup ideas, or refine your application. Ask away!",
-      agent_error: "Couldn't get a reply. Please try again.",
-      feed_title: "Project Feed",
-      feed_sub: "Projects currently under review by the community",
-      btn_eval: "Review",
-      score_title: "Project Review",
-      score_sub: "Community rating across 5 key criteria",
-      evaluating_label: "Currently Reviewing",
-      change_project_btn: "Pick another",
-      scoreLabel: "Community Verdict",
-      c1_title: "1. Concept & Novelty",
-      c1_desc: "Originality of the idea and what sets it apart from existing products.",
-      c2_title: "2. Visuals & UX",
-      c2_desc: "Aesthetics, polish, layout, and how intuitive it feels to use.",
-      c3_title: "3. Audience Appeal",
-      c3_desc: "How engaging the project is and whether people would share it.",
-      c4_title: "4. Stage of Readiness",
-      c4_desc: "Is it an active, usable product or still an early concept draft?",
-      c5_title: "5. Scale Potential",
-      c5_desc: "Can the project grow into a major platform and reach a wide audience?",
-      commentLabel: "Review notes (optional)",
-      commentPlaceholder: "Key strengths and areas for improvement...",
-      submitBtn: "Submit Review",
-      share_btn: "Share Review",
-      top_title: "Project Leaderboard",
-      top_sub: "Highest-rated projects by community votes",
-      prof_title: "Member Profile",
-      prof_sub: "Personal statistics and community standing",
-      stat_reviews_label: "Reviews",
-      stat_projects_label: "Projects submitted",
-      submit_title: "Submit Project for Audit",
-      submit_desc: "Want an independent score and broader audience? Apply for showcase inclusion.",
-      btn_submit_proj: "Publish Project",
-      form_name_label: "Project name",
-      form_desc_label: "Description",
-      form_tags_label: "Select categories (up to 4)",
-      tag_all: "All",
-      v_top: "Community Favorite",
-      v_good: "Community Approved",
-      v_mid: "Shows Potential",
-      v_low: "Needs Work",
-      read_reviews: "Read reviews →",
-      reviews_loading: "Loading reviews...",
-      reviews_empty: "No one has reviewed this project yet.",
-      reviews_no_comment: "No comment",
-      reviews_error: "Couldn't load reviews. Please try again."
-    },
-    am: {
-      preloader: "Համաժամացում",
-      nav_feed: "Լրահոս",
-      nav_score: "Գնահատում",
-      nav_top: "Թոփ",
-      nav_prof: "Պրոֆիլ",
-      nav_agent: "Չիֆ",
-      agent_title: "Չիֆ 🦝",
-      agent_sub: "Open Hall AI-օգնական",
-      agent_placeholder: "Հարցրեք Չիֆին...",
-      agent_welcome: "Բարև! Ես Չիֆն եմ 🦝: Կօգնեմ հասկանալ սքորինգի համակարգը և բարելավել ձեր նախագիծը:",
-      agent_error: "Չհաջողվեց ստանալ պատասխան: Փորձեք կրկին:",
-      feed_title: "Նախագծերի լրահոս",
-      feed_sub: "Համայնքի կողմից գնահատվող նախագծեր",
-      btn_eval: "Գնահատել",
-      score_title: "Նախագծի գնահատում",
-      score_sub: "Համայնքի գնահատականը 5 հիմնական չափանիշներով",
-      evaluating_label: "Ընտրված նախագիծ",
-      change_project_btn: "Փոխել",
-      scoreLabel: "Համայնքի վճիռը",
-      c1_title: "1. Գաղափար և նորարարություն",
-      c1_desc: "Մտահղացման ինքնատիպությունը և տարբերությունը շուկայում եղածից:",
-      c2_title: "2. Վիզուալ և հարմարավետություն",
-      c2_desc: "Ոճը, ձևավորումը և օգտագործման հարմարավետությունը:",
-      c3_title: "3. Լսարանի հետաքրքրություն",
-      c3_desc: "Որքանով է նախագիծը գրավում մարդկանց և տարածելու ցանկություն առաջացնում:",
-      c4_title: "4. Պատրաստվածության մակարդակ",
-      c4_desc: "Արդյո՞ք սա գործող արդյունք է, թե՞ դեռ նախնական սևագիր:",
-      c5_title: "5. Մասշտաբի ներուժ",
-      c5_desc: "Կարո՞ղ է արդյոք նախագիծը վերածվել մեծ պատմության:",
-      commentLabel: "Գնահատականի նշումներ (ըստ ցանկության)",
-      commentPlaceholder: "Որո՞նք են գլխավոր առավելությունները և ի՞նչը արժե բարելավել...",
-      submitBtn: "Ուղարկել ակնարկը",
-      share_btn: "Կիսվել գնահատականով",
-      top_title: "Վարկանիշային աղյուսակ",
-      top_sub: "Առաջատարներն ըստ համայնքի ձայների",
-      prof_title: "Մասնակցի պրոֆիլ",
-      prof_sub: "Անձնական վիճակագրություն և կարգավիճակ",
-      stat_reviews_label: "Ակնարկներ",
-      stat_projects_label: "Ներկայացված նախագծեր",
-      submit_title: "Ներկայացնել նախագիծ",
-      submit_desc: "Ցանկանո՞ւմ եք ստանալ գնահատական և ներգրավել լսարան:",
-      btn_submit_proj: "Հրապարակել նախագիծը",
-      form_name_label: "Նախագծի անվանումը",
-      form_desc_label: "Նկարագրություն",
-      form_tags_label: "Ընտրեք կատեգորիաներ (մինչև 4)",
-      tag_all: "Բոլորը",
-      v_top: "Համայնքի ընտրյալ",
-      v_good: "Համայնքի կողմից հավանված",
-      v_mid: "Ունի ներուժ",
-      v_low: "Կարիք ունի լրամշակման",
-      read_reviews: "Читать отзывы →",
-      reviews_loading: "Ակնարկների բեռնում...",
-      reviews_empty: "Այս նախագծի համար դեռ ակնարկներ չկան:",
-      reviews_no_comment: "Առանց մեկնաբանության",
-      reviews_error: "Չհաջողվեց բեռնել ակնարկները:"
-    },
-    ge: {
-      preloader: "სინქრონიზაცია",
-      nav_feed: "ლენტა",
-      nav_score: "შეფასება",
-      nav_top: "ტოპი",
-      nav_prof: "პროფილი",
-      nav_agent: "ჩიფი",
-      agent_title: "ჩიფი 🦝",
-      agent_sub: "Open Hall-ის AI-დამხმარე",
-      agent_placeholder: "ჰკითხეთ ჩიფს...",
-      agent_welcome: "გამარჯობა! მე ვარ ჩიფი 🦝. დაგეხმარებით პროექტის შეფასებაში და რჩევებში:",
-      agent_error: "პასუხის მიღება ვერ მოხერხდა. სცადეთ თავიდან.",
-      feed_title: "პროექტების ლენტა",
-      feed_sub: "პროექტები საზოგადოების შეფასების პროცესში",
-      btn_eval: "შეფასება",
-      score_title: "პროექტის შეფასება",
-      score_sub: "საზოგადოების შეფასება 5 ძირითადი კრიტერიუმით",
-      evaluating_label: "არჩეული ბოტი",
-      change_project_btn: "სხვისი არჩევა",
-      scoreLabel: "საზოგადოების ვერდიქტი",
-      c1_title: "1. კონცეფცია და სიახლე",
-      c1_desc: "იდეის ორიგინალობა და განსხვავება არსებული გადაწყვეტილებებისგან.",
-      c2_title: "2. ვიზუალი და მოხერხებულობა",
-      c2_desc: "სტილი, დიზაინი, აკურატულობა და გამოყენების სიმარტივე.",
-      c3_title: "3. აუდიტორიის ინტერესი",
-      c3_desc: "რამდენად იზიდავს პროექტი ხალხს და აჩენს გაზიარების სურვილს.",
-      c4_title: "4. მზადყოფნის დონე",
-      c4_desc: "ეს უკვე მოქმედი პროდუქტია თუ ჯერ მხოლოდ საწყისი ჩანახატი?",
-      c5_title: "5. მასშტაბის პოტენციალი",
-      c5_desc: "შეუძლია თუ არა პროექტს გაიზარდოს და შეკრიბოს ფართო აუდიტორია.",
-      commentLabel: "შენიშვნა შეფასებისთვის (არასავალდებულო)",
-      commentPlaceholder: "მთავარი პლიუსები და რა არის გასაუმჯობესებელი...",
-      submitBtn: "შეფასების გაგზავნა",
-      share_btn: "შეფასების გაზიარება",
-      top_title: "პროექტების რეიტინგი",
-      top_sub: "ლიდერები საზოგადოების შეფასებების მიხედვით",
-      prof_title: "მონაწილის პროფილი",
-      prof_sub: "პირადი სტატისტიკა და სტატუსი საზოგადოებაში",
-      stat_reviews_label: "შეფასებები",
-      stat_projects_label: "წარდგენილი პროექტები",
-      submit_title: "პროექტის შეტანა აუდიტზე",
-      submit_desc: "გსურთ მიიღოთ დამოუკიდებელი სქორინგი და მოიზიდოთ აუდიტორია?",
-      btn_submit_proj: "პროექტის გამოქვეყნება",
-      form_name_label: "პროექტის სახელი",
-      form_desc_label: "აღწერა",
-      form_tags_label: "აირჩიეთ კატეგორიები (4-მდე)",
-      tag_all: "ყველა",
-      v_top: "საზოგადოების რჩეული",
-      v_good: "საზოგადოების მიერ მოწონებული",
-      v_mid: "აქვს პოტენციალი",
-      v_low: "საჭიროებს დამუშავებას",
-      read_reviews: "შეფასებების ნახვა →",
-      reviews_loading: "იტვირთება შეფასებები...",
-      reviews_empty: "ამ პროექტზე შეფასებები ჯერ არ არის.",
-      reviews_no_comment: "კომენტარის გარეშე",
-      reviews_error: "შეფასებების ჩატვირთვა ვერ მოხერხდა."
-    }
-  };
-
-  let currentLang = 'ru';
 
   const sliders = [
     { el: document.getElementById('c1'), valEl: document.getElementById('val1') },
@@ -3243,82 +1933,6 @@
   const submitBtn = document.getElementById('submitBtn');
   const shareBtn = document.getElementById('shareBtn');
   const scoreBannerBox = document.getElementById('scoreBannerBox');
-
-  function setLanguage(lang) {
-    currentLang = lang;
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
-    });
-
-    const t = i18n[lang];
-    if (!t) return;
-
-    const updateText = (id, text) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = text;
-    };
-
-    updateText('t_preloader_status', t.preloader);
-    updateText('t_nav_feed', t.nav_feed);
-    updateText('t_nav_score', t.nav_score);
-    updateText('t_nav_top', t.nav_top);
-    updateText('t_nav_prof', t.nav_prof);
-    updateText('t_nav_agent', t.nav_agent);
-    updateText('t_agent_title', t.agent_title);
-    updateText('t_agent_sub', t.agent_sub);
-    updateText('t_evaluating_label', t.evaluating_label);
-    updateText('t_change_project_btn', t.change_project_btn);
-    
-    const agentInp = document.getElementById('agentInput');
-    if (agentInp) agentInp.placeholder = t.agent_placeholder;
-
-    updateText('agent-welcome-msg', t.agent_welcome);
-    updateText('t_feed_title', t.feed_title);
-    updateText('t_feed_sub', t.feed_sub);
-    updateText('t_tag_all', t.tag_all);
-
-    updateText('t_score_sub', t.score_sub);
-    updateText('t_scoreLabel', t.scoreLabel);
-    updateText('t_c1_title', t.c1_title);
-    updateText('t_c1_desc', t.c1_desc);
-    updateText('t_c2_title', t.c2_title);
-    updateText('t_c2_desc', t.c2_desc);
-    updateText('t_c3_title', t.c3_title);
-    updateText('t_c3_desc', t.c3_desc);
-    updateText('t_c4_title', t.c4_title);
-    updateText('t_c4_desc', t.c4_desc);
-    updateText('t_c5_title', t.c5_title);
-    updateText('t_c5_desc', t.c5_desc);
-    updateText('t_commentLabel', t.commentLabel);
-    
-    const commInp = document.getElementById('comment');
-    if (commInp) commInp.placeholder = t.commentPlaceholder;
-
-    if (submitBtn) {
-      submitBtn.textContent = projectChosen ? `${t.submitBtn}: «${activeProject}»` : t.submitBtn;
-    }
-    if (shareBtn) shareBtn.textContent = `${t.share_btn} «${activeProject}»`;
-
-    updateText('t_top_title', t.top_title);
-    updateText('t_top_sub', t.top_sub);
-    updateText('t_prof_title', t.prof_title);
-    updateText('t_prof_sub', t.prof_sub);
-    updateText('t_submit_title', t.submit_title);
-    updateText('t_submit_desc', t.submit_desc);
-    updateText('t_form_name_label', t.form_name_label);
-    updateText('t_form_desc_label', t.form_desc_label);
-    updateText('t_form_tags_label', t.form_tags_label);
-    
-    const submitProj = document.getElementById('submitProjBtn');
-    if (submitProj) submitProj.textContent = t.btn_submit_proj;
-
-    renderProfileStats();
-    calculate();
-    updateScoreTitle();
-
-    if (currentTab === 'top') fetchLeaderboard();
-    fetchFeed();
-  }
 
   function interpolateColor(color1, color2, factor) {
     const r = Math.round(color1[0] + factor * (color2[0] - color1[0]));
@@ -3519,6 +2133,406 @@
     }
   });
 
+  function startScoring(projName) {
+    activeProject = projName;
+    projectChosen = true;
+    updateScoreTitle();
+    shareBtn.style.display = 'none';
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) submitBtn.textContent = `${i18n[currentLang].submitBtn}: «${activeProject}»`;
+    switchTab('scoring');
+  }
+
+  async function updateScoreTitle() {
+    const titleEl = document.getElementById('t_score_title');
+    const targetEl = document.getElementById('scoringTargetName');
+    const t = i18n[currentLang];
+    
+    if (targetEl) targetEl.textContent = activeProject;
+
+    if (!projectChosen) {
+      titleEl.textContent = t.score_title;
+      return;
+    }
+    if (currentLang === 'ru') {
+      titleEl.textContent = activeProject;
+      return;
+    }
+    const [translated] = await translateTexts([activeProject], currentLang);
+    titleEl.textContent = translated;
+  }
+
+  function renderFeedList() {
+    const feedContainer = document.getElementById('feed-list');
+    let projects = allProjectsData;
+
+    if (currentFilterTag !== 'all') {
+      projects = projects.filter(p => (p.tags || []).includes(currentFilterTag));
+    }
+
+    if (!projects || projects.length === 0) {
+      feedContainer.innerHTML = `<div class="card"><p>В этой категории пока нет проектов.</p></div>`;
+      return;
+    }
+
+    feedContainer.innerHTML = projects.map((p, index) => {
+      const tagsHtml = (p.tags || []).map(tag => `
+        <span class="tag tag-interactive" onclick="filterByTag('${escapeHtml(tag).replace(/'/g, "\\'")}', null)">#${escapeHtml(tag)}</span>
+      `).join('');
+      const safeDisplayName = escapeHtml(p.displayName || p.name);
+      const safeOriginalNameJs = escapeHtml(p.name).replace(/'/g, "\\'");
+      const delay = Math.min(index * 60, 400);
+
+      const authorRaccoon = RACCOON_CHARACTERS.find(it => it.id === p.author_avatar) || RACCOON_CHARACTERS[0];
+
+      const authorBadgeHtml = p.submitted_by ? `
+        <div class="author-badge ios-btn-tap" onclick="openUserProfile('${p.submitted_by}')">
+          <div class="author-avatar-bubble">${getRaccoonSvg(authorRaccoon, 28)}</div>
+          <span class="author-name-text">${escapeHtml(p.author_name || 'Фаундер')}</span>
+        </div>
+      ` : '';
+
+      return `
+        <div class="card stagger-in" style="animation-delay:${delay}ms">
+          ${authorBadgeHtml}
+          <h3>${safeDisplayName}</h3>
+          <p>${escapeHtml(p.displayDesc || p.description)}</p>
+          <div class="card-footer">
+            <div class="project-tags">${tagsHtml}</div>
+            <button class="btn-small ios-btn-tap" onclick="startScoring('${safeOriginalNameJs}')">${i18n[currentLang].btn_eval}</button>
+          </div>
+          <div style="margin-top:14px; text-align:right;">
+            <span class="read-reviews-btn ios-btn-tap" onclick="openReviews('${safeOriginalNameJs}')">${i18n[currentLang].read_reviews}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    applyTiltToAll();
+    document.querySelectorAll('#feed-list .card').forEach(initDoubleTap);
+  }
+
+  async function fetchFeed() {
+    const feedContainer = document.getElementById('feed-list');
+    try {
+      const res = await fetch(`${API_URL}/api/projects`);
+      const projects = await res.json();
+
+      if (!projects || projects.length === 0) {
+        feedContainer.innerHTML = `<div class="card"><p>Пока нет опубликованных проектов.</p></div>`;
+        return;
+      }
+
+      lastKnownProjectsCount = projects.length;
+
+      let displayNames = projects.map(p => p.name);
+      let displayDescs = projects.map(p => p.description);
+      if (currentLang !== 'ru') {
+        [displayNames, displayDescs] = await Promise.all([
+          translateTexts(displayNames, currentLang),
+          translateTexts(displayDescs, currentLang)
+        ]);
+      }
+
+      allProjectsData = projects.map((p, i) => ({
+        ...p,
+        displayName: displayNames[i],
+        displayDesc: displayDescs[i]
+      }));
+
+      updateTagsFilterBar(allProjectsData);
+      renderFeedList();
+    } catch (err) {
+      console.error("Ошибка загрузки ленты:", err);
+      feedContainer.innerHTML = `<div class="card"><p style="color:#ff5c5c;">Сервер просыпается... повторите через 15 секунд.</p></div>`;
+    }
+  }
+
+  async function checkForFeedUpdates() {
+    try {
+      const res = await fetch(`${API_URL}/api/projects`);
+      const projects = await res.json();
+      if (!Array.isArray(projects)) return;
+
+      if (lastKnownProjectsCount > 0 && projects.length > lastKnownProjectsCount) {
+        lastKnownProjectsCount = projects.length;
+        await fetchFeed();
+        triggerHaptic('success');
+        if (typeof tg?.showAlert === 'function') {
+          tg.showAlert('🎉 Проект прошёл модерацию и добавлен в ленту Open Hall!');
+        }
+      } else {
+        lastKnownProjectsCount = projects.length;
+      }
+    } catch (e) {}
+  }
+
+  setInterval(checkForFeedUpdates, 6000);
+
+  function toggleFormTag(tag, element) {
+    triggerHaptic('light');
+    if (selectedFormTags.has(tag)) {
+      selectedFormTags.delete(tag);
+      element.classList.remove('selected');
+    } else {
+      if (selectedFormTags.size >= 4) {
+        alert('Можно выбрать максимум 4 категории.');
+        return;
+      }
+      selectedFormTags.add(tag);
+      element.classList.add('selected');
+    }
+  }
+
+  async function fetchLeaderboard() {
+    const listContainer = document.getElementById('leaderboard-list');
+    try {
+      const res = await fetch(`${API_URL}/api/leaderboard`);
+      const items = await res.json();
+
+      if (!items || items.length === 0) {
+        listContainer.innerHTML = `
+          <div class="rank-item">
+            <div class="rank-info">
+              <div class="rank-title">Пока нет оценок</div>
+              <div class="rank-cat">Будьте первым, кто оценит проект!</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      let displayNames = items.map(it => it.project_name);
+      if (currentLang !== 'ru') {
+        displayNames = await translateTexts(displayNames, currentLang);
+      }
+
+      listContainer.innerHTML = items.map((item, index) => {
+        const rankNum = String(index + 1).padStart(2, '0');
+        const delay = Math.min(index * 60, 400);
+        const safeDisplayName = escapeHtml(displayNames[index]);
+        const safeOriginalNameJs = escapeHtml(item.project_name).replace(/'/g, "\\'");
+        return `
+          <div class="rank-item ios-btn-tap stagger-in" style="animation-delay:${delay}ms;" onclick="openReviews('${safeOriginalNameJs}')">
+            <span class="rank-num">${rankNum}</span>
+            <div class="rank-info">
+              <div class="rank-title">${safeDisplayName}</div>
+              <div class="rank-cat">Голосов: ${item.total_votes}</div>
+            </div>
+            <span class="rank-score">${item.avg_score}</span>
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error("Ошибка загрузки лидерборда:", err);
+      listContainer.innerHTML = `
+        <div class="rank-item">
+          <div class="rank-info">
+            <div class="rank-title" style="color:#ff5c5c;">Сервер просыпается...</div>
+            <div class="rank-cat">Повторите через 15 секунд</div>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  const reviewsModal = document.getElementById('reviews-modal');
+  const reviewsModalBody = document.getElementById('reviews-modal-body');
+
+  function formatReviewDate(iso) {
+    try {
+      const d = new Date(iso);
+      return d.toLocaleDateString(currentLang === 'ru' ? 'ru-RU' : 'en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch (e) {
+      return '';
+    }
+  }
+
+  async function openReviews(projectName) {
+    triggerHaptic('medium');
+    reviewsModalBody.innerHTML = `<p>${i18n[currentLang].reviews_loading}</p>`;
+    reviewsModal.classList.add('open');
+
+    if (currentLang !== 'ru') {
+      const [translatedTitle] = await translateTexts([projectName], currentLang);
+      document.getElementById('reviewsModalTitle').textContent = translatedTitle;
+    } else {
+      document.getElementById('reviewsModalTitle').textContent = projectName;
+    }
+
+    try {
+      const res = await fetch(`${API_URL}/api/reviews?project=${encodeURIComponent(projectName)}`);
+      const reviews = await res.json();
+
+      if (!reviews || reviews.length === 0) {
+        reviewsModalBody.innerHTML = `<p>${i18n[currentLang].reviews_empty}</p>`;
+        return;
+      }
+
+      let displayComments = reviews.map(r => r.comment || '');
+      let displayVerdicts = reviews.map(r => r.verdict || '');
+      if (currentLang !== 'ru') {
+        [displayComments, displayVerdicts] = await Promise.all([
+          translateTexts(displayComments, currentLang),
+          translateTexts(displayVerdicts, currentLang)
+        ]);
+      }
+
+      reviewsModalBody.innerHTML = reviews.map((r, i) => {
+        const commentHtml = displayComments[i]
+          ? `<div class="review-comment">${escapeHtml(displayComments[i])}</div>`
+          : `<div class="review-comment" style="color:var(--text-sub); font-style:italic;">${i18n[currentLang].reviews_no_comment}</div>`;
+
+        const reviewerRaccoon = RACCOON_CHARACTERS.find(it => it.id === r.author_avatar) || RACCOON_CHARACTERS[0];
+
+        return `
+          <div class="review-item">
+            <div class="author-badge ios-btn-tap" style="margin-bottom:6px;">
+              <div class="author-avatar-bubble">${getRaccoonSvg(reviewerRaccoon, 28)}</div>
+              <span class="author-name-text">${escapeHtml(r.author_name)}</span>
+            </div>
+            <div class="review-item-header">
+              <span class="review-score">${r.score} / 10</span>
+              <span class="review-verdict">${escapeHtml(displayVerdicts[i])}</span>
+            </div>
+            ${commentHtml}
+            <div class="review-date">${formatReviewDate(r.created_at)}</div>
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Ошибка загрузки рецензий:', err);
+      reviewsModalBody.innerHTML = `<p style="color:#ff5c5c;">${i18n[currentLang].reviews_error}</p>`;
+    }
+  }
+
+  function closeReviews() {
+    triggerHaptic('light');
+    reviewsModal.classList.remove('open');
+  }
+
+  let profileStats = { reviews_count: null, projects_submitted: null };
+
+  function renderProfileStats() {
+    const t = i18n[currentLang];
+    const r = profileStats.reviews_count;
+    const p = profileStats.projects_submitted;
+    const revEl = document.getElementById('t_stat_reviews');
+    const projEl = document.getElementById('t_stat_projects');
+    if (revEl) revEl.textContent = `${t.stat_reviews_label}: ${r === null ? '—' : r}`;
+    if (projEl) projEl.textContent = `${t.stat_projects_label}: ${p === null ? '—' : p}`;
+  }
+
+  async function fetchProfile() {
+    if (!tg?.initData) {
+      renderProfileStats();
+      return;
+    }
+    try {
+      const res = await fetch(`${API_URL}/api/profile?initData=${encodeURIComponent(tg.initData)}`);
+      const data = await res.json();
+      if (data.available && data.user) {
+        const u = data.user;
+        profileStats.reviews_count = data.reviews_count || 0;
+        profileStats.projects_submitted = data.projects_submitted || 0;
+
+        document.getElementById('user_display_name').textContent = u.custom_handle || u.name;
+        document.getElementById('customHandleInput').value = u.custom_handle || '';
+
+        if (u.avatar_json && RACCOON_CHARACTERS.some(it => it.id === u.avatar_json)) {
+          currentChiefId = u.avatar_json;
+        }
+
+        renderChiefGallery();
+
+        const card = document.getElementById('profileCard');
+        const badge = document.getElementById('profileStatusBadge');
+        const icon = document.getElementById('tierIcon');
+        const count = profileStats.reviews_count;
+
+        card.classList.remove('tier-obsidian', 'tier-emerald', 'tier-gold');
+
+        if (count >= 10 || profileStats.projects_submitted >= 1) {
+          card.classList.add('tier-gold');
+          badge.textContent = 'Syndicate Partner';
+          icon.textContent = '👑';
+        } else if (count >= 3) {
+          card.classList.add('tier-emerald');
+          badge.textContent = 'Certified Reviewer';
+          icon.textContent = '⚡️';
+        } else {
+          card.classList.add('tier-obsidian');
+          badge.textContent = 'Community Scout';
+          icon.textContent = '✦';
+        }
+      }
+    } catch (err) {
+      console.error('Ошибка загрузки статистики профиля:', err);
+    }
+    renderProfileStats();
+  }
+
+  function moveNavIndicator(tabId) {
+    const indicator = document.getElementById('nav-indicator');
+    if (!indicator) return;
+    const index = ['feed', 'scoring', 'top', 'agent', 'profile'].indexOf(tabId);
+    if (index !== -1) indicator.style.transform = `translateX(${index * 100}%)`;
+  }
+
+  function switchTab(tabId) {
+    currentTab = tabId;
+    document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+    document.getElementById(`tab-${tabId}`)?.classList.add('active');
+    const idx = ['feed', 'scoring', 'top', 'agent', 'profile'].indexOf(tabId);
+    if (idx !== -1) {
+      document.querySelectorAll('.nav-btn')[idx]?.classList.add('active');
+      moveNavIndicator(tabId);
+    }
+
+    const stripCard = document.getElementById('app-community-strip');
+    if (tabId === 'profile') {
+      if (stripCard) stripCard.style.display = 'none';
+      renderChiefGallery();
+    } else {
+      if (stripCard) stripCard.style.display = 'block';
+    }
+
+    window.scrollTo(0, 0);
+
+    if (tabId === 'top') fetchLeaderboard();
+    if (tabId === 'profile') fetchProfile();
+    applyTiltToAll();
+  }
+
+  function updateTagsFilterBar(projects) {
+    const bar = document.getElementById('tagsFilterBar');
+    const tagsSet = new Set();
+
+    projects.forEach(p => {
+      (p.tags || []).forEach(t => {
+        if (t && t.trim()) tagsSet.add(t.trim());
+      });
+    });
+
+    const tagsArr = Array.from(tagsSet);
+    bar.innerHTML = `
+      <div class="filter-tag-chip ${currentFilterTag === 'all' ? 'active' : ''}" onclick="filterByTag('all', this)" id="t_tag_all">${i18n[currentLang].tag_all}</div>
+      ${tagsArr.map(t => `
+        <div class="filter-tag-chip ${currentFilterTag === t ? 'active' : ''}" onclick="filterByTag('${escapeHtml(t).replace(/'/g, "\\'")}', this)">#${escapeHtml(t)}</div>
+      `).join('')}
+    `;
+  }
+
+  function filterByTag(tag, element) {
+    triggerHaptic('light');
+    currentFilterTag = tag;
+    document.querySelectorAll('.filter-tag-chip').forEach(el => el.classList.remove('active'));
+    if (element) element.classList.add('active');
+    renderFeedList();
+  }
+
   const agentMessagesEl = document.getElementById('agent-messages');
   const agentInputEl = document.getElementById('agentInput');
   const agentSendBtn = document.getElementById('agentSendBtn');
@@ -3599,10 +2613,673 @@
       sendAgentMessage();
     }
   });
-  agentInputEl.addEventListener('input', () => {
-    agentInputEl.style.height = 'auto';
-    agentInputEl.style.height = Math.min(agentInputEl.scrollHeight, 90) + 'px';
+
+  const i18n = {
+    ru: {
+      preloader: "Синхронизация",
+      nav_feed: "Лента",
+      nav_score: "Оценка",
+      nav_top: "Топ",
+      nav_prof: "Профиль",
+      nav_agent: "Чиф",
+      agent_title: "Чиф 🦝",
+      agent_sub: "AI-помощник Open Hall",
+      agent_placeholder: "Спросить у Чифа...",
+      agent_welcome: "Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Спрашивай о проектах, оценках или подаче!",
+      agent_error: "Не удалось получить ответ. Попробуйте ещё раз.",
+      feed_title: "Лента проектов",
+      feed_sub: "Проекты на оценке у комьюнити",
+      btn_eval: "Оценить",
+      score_title: "Рецензия проекта",
+      score_sub: "Оценка от участников сообщества по 5 критериям",
+      evaluating_label: "Оцениваемый бот",
+      change_project_btn: "Выбрать другой",
+      scoreLabel: "Вердикт участников",
+      c1_title: "1. Концепция и новизна",
+      c1_desc: "Оригинальность замысла и отличие от того, что уже есть на рынке.",
+      c2_title: "2. Визуал и удобство",
+      c2_desc: "Вкус, оформление, аккуратность и насколько приятно этим пользоваться.",
+      c3_title: "3. Интерес аудитории",
+      c3_desc: "Насколько проект вовлекает людей и вызывает желание делиться с друзьями.",
+      c4_title: "4. Уровень готовности",
+      c4_desc: "Это уже рабочий продукт/материал или пока только черновой набросок?",
+      c5_title: "5. Потенциал масштаба",
+      c5_desc: "Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.",
+      commentLabel: "Заметка к оценке (необязательно)",
+      commentPlaceholder: "В чем главные плюсы и что авторам стоит доработать?",
+      submitBtn: "Оставить рецензию",
+      share_btn: "Поделиться оценкой",
+      top_title: "Рейтинг проектов",
+      top_sub: "Лидеры по оценкам участников комьюнити",
+      prof_title: "Профиль участника",
+      prof_sub: "Личная статистика и выбор персонажа",
+      stat_reviews_label: "Рецензий",
+      stat_projects_label: "Проектов подано",
+      submit_title: "Подать проект на аудит",
+      submit_desc: "Хотите получить независимый скоринг и привлечь аудиторию? Отправьте заявку на добавление в витрину.",
+      btn_submit_proj: "Опубликовать проект",
+      form_name_label: "Название проекта",
+      form_desc_label: "Описание",
+      form_tags_label: "Выберите категории (до 4)",
+      tag_all: "Все",
+      v_top: "Фаворит комьюнити",
+      v_good: "Одобрено сообществом",
+      v_mid: "Есть потенциал",
+      v_low: "Нужна доработка",
+      read_reviews: "Читать отзывы →",
+      reviews_loading: "Загрузка рецензий...",
+      reviews_empty: "Пока никто не оставил рецензию на этот проект.",
+      reviews_no_comment: "Без комментария",
+      reviews_error: "Не удалось загрузить рецензии. Попробуйте ещё раз."
+    },
+    en: {
+      preloader: "Syncing",
+      nav_feed: "Feed",
+      nav_score: "Review",
+      nav_top: "Top",
+      nav_prof: "Profile",
+      nav_agent: "Chief",
+      agent_title: "Chief 🦝",
+      agent_sub: "Open Hall AI Assistant",
+      agent_placeholder: "Ask Chief anything...",
+      agent_welcome: "Hi! I'm Chief 🦝, your smart guide to Open Hall. Ask away!",
+      agent_error: "Couldn't get a reply. Please try again.",
+      feed_title: "Project Feed",
+      feed_sub: "Projects currently under review by the community",
+      btn_eval: "Review",
+      score_title: "Project Review",
+      score_sub: "Community rating across 5 key criteria",
+      evaluating_label: "Currently Reviewing",
+      change_project_btn: "Pick another",
+      scoreLabel: "Community Verdict",
+      c1_title: "1. Concept & Novelty",
+      c1_desc: "Originality of the idea and what sets it apart from existing products.",
+      c2_title: "2. Visuals & UX",
+      c2_desc: "Aesthetics, polish, layout, and how intuitive it feels to use.",
+      c3_title: "3. Audience Appeal",
+      c3_desc: "How engaging the project is and whether people would share it.",
+      c4_title: "4. Stage of Readiness",
+      c4_desc: "Is it an active, usable product or still an early concept draft?",
+      c5_title: "5. Scale Potential",
+      c5_desc: "Can the project grow into a major platform and reach a wide audience?",
+      commentLabel: "Review notes (optional)",
+      commentPlaceholder: "Key strengths and areas for improvement...",
+      submitBtn: "Submit Review",
+      share_btn: "Share Review",
+      top_title: "Project Leaderboard",
+      top_sub: "Highest-rated projects by community votes",
+      prof_title: "Member Profile",
+      prof_sub: "Personal statistics and character pick",
+      stat_reviews_label: "Reviews",
+      stat_projects_label: "Projects submitted",
+      submit_title: "Submit Project for Audit",
+      submit_desc: "Want an independent score and broader audience? Apply for showcase inclusion.",
+      btn_submit_proj: "Publish Project",
+      form_name_label: "Project name",
+      form_desc_label: "Description",
+      form_tags_label: "Select categories (up to 4)",
+      tag_all: "All",
+      v_top: "Community Favorite",
+      v_good: "Community Approved",
+      v_mid: "Shows Potential",
+      v_low: "Needs Work",
+      read_reviews: "Read reviews →",
+      reviews_loading: "Loading reviews...",
+      reviews_empty: "No one has reviewed this project yet.",
+      reviews_no_comment: "No comment",
+      reviews_error: "Couldn't load reviews. Please try again."
+    },
+    am: {
+      preloader: "Համաժամացում",
+      nav_feed: "Լրահոս",
+      nav_score: "Գնահատում",
+      nav_top: "Թոփ",
+      nav_prof: "Պրոֆիլ",
+      nav_agent: "Չիֆ",
+      agent_title: "Չիֆ 🦝",
+      agent_sub: "Open Hall AI-օգնական",
+      agent_placeholder: "Հարցրեք Չիֆին...",
+      agent_welcome: "Բարև! Ես Չիֆն եմ 🦝:",
+      agent_error: "Չհաջողվեց ստանալ պատասխան:",
+      feed_title: "Նախագծերի լրահոս",
+      feed_sub: "Համայնքի կողմից գնահատվող նախագծեր",
+      btn_eval: "Գնահատել",
+      score_title: "Նախագծի գնահատում",
+      score_sub: "Համայնքի գնահատականը 5 չափանիշներով",
+      evaluating_label: "Ընտրված նախագիծ",
+      change_project_btn: "Փոխել",
+      scoreLabel: "Համայնքի վճիռը",
+      c1_title: "1. Գաղափար և նորարարություն",
+      c1_desc: "Մտահղացման ինքնատիպությունը:",
+      c2_title: "2. Վիզուալ և հարմարավետություն",
+      c2_desc: "Ոճը և ձևավորումը:",
+      c3_title: "3. Լսարանի հետաքրքրություն",
+      c3_desc: "Որքանով է նախագիծը գրավում մարդկանց:",
+      c4_title: "4. Պատրաստվածության մակարդակ",
+      c4_desc: "Արդյո՞ք սա գործող արդյունք է:",
+      c5_title: "5. Մասշտաբի ներուժ",
+      c5_desc: "Կարո՞ղ է արդյոք նախագիծը մեծանալ:",
+      commentLabel: "Գնահատականի նշումներ",
+      commentPlaceholder: "Առավելություններ և թերություններ...",
+      submitBtn: "Ուղարկել ակնարկը",
+      share_btn: "Կիսվել գնահատականով",
+      top_title: "Վարկանիշային աղյուսակ",
+      top_sub: "Առաջատարներն ըստ ձայների",
+      prof_title: "Մասնակցի պրոֆիլ",
+      prof_sub: "Անձնական վիճակագրություն",
+      stat_reviews_label: "Ակնարկներ",
+      stat_projects_label: "Նախագծեր",
+      submit_title: "Ներկայացնել նախագիծ",
+      submit_desc: "Ստացեք անկախ գնահատական:",
+      btn_submit_proj: "Հրապարակել",
+      form_name_label: "Անվանում",
+      form_desc_label: "Նկարագրություն",
+      form_tags_label: "Կատեգորիաներ (մինչև 4)",
+      tag_all: "Բոլորը",
+      v_top: "Համայնքի ընտրյալ",
+      v_good: "Հավանված",
+      v_mid: "Ունի ներուժ",
+      v_low: "Լրամշակման կարիք ունի",
+      read_reviews: "Կարդալ ակնարկները →",
+      reviews_loading: "Բեռնում...",
+      reviews_empty: "Ակնարկներ դեռ չկան:",
+      reviews_no_comment: "Առանց մեկնաբանության",
+      reviews_error: "Չհաջողվեց բեռնել:"
+    },
+    ge: {
+      preloader: "სინქრონიზაცია",
+      nav_feed: "ლენტა",
+      nav_score: "შეფასება",
+      nav_top: "ტოპი",
+      nav_prof: "პროფილი",
+      nav_agent: "ჩიფი",
+      agent_title: "ჩიფი 🦝",
+      agent_sub: "Open Hall AI",
+      agent_placeholder: "ჰკითხეთ ჩიფს...",
+      agent_welcome: "გამარჯობა! მე ვარ ჩიფი 🦝.",
+      agent_error: "პასუხის მიღება ვერ მოხერხდა.",
+      feed_title: "პროექტების ლენტა",
+      feed_sub: "პროექტები შეფასების პროცესში",
+      btn_eval: "შეფასება",
+      score_title: "პროექტის შეფასება",
+      score_sub: "შეფასება 5 კრიტერიუმით",
+      evaluating_label: "არჩეული ბოტი",
+      change_project_btn: "სხვისი არჩევა",
+      scoreLabel: "საზოგადოების ვერდიქტი",
+      c1_title: "1. კონცეფცია და სიახლე",
+      c1_desc: "იდეის ორიგინალობა.",
+      c2_title: "2. ვიზუალი და მოხერხებულობა",
+      c2_desc: "სტილი და დიზაინი.",
+      c3_title: "3. აუდიტორიის ინტერესი",
+      c3_desc: "რამდენად იზიდავს ხალხს.",
+      c4_title: "4. მზადყოფნის დონე",
+      c4_desc: "მოქმედი პროდუქტია თუ ჩანახატი?",
+      c5_title: "5. მასშტაბის პოტენციალი",
+      c5_desc: "შეუძლია თუ არა გაზრდა.",
+      commentLabel: "შენიშვნა",
+      commentPlaceholder: "პლიუსები და მინუსები...",
+      submitBtn: "შეფასების გაგზავნა",
+      share_btn: "შეფასების გაზიარება",
+      top_title: "რეიტინგი",
+      top_sub: "ლიდერები",
+      prof_title: "პროფილი",
+      prof_sub: "პირადი სტატისტიკა",
+      stat_reviews_label: "შეფასებები",
+      stat_projects_label: "პროექტები",
+      submit_title: "პროექტის შეტანა",
+      submit_desc: "მიიღეთ შეფასება.",
+      btn_submit_proj: "გამოქვეყნება",
+      form_name_label: "სახელი",
+      form_desc_label: "აღწერა",
+      form_tags_label: "კატეგორიები",
+      tag_all: "ყველა",
+      v_top: "რჩეული",
+      v_good: "მოწონებული",
+      v_mid: "პოტენციალით",
+      v_low: "საჭიროებს დამუშავებას",
+      read_reviews: "ნახვა →",
+      reviews_loading: "იტვირთება...",
+      reviews_empty: "შეფასებები არ არის.",
+      reviews_no_comment: "კომენტარის გარეშე",
+      reviews_error: "შეცდომა ჩატვირთვისას."
+    }
+  };
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+    });
+
+    const t = i18n[lang];
+    if (!t) return;
+
+    const updateText = (id, text) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    };
+
+    updateText('t_preloader_status', t.preloader);
+    updateText('t_nav_feed', t.nav_feed);
+    updateText('t_nav_score', t.nav_score);
+    updateText('t_nav_top', t.nav_top);
+    updateText('t_nav_prof', t.nav_prof);
+    updateText('t_nav_agent', t.nav_agent);
+    updateText('t_agent_title', t.agent_title);
+    updateText('t_agent_sub', t.agent_sub);
+    updateText('t_evaluating_label', t.evaluating_label);
+    updateText('t_change_project_btn', t.change_project_btn);
+    
+    const agentInp = document.getElementById('agentInput');
+    if (agentInp) agentInp.placeholder = t.agent_placeholder;
+
+    updateText('agent-welcome-msg', t.agent_welcome);
+    updateText('t_feed_title', t.feed_title);
+    updateText('t_feed_sub', t.feed_sub);
+    updateText('t_tag_all', t.tag_all);
+
+    updateText('t_score_sub', t.score_sub);
+    updateText('t_scoreLabel', t.scoreLabel);
+    updateText('t_c1_title', t.c1_title);
+    updateText('t_c1_desc', t.c1_desc);
+    updateText('t_c2_title', t.c2_title);
+    updateText('t_c2_desc', t.c2_desc);
+    updateText('t_c3_title', t.c3_title);
+    updateText('t_c3_desc', t.c3_desc);
+    updateText('t_c4_title', t.c4_title);
+    updateText('t_c4_desc', t.c4_desc);
+    updateText('t_c5_title', t.c5_title);
+    updateText('t_c5_desc', t.c5_desc);
+    updateText('t_commentLabel', t.commentLabel);
+    
+    const commInp = document.getElementById('comment');
+    if (commInp) commInp.placeholder = t.commentPlaceholder;
+
+    if (submitBtn) {
+      submitBtn.textContent = projectChosen ? `${t.submitBtn}: «${activeProject}»` : t.submitBtn;
+    }
+    if (shareBtn) shareBtn.textContent = `${t.share_btn} «${activeProject}»`;
+
+    updateText('t_top_title', t.top_title);
+    updateText('t_top_sub', t.top_sub);
+    updateText('t_prof_title', t.prof_title);
+    updateText('t_prof_sub', t.prof_sub);
+    updateText('t_submit_title', t.submit_title);
+    updateText('t_submit_desc', t.submit_desc);
+    updateText('t_form_name_label', t.form_name_label);
+    updateText('t_form_desc_label', t.form_desc_label);
+    updateText('t_form_tags_label', t.form_tags_label);
+    
+    const submitProj = document.getElementById('submitProjBtn');
+    if (submitProj) submitProj.textContent = t.btn_submit_proj;
+
+    renderProfileStats();
+    calculate();
+    updateScoreTitle();
+
+    if (currentTab === 'top') fetchLeaderboard();
+    fetchFeed();
+  }
+
+  function applyTheme(theme) {
+    currentTheme = theme;
+    localStorage.setItem('openhall_theme', theme);
+    const toggleBtn = document.getElementById('themeToggleBtn');
+    const metaTheme = document.getElementById('meta-theme-color');
+
+    if (theme === 'light') {
+      document.documentElement.classList.add('light-theme');
+      document.body.classList.add('light-theme');
+      if (toggleBtn) toggleBtn.textContent = '🌙';
+      if (metaTheme) metaTheme.setAttribute('content', '#f8fafc');
+
+      if (tg) {
+        if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#f8fafc');
+        if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#f8fafc');
+        if (typeof tg.setBottomBarColor === 'function') tg.setBottomBarColor('#f8fafc');
+      }
+    } else {
+      document.documentElement.classList.remove('light-theme');
+      document.body.classList.remove('light-theme');
+      if (toggleBtn) toggleBtn.textContent = '☀️';
+      if (metaTheme) metaTheme.setAttribute('content', '#070a0f');
+
+      if (tg) {
+        if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#070a0f');
+        if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#070a0f');
+        if (typeof tg.setBottomBarColor === 'function') tg.setBottomBarColor('#070a0f');
+      }
+    }
+  }
+
+  function toggleAppTheme() {
+    triggerHaptic('medium');
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+  }
+
+  applyTheme(currentTheme);
+
+  function updateSafePadding() {
+    if (!tg) return;
+    const safeTop = (tg.safeAreaInset && tg.safeAreaInset.top) || 0;
+    const contentTop = (tg.contentSafeAreaInset && tg.contentSafeAreaInset.top) || 0;
+    const computed = safeTop + contentTop;
+    const finalTop = computed > 0 ? (computed + 16) : 140;
+    document.body.style.paddingTop = finalTop + 'px';
+  }
+
+  if (tg) {
+    tg.ready();
+    tg.expand();
+    if (typeof tg.requestFullscreen === 'function') {
+      try { tg.requestFullscreen(); } catch (e) {}
+    }
+    updateSafePadding();
+    if (typeof tg.onEvent === 'function') {
+      tg.onEvent('fullscreenChanged', updateSafePadding);
+      tg.onEvent('safeAreaChanged', updateSafePadding);
+      tg.onEvent('contentSafeAreaChanged', updateSafePadding);
+      tg.onEvent('viewportChanged', updateSafePadding);
+    }
+    [100, 300, 600, 1000, 1800].forEach(delay => setTimeout(updateSafePadding, delay));
+    if (typeof tg.disableVerticalSwipes === 'function') tg.disableVerticalSwipes();
+  }
+
+  function triggerHaptic(type = 'light') {
+    if (tg?.HapticFeedback) {
+      if (type === 'medium') tg.HapticFeedback.impactOccurred('medium');
+      else if (type === 'heavy') tg.HapticFeedback.impactOccurred('heavy');
+      else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+      else tg.HapticFeedback.impactOccurred('light');
+    }
+  }
+
+  document.addEventListener('touchstart', (e) => {
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
+    if (target) {
+      target.classList.add('touch-active');
+      triggerHaptic('light');
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
+    if (target) setTimeout(() => target.classList.remove('touch-active'), 120);
+  }, { passive: true });
+
+  function init3DTilt(card) {
+    let bounds;
+    function updateBounds() { bounds = card.getBoundingClientRect(); }
+
+    function handleMove(e) {
+      if (!bounds) updateBounds();
+      const touch = e.touches ? e.touches[0] : e;
+      const x = touch.clientX - bounds.left;
+      const y = touch.clientY - bounds.top;
+
+      const centerX = bounds.width / 2;
+      const centerY = bounds.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -5;
+      const rotateY = ((x - centerX) / centerX) * 5;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.01, 1.01, 1.01)`;
+      card.style.setProperty('--mouse-x', `${(x / bounds.width) * 100}%`);
+      card.style.setProperty('--mouse-y', `${(y / bounds.height) * 100}%`);
+    }
+
+    function handleLeave() {
+      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+      card.style.setProperty('--mouse-x', `50%`);
+      card.style.setProperty('--mouse-y', `20%`);
+    }
+
+    card.addEventListener('touchstart', updateBounds, { passive: true });
+    card.addEventListener('touchmove', handleMove, { passive: true });
+    card.addEventListener('touchend', handleLeave, { passive: true });
+  }
+
+  function applyTiltToAll() {
+    document.querySelectorAll('.card').forEach(c => {
+      if (!c.dataset.tiltInit) {
+        c.dataset.tiltInit = 'true';
+        init3DTilt(c);
+      }
+    });
+  }
+
+  function initDoubleTap(card) {
+    let lastTap = 0;
+    card.addEventListener('touchend', (e) => {
+      if (e.target.closest('button, input, textarea, a, .read-reviews-btn, .tag, .author-badge')) return;
+      const now = Date.now();
+      if (now - lastTap < 300) {
+        const touch = e.changedTouches[0];
+        const rect = card.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        const heart = document.createElement('div');
+        heart.className = 'reaction-heart';
+        heart.innerHTML = '✦';
+        heart.style.left = `${x}px`;
+        heart.style.top = `${y}px`;
+        card.appendChild(heart);
+
+        triggerHaptic('medium');
+        setTimeout(() => heart.remove(), 750);
+      }
+      lastTap = now;
+    });
+  }
+
+  const tabsOrder = ['feed', 'scoring', 'top', 'agent', 'profile'];
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet, .chief-gallery-grid')) return;
+    const diffX = e.changedTouches[0].clientX - touchStartX;
+    const diffY = e.changedTouches[0].clientY - touchStartY;
+
+    if (Math.abs(diffX) > 65 && Math.abs(diffY) < 45) {
+      const curIndex = tabsOrder.indexOf(currentTab);
+      if (diffX < 0 && curIndex < tabsOrder.length - 1) {
+        triggerHaptic('light');
+        switchTab(tabsOrder[curIndex + 1]);
+      } else if (diffX > 0 && curIndex > 0) {
+        triggerHaptic('light');
+        switchTab(tabsOrder[curIndex - 1]);
+      }
+    }
+  }, { passive: true });
+
+  const bottomNavEl = document.querySelector('.bottom-nav');
+  let navShowTimeout;
+  document.addEventListener('focusin', (e) => {
+    if (e.target.matches('input, textarea')) {
+      clearTimeout(navShowTimeout);
+      bottomNavEl?.classList.add('nav-hidden');
+    }
   });
+  document.addEventListener('focusout', (e) => {
+    if (e.target.matches('input, textarea')) {
+      clearTimeout(navShowTimeout);
+      navShowTimeout = setTimeout(() => bottomNavEl?.classList.remove('nav-hidden'), 200);
+    }
+  });
+
+  function hidePreloader() {
+    const preloader = document.getElementById('app-preloader');
+    if (preloader) {
+      preloader.classList.add('hidden');
+      setTimeout(() => preloader.remove(), 500);
+    }
+  }
+  window.addEventListener('load', () => setTimeout(hidePreloader, 600));
+  setTimeout(hidePreloader, 3000);
+
+  const humanSvg = `<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
+
+  async function updateCommunityStrip() {
+    const row = document.getElementById('communityAvatarsRow');
+    let userSlot = 24;
+
+    try {
+      const res = await fetch(`${API_URL}/api/community/strip`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ initData: tg?.initData || '' })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        userSlot = data.userSlot;
+      }
+    } catch (e) {}
+
+    let nodesHtml = '';
+    for (let i = 1; i <= 50; i++) {
+      const isMe = (i === userSlot);
+      nodesHtml += `<div class="user-node ${isMe ? 'user-gold' : ''}" id="${isMe ? 'myGoldSlot' : ''}">${humanSvg}</div>`;
+    }
+    row.innerHTML = nodesHtml;
+
+    setTimeout(() => {
+      const mySlot = document.getElementById('myGoldSlot');
+      if (mySlot) mySlot.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }, 350);
+  }
+
+  async function translateTexts(texts, target) {
+    if (target === 'ru' || !texts || texts.length === 0) return texts;
+    try {
+      const res = await fetch(`${API_URL}/api/translate-batch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texts, target })
+      });
+      const data = await res.json();
+      if (data && Array.isArray(data.translations) && data.translations.length === texts.length) {
+        return data.translations;
+      }
+      return texts;
+    } catch (err) {
+      console.error('Ошибка перевода:', err);
+      return texts;
+    }
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  async function openMyContentModal(type) {
+    triggerHaptic('medium');
+    const modal = document.getElementById('my-content-modal');
+    const title = document.getElementById('myContentModalTitle');
+    const body = document.getElementById('my-content-modal-body');
+
+    modal.classList.add('open');
+    body.innerHTML = '<p>Загрузка...</p>';
+
+    title.textContent = (type === 'projects') ? 'Мои поданные проекты' : 'Мои оставленные рецензии';
+
+    try {
+      const res = await fetch(`${API_URL}/api/profile/my-content?type=${type}&initData=${encodeURIComponent(tg?.initData || '')}`);
+      const data = await res.json();
+      const items = data.items || [];
+
+      if (items.length === 0) {
+        body.innerHTML = `<p style="color:var(--text-sub);">Список пока пуст.</p>`;
+        return;
+      }
+
+      if (type === 'projects') {
+        body.innerHTML = items.map(p => {
+          const statusText = p.status === 'approved' ? '✅ Опубликован' : (p.status === 'rejected' ? '❌ Отклонен' : '⏳ На модерации');
+          return `
+            <div class="review-item">
+              <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                <h4 style="font-size:15px; font-weight:800;">${escapeHtml(p.name)}</h4>
+                <span style="font-size:11px; font-weight:700;">${statusText}</span>
+              </div>
+              <p style="font-size:12px; color:var(--text-sub); margin-bottom:8px;">${escapeHtml(p.description)}</p>
+              <div style="font-size:10px; color:var(--text-sub);">${new Date(p.created_at).toLocaleDateString()}</div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        body.innerHTML = items.map(r => `
+          <div class="review-item">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+              <h4 style="font-size:15px; font-weight:800;">${escapeHtml(r.project)}</h4>
+              <span style="font-size:14px; font-weight:800; color:var(--emerald);">${r.score} / 10</span>
+            </div>
+            <div style="font-size:11px; color:var(--cyan); margin-bottom:6px; font-weight:700;">${escapeHtml(r.verdict)}</div>
+            <p style="font-size:12px; color:var(--text-main); margin-bottom:6px;">${escapeHtml(r.comment || 'Без комментария')}</p>
+            <div style="font-size:10px; color:var(--text-sub);">${new Date(r.created_at).toLocaleDateString()}</div>
+          </div>
+        `).join('');
+      }
+    } catch (e) {
+      body.innerHTML = '<p style="color:#ef4444;">Ошибка загрузки</p>';
+    }
+  }
+
+  function closeMyContentModal() {
+    triggerHaptic('light');
+    document.getElementById('my-content-modal').classList.remove('open');
+  }
+
+  async function openUserProfile(userId) {
+    if (!userId) return;
+    triggerHaptic('medium');
+    const modal = document.getElementById('user-profile-modal');
+    const title = document.getElementById('userProfileModalTitle');
+    const body = document.getElementById('user-profile-modal-body');
+
+    modal.classList.add('open');
+    body.innerHTML = '<p>Загрузка профиля...</p>';
+
+    try {
+      const res = await fetch(`${API_URL}/api/user/${userId}`);
+      const data = await res.json();
+
+      title.textContent = `Профиль ${data.name}`;
+      const tierBadge = (data.reviews_count >= 10 || data.projects_count >= 1) ? '👑 Syndicate Partner' : ((data.reviews_count >= 3) ? '⚡️ Certified Reviewer' : '✦ Community Scout');
+
+      const userRaccoon = RACCOON_CHARACTERS.find(it => it.id === data.avatar_json) || RACCOON_CHARACTERS[0];
+
+      body.innerHTML = `
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
+          <div style="width:64px; height:64px; border-radius:50%; overflow:hidden; border:2px solid var(--emerald); box-shadow:0 4px 14px rgba(0,0,0,0.3);">${getRaccoonSvg(userRaccoon, 64)}</div>
+          <div>
+            <h3 style="font-size:18px; font-weight:800;">${escapeHtml(data.name)}</h3>
+            <span class="badge" style="display:inline-block; margin-top:4px; font-size:10px;">${tierBadge}</span>
+          </div>
+        </div>
+
+        <div class="project-tags" style="margin-bottom:18px;">
+          <span class="tag">Рецензий: ${data.reviews_count || 0}</span>
+          <span class="tag">Проектов: ${data.projects_count || 0}</span>
+        </div>
+      `;
+    } catch (e) {
+      body.innerHTML = '<p style="color:#ef4444;">Не удалось загрузить профиль</p>';
+    }
+  }
+
+  function closeUserProfileModal() {
+    triggerHaptic('light');
+    document.getElementById('user-profile-modal').classList.remove('open');
+  }
 
   if (tg?.initDataUnsafe?.user?.first_name) {
     document.getElementById('user_display_name').textContent = tg.initDataUnsafe.user.first_name;
@@ -3619,7 +3296,7 @@
   updateCommunityStrip();
   setInterval(updateCommunityStrip, 45000);
   applyTiltToAll();
-  updateChiefAvatarDisplays();
+  renderChiefGallery();
 </script>
 
 </body>
