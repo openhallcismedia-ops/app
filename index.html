@@ -809,6 +809,23 @@
       color: #334155;
     }
 
+    /* Индикатор текущего оцениваемого проекта */
+    .scoring-target-badge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 229, 153, 0.12);
+      border: 1px solid rgba(0, 229, 153, 0.35);
+      border-radius: 16px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 10px var(--shadow-color);
+    }
+    body.light-theme .scoring-target-badge {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+
     .score-banner {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -1466,6 +1483,15 @@
     <h1 id="t_score_title">Рецензия проекта</h1>
     <p class="subtitle" id="t_score_sub">Оценка от участников сообщества по 5 критериям</p>
 
+    <!-- Четкая привязка к оцениваемому проекту -->
+    <div class="scoring-target-badge" id="scoringTargetBox">
+      <div>
+        <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; font-weight:700; color:var(--text-sub);" id="t_evaluating_label">Оцениваемый бот</span>
+        <h3 id="scoringTargetName" style="font-size:16px; font-weight:800; color:var(--text-main); margin-top:2px;">Open Hall Bot</h3>
+      </div>
+      <button class="btn-small ios-btn-tap" onclick="switchTab('feed')" style="padding:6px 12px; font-size:11px;" id="t_change_project_btn">Выбрать другой</button>
+    </div>
+
     <div class="score-banner" id="scoreBannerBox">
       <div class="score-left">
         <span id="t_scoreLabel">Вердикт участников</span>
@@ -1546,17 +1572,17 @@
     </div>
   </div>
 
-  <!-- ВКЛАДКА: AI-АГЕНТ -->
+  <!-- ВКЛАДКА: ЧИФ (AI-ПОМОЩНИК) -->
   <div id="tab-agent" class="tab-view">
-    <h1 id="t_agent_title">AI-помощник</h1>
-    <p class="subtitle" id="t_agent_sub">Задайте вопрос про Open Hall</p>
+    <h1 id="t_agent_title">Чиф 🦝</h1>
+    <p class="subtitle" id="t_agent_sub">AI-помощник Open Hall</p>
 
     <div class="agent-chat-card">
       <div id="agent-messages" class="agent-messages">
-        <div class="agent-msg agent-msg-bot" id="agent-welcome-msg">Привет! Я помогу разобраться с Open Hall — объясню как работает скоринг, помогу составить описание проекта или дам совет по улучшению идеи. Спрашивай!</div>
+        <div class="agent-msg agent-msg-bot" id="agent-welcome-msg">Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Расскажу как работает скоринг, оценю твою идею или помогу грамотно заполнить заявку на добавление проекта. Спрашивай!</div>
       </div>
       <div class="agent-input-row">
-        <textarea id="agentInput" rows="1" placeholder="Напишите сообщение..."></textarea>
+        <textarea id="agentInput" rows="1" placeholder="Спросить у Чифа..."></textarea>
         <button id="agentSendBtn" class="agent-send-btn ios-btn-tap" aria-label="Отправить">➤</button>
       </div>
     </div>
@@ -1675,19 +1701,10 @@
     <span class="nav-label" id="t_nav_top">Топ</span>
   </button>
 
+  <!-- Вкладка Чифа с енотом 🦝 -->
   <button class="nav-btn ios-btn-tap" onclick="switchTab('agent')">
-    <svg class="nav-icon" viewBox="0 0 24 24">
-      <path d="M6 7 8 2 10 6"></path>
-      <path d="M18 7 16 2 14 6"></path>
-      <circle cx="12" cy="14" r="7"></circle>
-      <rect x="7" y="10" width="4" height="3" rx="1"></rect>
-      <rect x="13" y="10" width="4" height="3" rx="1"></rect>
-      <path d="M11 11.5h2"></path>
-      <path d="M7 11H5"></path>
-      <path d="M17 11h2"></path>
-      <path d="M12 17v1.5"></path>
-    </svg>
-    <span class="nav-label" id="t_nav_agent">Агент</span>
+    <span style="font-size:22px; line-height:1; margin-bottom:2px; display:inline-block;">🦝</span>
+    <span class="nav-label" id="t_nav_agent">Чиф</span>
   </button>
 
   <button class="nav-btn ios-btn-tap" onclick="switchTab('profile')">
@@ -2544,7 +2561,6 @@
     document.querySelectorAll('.nav-btn')[tabIndexMap[tabId]].classList.add('active');
     moveNavIndicator(tabId);
 
-    // В шапке аватарки скрываем только для профиля, а кнопки языков и темы оставляем ВСЕГДА
     const stripCard = document.getElementById('app-community-strip');
     if (tabId === 'profile') {
       if (stripCard) stripCard.style.display = 'none';
@@ -2564,8 +2580,13 @@
 
   async function updateScoreTitle() {
     const titleEl = document.getElementById('t_score_title');
+    const targetEl = document.getElementById('scoringTargetName');
+    const t = i18n[currentLang];
+    
+    if (targetEl) targetEl.textContent = activeProject;
+
     if (!projectChosen) {
-      titleEl.textContent = i18n[currentLang].score_title;
+      titleEl.textContent = t.score_title;
       return;
     }
     if (currentLang === 'ru') {
@@ -2581,6 +2602,8 @@
     projectChosen = true;
     updateScoreTitle();
     shareBtn.style.display = 'none';
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) submitBtn.textContent = `${i18n[currentLang].submitBtn}: «${activeProject}»`;
     switchTab('scoring');
   }
 
@@ -2591,17 +2614,19 @@
       nav_score: "Оценка",
       nav_top: "Топ",
       nav_prof: "Профиль",
-      nav_agent: "Агент",
-      agent_title: "AI-помощник",
-      agent_sub: "Задайте вопрос про Open Hall",
-      agent_placeholder: "Напишите сообщение...",
-      agent_welcome: "Привет! Я помогу разобраться с Open Hall — объясню как работает скоринг, помогу составить описание проекта или дам совет по улучшению идеи. Спрашивай!",
+      nav_agent: "Чиф",
+      agent_title: "Чиф 🦝",
+      agent_sub: "AI-помощник Open Hall",
+      agent_placeholder: "Спросить у Чифа...",
+      agent_welcome: "Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Расскажу как работает скоринг, оценю твою идею или помогу грамотно заполнить заявку на добавление проекта. Спрашивай!",
       agent_error: "Не удалось получить ответ. Попробуйте ещё раз.",
       feed_title: "Лента проектов",
       feed_sub: "Проекты на оценке у комьюнити",
       btn_eval: "Оценить",
       score_title: "Рецензия проекта",
       score_sub: "Оценка от участников сообщества по 5 критериям",
+      evaluating_label: "Оцениваемый бот",
+      change_project_btn: "Выбрать другой",
       scoreLabel: "Вердикт участников",
       c1_title: "1. Концепция и новизна",
       c1_desc: "Оригинальность замысла и отличие от того, что уже есть на рынке.",
@@ -2652,17 +2677,19 @@
       nav_score: "Review",
       nav_top: "Top",
       nav_prof: "Profile",
-      nav_agent: "Agent",
-      agent_title: "AI Assistant",
-      agent_sub: "Ask anything about Open Hall",
-      agent_placeholder: "Type a message...",
-      agent_welcome: "Hi! I can help you navigate Open Hall — explain how scoring works, help draft a project description, or give improvement tips. Ask away!",
+      nav_agent: "Chief",
+      agent_title: "Chief 🦝",
+      agent_sub: "Open Hall AI Assistant",
+      agent_placeholder: "Ask Chief anything...",
+      agent_welcome: "Hi! I'm Chief 🦝, your smart guide to Open Hall. I will help you with project scoring, analyze startup ideas, or refine your application. Ask away!",
       agent_error: "Couldn't get a reply. Please try again.",
       feed_title: "Project Feed",
       feed_sub: "Projects currently under review by the community",
       btn_eval: "Review",
       score_title: "Project Review",
       score_sub: "Community rating across 5 key criteria",
+      evaluating_label: "Currently Reviewing",
+      change_project_btn: "Pick another",
       scoreLabel: "Community Verdict",
       c1_title: "1. Concept & Novelty",
       c1_desc: "Originality of the idea and what sets it apart from existing products.",
@@ -2713,17 +2740,19 @@
       nav_score: "Գնահատում",
       nav_top: "Թոփ",
       nav_prof: "Պրոֆիլ",
-      nav_agent: "Գործակալ",
-      agent_title: "AI-օգնական",
-      agent_sub: "Հարցրեք ինչ-որ բան Open Hall-ի մասին",
-      agent_placeholder: "Գրեք հաղորդագրություն...",
-      agent_welcome: "Բարև! Կօգնեմ հասկանալ Open Hall-ը՝ կբացատրեմ սքորինգի աշխատանքը, կօգնեմ կազմել նախագծի նկարագրություն կամ կտամ խորհուրդներ:",
+      nav_agent: "Չիֆ",
+      agent_title: "Չիֆ 🦝",
+      agent_sub: "Open Hall AI-օգնական",
+      agent_placeholder: "Հարցրեք Չիֆին...",
+      agent_welcome: "Բարև! Ես Չիֆն եմ 🦝: Կօգնեմ հասկանալ սքորինգի համակարգը և բարելավել ձեր նախագիծը:",
       agent_error: "Չհաջողվեց ստանալ պատասխան: Փորձեք կրկին:",
       feed_title: "Նախագծերի լրահոս",
       feed_sub: "Համայնքի կողմից գնահատվող նախագծեր",
       btn_eval: "Գնահատել",
       score_title: "Նախագծի գնահատում",
       score_sub: "Համայնքի գնահատականը 5 հիմնական չափանիշներով",
+      evaluating_label: "Ընտրված նախագիծ",
+      change_project_btn: "Փոխել",
       scoreLabel: "Համայնքի վճիռը",
       c1_title: "1. Գաղափար և նորարարություն",
       c1_desc: "Մտահղացման ինքնատիպությունը և տարբերությունը շուկայում եղածից:",
@@ -2774,17 +2803,19 @@
       nav_score: "შეფასება",
       nav_top: "ტოპი",
       nav_prof: "პროფილი",
-      nav_agent: "აგენტი",
-      agent_title: "AI-დამხმარე",
-      agent_sub: "დასვით კითხვა Open Hall-ის შესახებ",
-      agent_placeholder: "დაწერეთ შეტყობინება...",
-      agent_welcome: "გამარჯობა! დაგეხმარებით Open Hall-ში გარკვევაში — ავხსნი სქორინგის მუშაობას, დაგეხმარებით პროექტის აღწერის შედგენაში ან მოგცემთ რჩევებს:",
+      nav_agent: "ჩიფი",
+      agent_title: "ჩიფი 🦝",
+      agent_sub: "Open Hall-ის AI-დამხმარე",
+      agent_placeholder: "ჰკითხეთ ჩიფს...",
+      agent_welcome: "გამარჯობა! მე ვარ ჩიფი 🦝. დაგეხმარებით პროექტის შეფასებაში და რჩევებში:",
       agent_error: "პასუხის მიღება ვერ მოხერხდა. სცადეთ თავიდან.",
       feed_title: "პროექტების ლენტა",
       feed_sub: "პროექტები საზოგადოების შეფასების პროცესში",
       btn_eval: "შეფასება",
       score_title: "პროექტის შეფასება",
       score_sub: "საზოგადოების შეფასება 5 ძირითადი კრიტერიუმით",
+      evaluating_label: "არჩეული ბოტი",
+      change_project_btn: "სხვისი არჩევა",
       scoreLabel: "საზოგადოების ვერდიქტი",
       c1_title: "1. კონცეფცია და სიახლე",
       c1_desc: "იდეის ორიგინალობა და განსხვავება არსებული გადაწყვეტილებებისგან.",
@@ -2869,6 +2900,8 @@
     updateText('t_nav_agent', t.nav_agent);
     updateText('t_agent_title', t.agent_title);
     updateText('t_agent_sub', t.agent_sub);
+    updateText('t_evaluating_label', t.evaluating_label);
+    updateText('t_change_project_btn', t.change_project_btn);
     
     const agentInp = document.getElementById('agentInput');
     if (agentInp) agentInp.placeholder = t.agent_placeholder;
@@ -2895,7 +2928,9 @@
     const commInp = document.getElementById('comment');
     if (commInp) commInp.placeholder = t.commentPlaceholder;
 
-    if (submitBtn) submitBtn.textContent = t.submitBtn;
+    if (submitBtn) {
+      submitBtn.textContent = projectChosen ? `${t.submitBtn}: «${activeProject}»` : t.submitBtn;
+    }
     if (shareBtn) shareBtn.textContent = `${t.share_btn} «${activeProject}»`;
 
     updateText('t_top_title', t.top_title);
@@ -3004,7 +3039,7 @@
       });
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
-      alert(`Оценка для «${activeProject}» сохранена!`);
+      alert(`Оценка для «${activeProject}» отправлена на модерацию!`);
       shareBtn.style.display = 'block';
       shareBtn.textContent = `${i18n[currentLang].share_btn} «${activeProject}»`;
     } catch (err) {
@@ -3012,7 +3047,7 @@
       alert("Не удалось сохранить оценку. Проверьте интернет и попробуйте ещё раз.");
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = i18n[currentLang].submitBtn;
+      submitBtn.textContent = `${i18n[currentLang].submitBtn}: «${activeProject}»`;
       isSubmitting = false;
     }
   });
