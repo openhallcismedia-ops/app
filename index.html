@@ -630,8 +630,8 @@
       border-color: var(--emerald);
     }
     .author-avatar-bubble {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -1040,12 +1040,12 @@
       color: #059669;
     }
 
-    /* --- Reddit-Style Avatar Builder --- */
-    .reddit-avatar-card {
+    /* --- Конструктор Енота Чифа (Chief Snoo-Style) --- */
+    .chief-avatar-card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 18px 14px;
+      padding: 20px 14px;
       background: var(--input-bg);
       border: 1px solid var(--tag-border);
       border-radius: 20px;
@@ -1053,22 +1053,22 @@
       position: relative;
     }
 
-    .reddit-avatar-canvas {
-      width: 100px;
-      height: 100px;
+    .chief-avatar-canvas {
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
       position: relative;
-      background: radial-gradient(circle, rgba(0, 229, 153, 0.15) 0%, rgba(14, 20, 32, 0.4) 100%);
-      border: 2.5px solid var(--card-border);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-      margin-bottom: 12px;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.2) 0%, rgba(14, 20, 32, 0.6) 100%);
+      border: 2.5px solid var(--emerald);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      margin-bottom: 14px;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .reddit-avatar-canvas svg {
+    .chief-avatar-canvas svg {
       width: 100%;
       height: 100%;
     }
@@ -1084,7 +1084,7 @@
       background: var(--card-bg);
       border: 1px solid var(--tag-border);
       color: var(--text-main);
-      padding: 7px 14px;
+      padding: 8px 16px;
       border-radius: 12px;
       font-size: 12px;
       font-weight: 700;
@@ -1094,20 +1094,19 @@
       cursor: pointer;
     }
 
-    /* Навигация по деталям (Категории как на Reddit: Тело, Глаза, Рот, Шляпа, Очки) */
     .builder-category-tabs {
       display: flex;
       gap: 6px;
       overflow-x: auto;
       width: 100%;
-      margin: 14px 0 10px;
+      margin: 16px 0 10px;
       padding-bottom: 4px;
       scrollbar-width: none;
     }
     .builder-category-tabs::-webkit-scrollbar { display: none; }
 
     .builder-cat-btn {
-      padding: 6px 12px;
+      padding: 7px 14px;
       background: var(--tag-bg);
       border: 1px solid var(--tag-border);
       border-radius: 10px;
@@ -1146,20 +1145,22 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       color: var(--text-main);
+      text-align: center;
+      padding: 4px;
       transition: all 0.2s var(--spring-ease);
     }
     .builder-item-choice.selected {
       border-color: var(--emerald);
-      background: rgba(0, 229, 153, 0.15);
+      background: rgba(0, 229, 153, 0.16);
       transform: scale(1.05);
     }
 
     .builder-color-dot {
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid transparent;
@@ -1168,7 +1169,7 @@
     .builder-color-dot.selected {
       border-color: #fff;
       transform: scale(1.15);
-      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+      box-shadow: 0 0 10px rgba(255,255,255,0.6);
     }
 
     .bottom-nav {
@@ -1679,7 +1680,7 @@
     </div>
   </div>
 
-  <!-- ВКЛАДКА 4: ПРОФИЛЬ С REDDIT-АВАТАРОМ -->
+  <!-- ВКЛАДКА 4: ПРОФИЛЬ С ЕНОТОМ ЧИФОМ -->
   <div id="tab-profile" class="tab-view">
     <h1 id="t_prof_title">Профиль участника</h1>
     <p class="subtitle" id="t_prof_sub">Личная статистика и статус в сообществе</p>
@@ -1704,35 +1705,34 @@
       </div>
     </div>
 
-    <!-- Редактор Reddit-style аватара (>10 000 уникальных комбинаций) -->
+    <!-- Конструктор Енота Чифа в стиле Reddit (>100 000 комбинаций) -->
     <div class="card tilt-card">
-      <h3 style="margin-bottom:6px;">Конструктор персонажа</h3>
-      <p style="margin-bottom:14px; font-size:12px;">Соберите уникальный образ: выбирайте эмоции, шлемы, очки и стили.</p>
+      <h3 style="margin-bottom:6px;">Кастомизация Енота Чифа</h3>
+      <p style="margin-bottom:14px; font-size:12px;">Соберите своего уникального енота: меняйте окрас, эмоции, шлемы и одежду.</p>
 
-      <div class="reddit-avatar-card">
-        <div class="reddit-avatar-canvas" id="builderAvatarPreview"></div>
+      <div class="chief-avatar-card">
+        <div class="chief-avatar-canvas" id="builderAvatarPreview"></div>
         <div class="builder-actions-top">
-          <button class="btn-dice ios-btn-tap" onclick="randomizeAvatar()">🎲 Случайный образ</button>
+          <button class="btn-dice ios-btn-tap" onclick="randomizeChiefAvatar()">🎲 Случайный Чиф</button>
         </div>
 
-        <!-- Переключатель категорий деталей -->
         <div class="builder-category-tabs">
-          <button class="builder-cat-btn active" onclick="switchBuilderTab('hair', this)">Причёска / Шлем</button>
-          <button class="builder-cat-btn" onclick="switchBuilderTab('eyes', this)">Глаза</button>
-          <button class="builder-cat-btn" onclick="switchBuilderTab('mouth', this)">Эмоция</button>
-          <button class="builder-cat-btn" onclick="switchBuilderTab('acc', this)">Очки / VR</button>
-          <button class="builder-cat-btn" onclick="switchBuilderTab('outfit', this)">Одежда</button>
-          <button class="builder-cat-btn" onclick="switchBuilderTab('color', this)">Цвет костюма</button>
+          <button class="builder-cat-btn active" onclick="switchChiefTab('fur', this)">Окрас</button>
+          <button class="builder-cat-btn" onclick="switchChiefTab('mask', this)">Маска</button>
+          <button class="builder-cat-btn" onclick="switchChiefTab('eyes', this)">Глаза</button>
+          <button class="builder-cat-btn" onclick="switchChiefTab('mouth', this)">Эмоция</button>
+          <button class="builder-cat-btn" onclick="switchChiefTab('hat', this)">Головной убор</button>
+          <button class="builder-cat-btn" onclick="switchChiefTab('outfit', this)">Одежда</button>
+          <button class="builder-cat-btn" onclick="switchChiefTab('color', this)">Цвет</button>
         </div>
 
-        <!-- Сетка выбора деталей -->
         <div class="builder-items-grid" id="builderItemsGrid"></div>
       </div>
 
       <label for="customHandleInput" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;">Отображаемый ник</label>
       <input type="text" id="customHandleInput" maxlength="30" placeholder="@nickname" style="margin-bottom:14px;">
 
-      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить персонажа</button>
+      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить енота</button>
     </div>
 
     <!-- Форма подачи проекта -->
@@ -1860,148 +1860,211 @@
   let selectedFormTags = new Set();
   let currentTheme = localStorage.getItem('openhall_theme') || 'dark';
 
-  /* --- Генератор векторного Reddit-аватара (>10 000 вариантов) --- */
-  let avatarState = {
-    skin: '#ffdfba',
+  /* --- Енот Чиф: Структура и Генератор (>100 000 уникальных комбинаций) --- */
+  let chiefAvatar = {
+    fur: '#94a3b8',
+    mask: 'bandit',
     eyes: 'smile',
     mouth: 'smile',
-    hair: 'snoo_antenna',
-    acc: 'none',
+    hat: 'none',
     outfit: 'hoodie',
     color: '#00e599'
   };
 
   try {
-    const saved = localStorage.getItem('openhall_reddit_avatar');
-    if (saved) avatarState = JSON.parse(saved);
+    const saved = localStorage.getItem('openhall_chief_avatar');
+    if (saved) chiefAvatar = JSON.parse(saved);
   } catch (e) {}
 
-  const AVATAR_DATA = {
-    skin: ['#ffffff', '#ffdfba', '#f1c27d', '#e0ac69', '#c68642', '#8d5524', '#00e599', '#00b4d8'],
-    eyes: ['smile', 'normal', 'wink', 'stars', 'focus', 'sunglasses', 'angry', 'surprised', 'scanner', 'closed'],
-    mouth: ['smile', 'smirk', 'neutral', 'open', 'tongue', 'happy', 'cool', 'laugh', 'cute', 'mask'],
-    hair: ['snoo_antenna', 'cap', 'hood', 'cyber_helmet', 'beanie', 'mohawk', 'curls', 'halo', 'crown', 'headset', 'ninja', 'none'],
-    acc: ['none', 'vr_glass', 'cyber_eye', 'shades', 'retro_glasses', 'blush', 'scars', 'mic', 'laser', 'band'],
-    outfit: ['hoodie', 'tshirt', 'suit', 'space_suit', 'jacket', 'turtleneck', 'cyber_armor', 'robe'],
+  const CHIEF_DATA = {
+    fur: [
+      { id: '#94a3b8', name: 'Классик' },
+      { id: '#e2e8f0', name: 'Снежный' },
+      { id: '#475569', name: 'Графит' },
+      { id: '#1e293b', name: 'Тень' },
+      { id: '#d97706', name: 'Рыжий' },
+      { id: '#00e599', name: 'Изумруд' },
+      { id: '#00b4d8', name: 'Кибер' },
+      { id: '#a855f7', name: 'Неон' }
+    ],
+    mask: [
+      { id: 'bandit', name: 'Бандит' },
+      { id: 'ninja', name: 'Ниндзя' },
+      { id: 'cyber', name: 'Кибер' },
+      { id: 'sharp', name: 'Острая' },
+      { id: 'stripes', name: 'Полосы' },
+      { id: 'none', name: 'Без маски' }
+    ],
+    eyes: [
+      { id: 'smile', name: 'Хитрый' },
+      { id: 'stars', name: 'Звёзды' },
+      { id: 'wink', name: 'Подмиг' },
+      { id: 'laser', name: 'Лазер' },
+      { id: 'shades', name: 'Очки' },
+      { id: 'vr', name: 'VR-шлем' },
+      { id: 'curious', name: 'Внимательный' }
+    ],
+    mouth: [
+      { id: 'smile', name: 'Улыбка' },
+      { id: 'tooth', name: 'Зубик' },
+      { id: 'tongue', name: 'Язык' },
+      { id: 'smirk', name: 'Ухмылка' },
+      { id: 'open', name: 'Радость' },
+      { id: 'mask', name: 'Респиратор' }
+    ],
+    hat: [
+      { id: 'none', name: 'Без шапки' },
+      { id: 'cap', name: 'Кепка' },
+      { id: 'hood', name: 'Капюшон' },
+      { id: 'crown', name: 'Корона' },
+      { id: 'headset', name: 'Гарнитура' },
+      { id: 'beanie', name: 'Бини' },
+      { id: 'space', name: 'Скафандр' },
+      { id: 'halo', name: 'Нимб' }
+    ],
+    outfit: [
+      { id: 'hoodie', name: 'Худи' },
+      { id: 'suit', name: 'Пиджак' },
+      { id: 'cyber', name: 'Броня' },
+      { id: 'space', name: 'Космо' },
+      { id: 'tshirt', name: 'Футболка' },
+      { id: 'jacket', name: 'Куртка' }
+    ],
     color: ['#00e599', '#00b4d8', '#1877f2', '#8b5cf6', '#ec4899', '#f59e0b', '#ef4444', '#ffffff', '#64748b', '#1e293b']
   };
 
-  let activeBuilderTab = 'hair';
+  let activeChiefTab = 'fur';
 
-  function renderRedditAvatarSvg(state, size = 100) {
-    // Векторные элементы Snoo-стиля
-    let hairSvg = '';
-    if (state.hair === 'snoo_antenna') {
-      hairSvg = `<path d="M50 32 V15 Q50 10 58 10 H62" stroke="${state.color}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-                 <circle cx="64" cy="10" r="5" fill="${state.color}"/>`;
-    } else if (state.hair === 'cyber_helmet') {
-      hairSvg = `<path d="M22 36 Q50 12 78 36 V48 H22 Z" fill="${state.color}" opacity="0.95"/>
-                 <path d="M26 42 H74" stroke="#00e599" stroke-width="3"/>`;
-    } else if (state.hair === 'mohawk') {
-      hairSvg = `<path d="M44 26 L50 8 L56 26 Z" fill="${state.color}"/>
-                 <path d="M38 32 L44 14 L50 32 Z" fill="${state.color}"/>
-                 <path d="M50 32 L56 14 L62 32 Z" fill="${state.color}"/>`;
-    } else if (state.hair === 'cap') {
-      hairSvg = `<path d="M25 36 Q50 18 75 36 Z" fill="${state.color}"/>
-                 <path d="M68 34 Q85 36 90 40 Q75 44 64 38 Z" fill="${state.color}"/>`;
-    } else if (state.hair === 'hood') {
-      hairSvg = `<path d="M20 40 Q50 14 80 40 V65 Q50 56 20 65 Z" fill="${state.color}" opacity="0.4"/>`;
-    } else if (state.hair === 'crown') {
-      hairSvg = `<path d="M30 32 L36 14 L46 26 L50 10 L54 26 L64 14 L70 32 Z" fill="#ffb703" stroke="#fff" stroke-width="1.5"/>`;
-    } else if (state.hair === 'halo') {
-      hairSvg = `<ellipse cx="50" cy="16" rx="22" ry="6" fill="none" stroke="#ffb703" stroke-width="3.5"/>`;
-    } else if (state.hair === 'beanie') {
-      hairSvg = `<path d="M26 38 Q50 20 74 38 Z" fill="${state.color}"/><circle cx="50" cy="22" r="5" fill="#fff"/>`;
-    } else if (state.hair === 'headset') {
-      hairSvg = `<path d="M22 42 Q50 16 78 42" fill="none" stroke="#64748b" stroke-width="4"/><rect x="18" y="40" width="8" height="14" rx="4" fill="${state.color}"/><rect x="74" y="40" width="8" height="14" rx="4" fill="${state.color}"/>`;
-    }
-
-    let eyesSvg = '';
-    if (state.eyes === 'smile') {
-      eyesSvg = `<circle cx="38" cy="46" r="4.5" fill="#1e293b"/><circle cx="62" cy="46" r="4.5" fill="#1e293b"/>
-                 <circle cx="39.5" cy="44.5" r="1.5" fill="#fff"/><circle cx="63.5" cy="44.5" r="1.5" fill="#fff"/>`;
-    } else if (state.eyes === 'wink') {
-      eyesSvg = `<circle cx="38" cy="46" r="4.5" fill="#1e293b"/><path d="M57 46 Q62 42 67 46" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>`;
-    } else if (state.eyes === 'stars') {
-      eyesSvg = `<text x="32" y="52" font-size="14" fill="#ffb703">★</text><text x="56" y="52" font-size="14" fill="#ffb703">★</text>`;
-    } else if (state.eyes === 'sunglasses') {
-      eyesSvg = `<path d="M30 42 H70 V50 Q50 56 30 50 Z" fill="#0f172a"/><path d="M32 44 H48 L44 48 Z" fill="#fff" opacity="0.4"/>`;
-    } else if (state.eyes === 'scanner') {
-      eyesSvg = `<rect x="28" y="43" width="44" height="6" rx="3" fill="#ff0055"/><circle cx="44" cy="46" r="4" fill="#00e599"/>`;
-    } else {
-      eyesSvg = `<circle cx="38" cy="46" r="4" fill="#1e293b"/><circle cx="62" cy="46" r="4" fill="#1e293b"/>`;
-    }
-
-    let mouthSvg = '';
-    if (state.mouth === 'smile') {
-      mouthSvg = `<path d="M43 57 Q50 64 57 57" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" fill="none"/>`;
-    } else if (state.mouth === 'open') {
-      mouthSvg = `<path d="M42 55 Q50 68 58 55 Z" fill="#ef4444"/>`;
-    } else if (state.mouth === 'smirk') {
-      mouthSvg = `<path d="M44 59 Q52 61 58 55" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" fill="none"/>`;
-    } else if (state.mouth === 'tongue') {
-      mouthSvg = `<path d="M43 57 Q50 63 57 57 Z" fill="#1e293b"/><path d="M47 59 Q50 67 53 59 Z" fill="#f43f5e"/>`;
-    } else if (state.mouth === 'mask') {
-      mouthSvg = `<rect x="36" y="53" width="28" height="14" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>`;
-    } else {
-      mouthSvg = `<path d="M44 58 H56" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>`;
-    }
-
-    let accSvg = '';
-    if (state.acc === 'vr_glass') {
-      accSvg = `<rect x="25" y="38" width="50" height="16" rx="6" fill="#0f172a" stroke="#00e599" stroke-width="2"/>
-                <path d="M30 46 H70" stroke="#00b4d8" stroke-width="2"/>`;
-    } else if (state.acc === 'shades') {
-      accSvg = `<rect x="28" y="42" width="20" height="11" rx="2" fill="#111"/><rect x="52" y="42" width="20" height="11" rx="2" fill="#111"/><path d="M48 45 H52" stroke="#111" stroke-width="2"/>`;
-    } else if (state.acc === 'blush') {
-      accSvg = `<circle cx="30" cy="52" r="4" fill="#ff70a6" opacity="0.6"/><circle cx="70" cy="52" r="4" fill="#ff70a6" opacity="0.6"/>`;
-    }
-
+  function renderChiefSvg(c, size = 100) {
+    // 1. Одежда
     let outfitSvg = '';
-    if (state.outfit === 'suit') {
-      outfitSvg = `<path d="M22 84 Q50 74 78 84 L85 100 H15 Z" fill="#0f172a"/>
-                   <polygon points="50,78 44,90 56,90" fill="#fff"/>
-                   <polygon points="50,84 48,96 50,100 52,96" fill="${state.color}"/>`;
-    } else if (state.outfit === 'space_suit') {
-      outfitSvg = `<path d="M20 80 Q50 72 80 80 L88 100 H12 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
-                   <circle cx="50" cy="90" r="6" fill="${state.color}"/>`;
-    } else if (state.outfit === 'cyber_armor') {
-      outfitSvg = `<path d="M18 82 L50 76 L82 82 L88 100 H12 Z" fill="#1e293b"/>
-                   <path d="M35 84 L50 94 L65 84" stroke="${state.color}" stroke-width="3" fill="none"/>`;
+    if (c.outfit === 'suit') {
+      outfitSvg = `<path d="M22 84 Q50 72 78 84 L86 100 H14 Z" fill="#0f172a"/>
+                   <polygon points="50,78 44,92 56,92" fill="#fff"/>
+                   <polygon points="50,85 48,97 50,100 52,97" fill="${c.color}"/>`;
+    } else if (c.outfit === 'cyber') {
+      outfitSvg = `<path d="M18 82 L50 75 L82 82 L88 100 H12 Z" fill="#1e293b"/>
+                   <path d="M34 84 L50 94 L66 84" stroke="${c.color}" stroke-width="3" fill="none"/>`;
+    } else if (c.outfit === 'space') {
+      outfitSvg = `<path d="M20 80 Q50 72 80 80 L88 100 H12 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+                   <circle cx="50" cy="90" r="5" fill="${c.color}"/>`;
     } else {
-      outfitSvg = `<path d="M22 82 Q50 72 78 82 L86 100 H14 Z" fill="${state.color}"/>
+      outfitSvg = `<path d="M22 82 Q50 72 78 82 L86 100 H14 Z" fill="${c.color}"/>
                    <path d="M46 76 L50 86 L54 76" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"/>`;
+    }
+
+    // 2. Ушки енота
+    const earsSvg = `
+      <polygon points="26,20 38,40 18,36" fill="${c.fur}" stroke="#0f172a" stroke-width="1.5"/>
+      <polygon points="26,23 35,37 21,35" fill="#f8fafc"/>
+      <polygon points="74,20 62,40 82,36" fill="${c.fur}" stroke="#0f172a" stroke-width="1.5"/>
+      <polygon points="74,23 65,37 79,35" fill="#f8fafc"/>
+    `;
+
+    // 3. Форма мордочки енота (с пушистыми щёчками)
+    const headBase = `
+      <path d="M22 46 C20 32, 80 32, 78 46 C86 52, 86 64, 76 70 C68 76, 32 76, 24 70 C14 64, 14 52, 22 46 Z" fill="${c.fur}" stroke="#0f172a" stroke-width="1.5"/>
+      <!-- Белые пушистые щеки -->
+      <path d="M22 55 Q35 52 42 62 Q30 70 24 67 Z" fill="#f8fafc"/>
+      <path d="M78 55 Q65 52 58 62 Q70 70 76 67 Z" fill="#f8fafc"/>
+    `;
+
+    // 4. Фирменная маска енота вокруг глаз
+    let maskSvg = '';
+    if (c.mask === 'bandit') {
+      maskSvg = `
+        <ellipse cx="36" cy="50" rx="12" ry="7" fill="#0f172a" transform="rotate(-10 36 50)"/>
+        <ellipse cx="64" cy="50" rx="12" ry="7" fill="#0f172a" transform="rotate(10 64 50)"/>
+      `;
+    } else if (c.mask === 'cyber') {
+      maskSvg = `<polygon points="24,46 76,46 68,56 32,56" fill="${c.color}" opacity="0.8"/>`;
+    } else if (c.mask === 'sharp') {
+      maskSvg = `<polygon points="20,44 46,52 36,58" fill="#0f172a"/><polygon points="80,44 54,52 64,58" fill="#0f172a"/>`;
+    } else if (c.mask === 'stripes') {
+      maskSvg = `<path d="M26 44 L44 54" stroke="#0f172a" stroke-width="4"/><path d="M74 44 L56 54" stroke="#0f172a" stroke-width="4"/>`;
+    }
+
+    // 5. Глаза
+    let eyesSvg = '';
+    if (c.eyes === 'stars') {
+      eyesSvg = `<text x="31" y="55" font-size="12" fill="#ffb703">★</text><text x="59" y="55" font-size="12" fill="#ffb703">★</text>`;
+    } else if (c.eyes === 'wink') {
+      eyesSvg = `<circle cx="36" cy="50" r="3.5" fill="#fff"/><circle cx="37" cy="49" r="1.5" fill="#0f172a"/>
+                 <path d="M60 50 Q64 46 68 50" stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none"/>`;
+    } else if (c.eyes === 'laser') {
+      eyesSvg = `<line x1="26" y1="50" x2="74" y2="50" stroke="#ff0055" stroke-width="3.5"/>
+                 <circle cx="36" cy="50" r="2.5" fill="#fff"/><circle cx="64" cy="50" r="2.5" fill="#fff"/>`;
+    } else if (c.eyes === 'shades') {
+      eyesSvg = `<rect x="24" y="44" width="22" height="11" rx="2" fill="#111" stroke="#fff" stroke-width="1"/>
+                 <rect x="54" y="44" width="22" height="11" rx="2" fill="#111" stroke="#fff" stroke-width="1"/>
+                 <line x1="46" y1="48" x2="54" y2="48" stroke="#fff" stroke-width="2"/>`;
+    } else if (c.eyes === 'vr') {
+      eyesSvg = `<rect x="24" y="42" width="52" height="15" rx="5" fill="#0f172a" stroke="${c.color}" stroke-width="2"/>
+                 <line x1="28" y1="49" x2="72" y2="49" stroke="${c.color}" stroke-width="2"/>`;
+    } else {
+      eyesSvg = `<circle cx="36" cy="50" r="4" fill="#ffffff"/><circle cx="37" cy="49" r="2" fill="#0f172a"/>
+                 <circle cx="64" cy="50" r="4" fill="#ffffff"/><circle cx="65" cy="49" r="2" fill="#0f172a"/>`;
+    }
+
+    // 6. Носик и ротик
+    let mouthSvg = '';
+    const noseSvg = `<polygon points="50,57 46,53 54,53" fill="#0f172a"/>`;
+
+    if (c.mouth === 'tooth') {
+      mouthSvg = `<path d="M46 62 Q50 67 54 62" stroke="#0f172a" stroke-width="2" fill="none"/><polygon points="48,62 50,65 52,62" fill="#fff"/>`;
+    } else if (c.mouth === 'tongue') {
+      mouthSvg = `<path d="M46 62 Q50 67 54 62 Z" fill="#0f172a"/><path d="M48 64 Q50 70 52 64 Z" fill="#f43f5e"/>`;
+    } else if (c.mouth === 'open') {
+      mouthSvg = `<path d="M45 61 Q50 71 55 61 Z" fill="#e11d48"/>`;
+    } else if (c.mouth === 'mask') {
+      mouthSvg = `<rect x="40" y="58" width="20" height="10" rx="3" fill="#334155" stroke="${c.color}" stroke-width="1"/>`;
+    } else {
+      mouthSvg = `<path d="M45 62 Q50 66 55 62" stroke="#0f172a" stroke-width="2" stroke-linecap="round" fill="none"/>`;
+    }
+
+    // 7. Головные уборы
+    let hatSvg = '';
+    if (c.hat === 'cap') {
+      hatSvg = `<path d="M26 38 Q50 18 74 38 Z" fill="${c.color}"/>
+                <path d="M68 34 Q86 36 92 41 Q76 45 64 39 Z" fill="${c.color}"/>`;
+    } else if (c.hat === 'crown') {
+      hatSvg = `<polygon points="32,32 38,14 46,24 50,10 54,24 62,14 68,32" fill="#ffb703" stroke="#fff" stroke-width="1.5"/>`;
+    } else if (c.hat === 'headset') {
+      hatSvg = `<path d="M20 44 Q50 16 80 44" fill="none" stroke="#64748b" stroke-width="4.5"/>
+                <rect x="15" y="42" width="7" height="14" rx="3" fill="${c.color}"/>
+                <rect x="78" y="42" width="7" height="14" rx="3" fill="${c.color}"/>`;
+    } else if (c.hat === 'halo') {
+      hatSvg = `<ellipse cx="50" cy="18" rx="22" ry="6" fill="none" stroke="#ffb703" stroke-width="3"/>`;
+    } else if (c.hat === 'beanie') {
+      hatSvg = `<path d="M28 38 Q50 18 72 38 Z" fill="${c.color}"/><circle cx="50" cy="20" r="4.5" fill="#fff"/>`;
+    } else if (c.hat === 'space') {
+      hatSvg = `<circle cx="50" cy="46" r="32" fill="none" stroke="#e2e8f0" stroke-width="4" opacity="0.65"/>`;
     }
 
     return `
       <svg viewBox="0 0 100 100" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
-        <!-- Тело / Одежда -->
         ${outfitSvg}
-        <!-- Голова -->
-        <circle cx="50" cy="48" r="26" fill="${state.skin}" stroke="rgba(0,0,0,0.15)" stroke-width="1.5"/>
-        <!-- Глаза -->
+        ${earsSvg}
+        ${headBase}
+        ${maskSvg}
         ${eyesSvg}
-        <!-- Рот -->
+        ${noseSvg}
         ${mouthSvg}
-        <!-- Прическа / Шлем -->
-        ${hairSvg}
-        <!-- Аксессуары -->
-        ${accSvg}
+        ${hatSvg}
       </svg>
     `;
   }
 
-  function updateAllAvatarDisplays() {
-    const svgCode = renderRedditAvatarSvg(avatarState);
+  function updateChiefAvatarDisplays() {
     const builderPreview = document.getElementById('builderAvatarPreview');
     const profileBubble = document.getElementById('myProfileAvatarBubble');
     
-    if (builderPreview) builderPreview.innerHTML = renderRedditAvatarSvg(avatarState, 100);
-    if (profileBubble) profileBubble.innerHTML = renderRedditAvatarSvg(avatarState, 58);
+    if (builderPreview) builderPreview.innerHTML = renderChiefSvg(chiefAvatar, 110);
+    if (profileBubble) profileBubble.innerHTML = renderChiefSvg(chiefAvatar, 58);
   }
 
-  function switchBuilderTab(category, btn) {
-    activeBuilderTab = category;
+  function switchChiefTab(category, btn) {
+    activeChiefTab = category;
     document.querySelectorAll('.builder-cat-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
 
@@ -2009,43 +2072,43 @@
     if (!grid) return;
 
     if (category === 'color') {
-      grid.innerHTML = AVATAR_DATA.color.map(c => `
-        <div class="builder-item-choice ${avatarState.color === c ? 'selected' : ''}" onclick="setAvatarPart('color', '${c}')">
-          <div class="builder-color-dot" style="background:${c};"></div>
+      grid.innerHTML = CHIEF_DATA.color.map(col => `
+        <div class="builder-item-choice ${chiefAvatar.color === col ? 'selected' : ''}" onclick="setChiefPart('color', '${col}')">
+          <div class="builder-color-dot" style="background:${col};"></div>
         </div>
       `).join('');
     } else {
-      const items = AVATAR_DATA[category] || [];
+      const items = CHIEF_DATA[category] || [];
       grid.innerHTML = items.map(item => `
-        <div class="builder-item-choice ${avatarState[category] === item ? 'selected' : ''}" onclick="setAvatarPart('${category}', '${item}')">
-          ${item.replace(/_/g, ' ')}
+        <div class="builder-item-choice ${chiefAvatar[category] === item.id ? 'selected' : ''}" onclick="setChiefPart('${category}', '${item.id}')">
+          ${item.name}
         </div>
       `).join('');
     }
   }
 
-  function setAvatarPart(part, value) {
+  function setChiefPart(part, value) {
     triggerHaptic('light');
-    avatarState[part] = value;
-    localStorage.setItem('openhall_reddit_avatar', JSON.stringify(avatarState));
-    updateAllAvatarDisplays();
-    switchBuilderTab(activeBuilderTab);
+    chiefAvatar[part] = value;
+    localStorage.setItem('openhall_chief_avatar', JSON.stringify(chiefAvatar));
+    updateChiefAvatarDisplays();
+    switchChiefTab(activeChiefTab);
   }
 
-  function randomizeAvatar() {
+  function randomizeChiefAvatar() {
     triggerHaptic('medium');
-    avatarState = {
-      skin: AVATAR_DATA.skin[Math.floor(Math.random() * AVATAR_DATA.skin.length)],
-      eyes: AVATAR_DATA.eyes[Math.floor(Math.random() * AVATAR_DATA.eyes.length)],
-      mouth: AVATAR_DATA.mouth[Math.floor(Math.random() * AVATAR_DATA.mouth.length)],
-      hair: AVATAR_DATA.hair[Math.floor(Math.random() * AVATAR_DATA.hair.length)],
-      acc: AVATAR_DATA.acc[Math.floor(Math.random() * AVATAR_DATA.acc.length)],
-      outfit: AVATAR_DATA.outfit[Math.floor(Math.random() * AVATAR_DATA.outfit.length)],
-      color: AVATAR_DATA.color[Math.floor(Math.random() * AVATAR_DATA.color.length)]
+    chiefAvatar = {
+      fur: CHIEF_DATA.fur[Math.floor(Math.random() * CHIEF_DATA.fur.length)].id,
+      mask: CHIEF_DATA.mask[Math.floor(Math.random() * CHIEF_DATA.mask.length)].id,
+      eyes: CHIEF_DATA.eyes[Math.floor(Math.random() * CHIEF_DATA.eyes.length)].id,
+      mouth: CHIEF_DATA.mouth[Math.floor(Math.random() * CHIEF_DATA.mouth.length)].id,
+      hat: CHIEF_DATA.hat[Math.floor(Math.random() * CHIEF_DATA.hat.length)].id,
+      outfit: CHIEF_DATA.outfit[Math.floor(Math.random() * CHIEF_DATA.outfit.length)].id,
+      color: CHIEF_DATA.color[Math.floor(Math.random() * CHIEF_DATA.color.length)]
     };
-    localStorage.setItem('openhall_reddit_avatar', JSON.stringify(avatarState));
-    updateAllAvatarDisplays();
-    switchBuilderTab(activeBuilderTab);
+    localStorage.setItem('openhall_chief_avatar', JSON.stringify(chiefAvatar));
+    updateChiefAvatarDisplays();
+    switchChiefTab(activeChiefTab);
   }
 
   async function saveCustomProfile() {
@@ -2060,17 +2123,17 @@
         body: JSON.stringify({
           initData: tg?.initData || '',
           custom_handle: formattedHandle,
-          avatar_json: JSON.stringify(avatarState)
+          avatar_json: JSON.stringify(chiefAvatar)
         })
       });
       const data = await res.json();
       if (data.status === 'ok') {
-        alert('Персонаж успешно сохранен!');
+        alert('Енот Чиф успешно сохранен!');
         document.getElementById('user_display_name').textContent = data.user.custom_handle || data.user.name;
         fetchFeed();
       }
     } catch (e) {
-      alert('Персонаж сохранен локально!');
+      alert('Енот сохранен локально!');
     }
   }
 
@@ -2423,14 +2486,14 @@
       title.textContent = `Профиль ${data.name}`;
       const tierBadge = (data.reviews_count >= 10 || data.projects_count >= 1) ? '👑 Syndicate Partner' : ((data.reviews_count >= 3) ? '⚡️ Certified Reviewer' : '✦ Community Scout');
 
-      let userAvatarSvg = renderRedditAvatarSvg(avatarState, 52);
+      let userChiefSvg = renderChiefSvg(chiefAvatar, 52);
       try {
-        if (data.avatar_json) userAvatarSvg = renderRedditAvatarSvg(JSON.parse(data.avatar_json), 52);
+        if (data.avatar_json) userChiefSvg = renderChiefSvg(JSON.parse(data.avatar_json), 52);
       } catch (e) {}
 
       body.innerHTML = `
         <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
-          <div style="width:52px; height:52px; border-radius:50%; overflow:hidden; border:2px solid var(--emerald); box-shadow:0 4px 14px rgba(0,0,0,0.3);">${userAvatarSvg}</div>
+          <div style="width:52px; height:52px; border-radius:50%; overflow:hidden; border:2px solid var(--emerald); box-shadow:0 4px 14px rgba(0,0,0,0.3);">${userChiefSvg}</div>
           <div>
             <h3 style="font-size:18px; font-weight:800;">${escapeHtml(data.name)}</h3>
             <span class="badge" style="display:inline-block; margin-top:4px; font-size:10px;">${tierBadge}</span>
@@ -2502,7 +2565,7 @@
 
       const authorBadgeHtml = p.submitted_by ? `
         <div class="author-badge ios-btn-tap" onclick="openUserProfile('${p.submitted_by}')">
-          <div class="author-avatar-bubble">${renderRedditAvatarSvg(avatarState, 24)}</div>
+          <div class="author-avatar-bubble">${renderChiefSvg(chiefAvatar, 26)}</div>
           <span class="author-name-text">${escapeHtml(p.author_name || 'Фаундер')}</span>
         </div>
       ` : '';
@@ -2701,7 +2764,7 @@
         return `
           <div class="review-item">
             <div class="author-badge ios-btn-tap" style="margin-bottom:6px;">
-              <div class="author-avatar-bubble">${renderRedditAvatarSvg(avatarState, 24)}</div>
+              <div class="author-avatar-bubble">${renderChiefSvg(chiefAvatar, 26)}</div>
               <span class="author-name-text">${escapeHtml(r.author_name)}</span>
             </div>
             <div class="review-item-header">
@@ -2754,8 +2817,8 @@
 
         if (u.avatar_json) {
           try {
-            avatarState = JSON.parse(u.avatar_json);
-            updateAllAvatarDisplays();
+            chiefAvatar = JSON.parse(u.avatar_json);
+            updateChiefAvatarDisplays();
           } catch(e) {}
         }
 
@@ -2808,8 +2871,8 @@
     const stripCard = document.getElementById('app-community-strip');
     if (tabId === 'profile') {
       if (stripCard) stripCard.style.display = 'none';
-      switchBuilderTab('hair');
-      updateAllAvatarDisplays();
+      switchChiefTab('fur');
+      updateChiefAvatarDisplays();
     } else {
       if (stripCard) stripCard.style.display = 'block';
     }
@@ -3475,7 +3538,7 @@
   updateCommunityStrip();
   setInterval(updateCommunityStrip, 45000);
   applyTiltToAll();
-  updateAllAvatarDisplays();
+  updateChiefAvatarDisplays();
 </script>
 
 </body>
