@@ -630,14 +630,15 @@
       border-color: var(--emerald);
     }
     .author-avatar-bubble {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      background: var(--card-bg);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
     }
     .author-avatar-bubble svg {
       width: 100%;
@@ -1040,12 +1041,12 @@
       color: #059669;
     }
 
-    /* --- Конструктор Енота Чифа (Chief Snoo-Style) --- */
+    /* --- Конструктор Енота Чифа (Пухлый Chibi-Style из референса) --- */
     .chief-avatar-card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 14px;
+      padding: 18px 14px;
       background: var(--input-bg);
       border: 1px solid var(--tag-border);
       border-radius: 20px;
@@ -1054,12 +1055,12 @@
     }
 
     .chief-avatar-canvas {
-      width: 110px;
-      height: 110px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       position: relative;
-      background: radial-gradient(circle, rgba(0, 229, 153, 0.2) 0%, rgba(14, 20, 32, 0.6) 100%);
-      border: 2.5px solid var(--emerald);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(14, 20, 32, 0.7) 100%);
+      border: 2px solid var(--card-border);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
       margin-bottom: 14px;
       overflow: hidden;
@@ -1680,7 +1681,7 @@
     </div>
   </div>
 
-  <!-- ВКЛАДКА 4: ПРОФИЛЬ С ЕНОТОМ ЧИФОМ -->
+  <!-- ВКЛАДКА 4: ПРОФИЛЬ С ЧИФОМ (РЕДИЗАЙН ИЗ РЕФЕРЕНСА) -->
   <div id="tab-profile" class="tab-view">
     <h1 id="t_prof_title">Профиль участника</h1>
     <p class="subtitle" id="t_prof_sub">Личная статистика и статус в сообществе</p>
@@ -1689,7 +1690,7 @@
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:14px;">
           <div class="avatar-preview-wrapper">
-            <div id="myProfileAvatarBubble" style="width:58px; height:58px; border-radius:50%; overflow:hidden; border:2px solid var(--emerald); box-shadow:0 4px 14px rgba(0,0,0,0.3);"></div>
+            <div id="myProfileAvatarBubble" style="width:62px; height:62px; border-radius:50%; overflow:hidden; border:2.5px solid var(--emerald); box-shadow:0 6px 18px rgba(0,0,0,0.35); background: var(--input-bg);"></div>
           </div>
           <div>
             <h3 id="user_display_name" style="font-size:18px; margin-bottom:2px;">Участник комьюнити</h3>
@@ -1705,10 +1706,10 @@
       </div>
     </div>
 
-    <!-- Конструктор Енота Чифа в стиле Reddit (>100 000 комбинаций) -->
+    <!-- Конструктор Енота Чифа в Chibi 2D стиле -->
     <div class="card tilt-card">
-      <h3 style="margin-bottom:6px;">Кастомизация Енота Чифа</h3>
-      <p style="margin-bottom:14px; font-size:12px;">Соберите своего уникального енота: меняйте окрас, эмоции, шлемы и одежду.</p>
+      <h3 style="margin-bottom:6px;">Кастомизация Чифа</h3>
+      <p style="margin-bottom:14px; font-size:12px;">Соберите своего уникального пухлого енота: меняйте окрас, шляпы, очки и костюмы.</p>
 
       <div class="chief-avatar-card">
         <div class="chief-avatar-canvas" id="builderAvatarPreview"></div>
@@ -1718,11 +1719,9 @@
 
         <div class="builder-category-tabs">
           <button class="builder-cat-btn active" onclick="switchChiefTab('fur', this)">Окрас</button>
-          <button class="builder-cat-btn" onclick="switchChiefTab('mask', this)">Маска</button>
-          <button class="builder-cat-btn" onclick="switchChiefTab('eyes', this)">Глаза</button>
-          <button class="builder-cat-btn" onclick="switchChiefTab('mouth', this)">Эмоция</button>
-          <button class="builder-cat-btn" onclick="switchChiefTab('hat', this)">Головной убор</button>
-          <button class="builder-cat-btn" onclick="switchChiefTab('outfit', this)">Одежда</button>
+          <button class="builder-cat-btn" onclick="switchChiefTab('hat', this)">Шляпы</button>
+          <button class="builder-cat-btn" onclick="switchChiefTab('eyes', this)">Очки / Визор</button>
+          <button class="builder-cat-btn" onclick="switchChiefTab('outfit', this)">Одежда / Пояс</button>
           <button class="builder-cat-btn" onclick="switchChiefTab('color', this)">Цвет</button>
         </div>
 
@@ -1732,7 +1731,7 @@
       <label for="customHandleInput" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;">Отображаемый ник</label>
       <input type="text" id="customHandleInput" maxlength="30" placeholder="@nickname" style="margin-bottom:14px;">
 
-      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить енота</button>
+      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить персонажа</button>
     </div>
 
     <!-- Форма подачи проекта -->
@@ -1860,196 +1859,259 @@
   let selectedFormTags = new Set();
   let currentTheme = localStorage.getItem('openhall_theme') || 'dark';
 
-  /* --- Енот Чиф: Структура и Генератор (>100 000 уникальных комбинаций) --- */
+  /* --- Енот Чиф: Отрисовка по референсу (Пухляш 2D) --- */
   let chiefAvatar = {
-    fur: '#94a3b8',
-    mask: 'bandit',
-    eyes: 'smile',
-    mouth: 'smile',
-    hat: 'none',
-    outfit: 'hoodie',
-    color: '#00e599'
+    fur: '#8c95a6',     // Базовый серо-голубой тон шерсти
+    belly: '#fbf5e6',   // Теплый пухлый животик
+    dark: '#3f4452',    // Полоски и маска
+    hat: 'none',        // Головной убор
+    eyes: 'glasses',    // Очки / глаза
+    outfit: 'belt_bag', // Пояс / жилетка
+    color: '#38bdf8'    // Акцентный цвет
   };
 
   try {
-    const saved = localStorage.getItem('openhall_chief_avatar');
+    const saved = localStorage.getItem('openhall_chubby_chief');
     if (saved) chiefAvatar = JSON.parse(saved);
   } catch (e) {}
 
-  const CHIEF_DATA = {
+  const CHIEF_PRESETS = {
     fur: [
-      { id: '#94a3b8', name: 'Классик' },
-      { id: '#e2e8f0', name: 'Снежный' },
-      { id: '#475569', name: 'Графит' },
-      { id: '#1e293b', name: 'Тень' },
-      { id: '#d97706', name: 'Рыжий' },
-      { id: '#00e599', name: 'Изумруд' },
-      { id: '#00b4d8', name: 'Кибер' },
-      { id: '#a855f7', name: 'Неон' }
-    ],
-    mask: [
-      { id: 'bandit', name: 'Бандит' },
-      { id: 'ninja', name: 'Ниндзя' },
-      { id: 'cyber', name: 'Кибер' },
-      { id: 'sharp', name: 'Острая' },
-      { id: 'stripes', name: 'Полосы' },
-      { id: 'none', name: 'Без маски' }
-    ],
-    eyes: [
-      { id: 'smile', name: 'Хитрый' },
-      { id: 'stars', name: 'Звёзды' },
-      { id: 'wink', name: 'Подмиг' },
-      { id: 'laser', name: 'Лазер' },
-      { id: 'shades', name: 'Очки' },
-      { id: 'vr', name: 'VR-шлем' },
-      { id: 'curious', name: 'Внимательный' }
-    ],
-    mouth: [
-      { id: 'smile', name: 'Улыбка' },
-      { id: 'tooth', name: 'Зубик' },
-      { id: 'tongue', name: 'Язык' },
-      { id: 'smirk', name: 'Ухмылка' },
-      { id: 'open', name: 'Радость' },
-      { id: 'mask', name: 'Респиратор' }
+      { id: '#8c95a6', dark: '#3f4452', name: 'Классик' },
+      { id: '#9ca3af', dark: '#1f2937', name: 'Графит' },
+      { id: '#b0a4d0', dark: '#4c3a69', name: 'Лаванда' },
+      { id: '#d9a07a', dark: '#5c3317', name: 'Рыжий' },
+      { id: '#6ee7b7', dark: '#064e3b', name: 'Изумруд' },
+      { id: '#7dd3fc', dark: '#0c4a6e', name: 'Кибер' },
+      { id: '#e2e8f0', dark: '#64748b', name: 'Снежок' }
     ],
     hat: [
       { id: 'none', name: 'Без шапки' },
-      { id: 'cap', name: 'Кепка' },
-      { id: 'hood', name: 'Капюшон' },
-      { id: 'crown', name: 'Корона' },
-      { id: 'headset', name: 'Гарнитура' },
-      { id: 'beanie', name: 'Бини' },
-      { id: 'space', name: 'Скафандр' },
+      { id: 'cowboy', name: 'Ковбой' },
+      { id: 'viking', name: 'Викинг' },
+      { id: 'santa', name: 'Колпак' },
+      { id: 'beret', name: 'Берет' },
+      { id: 'beanie', name: 'Кепка' },
+      { id: 'propeller', name: 'Пропеллер' },
+      { id: 'feathers', name: 'Перья' },
       { id: 'halo', name: 'Нимб' }
     ],
-    outfit: [
-      { id: 'hoodie', name: 'Худи' },
-      { id: 'suit', name: 'Пиджак' },
-      { id: 'cyber', name: 'Броня' },
-      { id: 'space', name: 'Космо' },
-      { id: 'tshirt', name: 'Футболка' },
-      { id: 'jacket', name: 'Куртка' }
+    eyes: [
+      { id: 'normal', name: 'Точки' },
+      { id: 'glasses', name: 'Круглые очки' },
+      { id: 'visor', name: 'Маска для сна' },
+      { id: 'goggles', name: 'Стимпанк' },
+      { id: 'blinds', name: 'Жалюзи' },
+      { id: 'eyepatch', name: 'Пират' }
     ],
-    color: ['#00e599', '#00b4d8', '#1877f2', '#8b5cf6', '#ec4899', '#f59e0b', '#ef4444', '#ffffff', '#64748b', '#1e293b']
+    outfit: [
+      { id: 'none', name: 'Без одежды' },
+      { id: 'vest', name: 'Жилетка' },
+      { id: 'vest_open', name: 'Куртка' },
+      { id: 'belt_buckle', name: 'Пояс с пряжкой' },
+      { id: 'belt_bag', name: 'Пояс искателя' },
+      { id: 'cape_amulet', name: 'Амулет' }
+    ],
+    color: ['#38bdf8', '#f59e0b', '#10b981', '#f43f5e', '#8b5cf6', '#ea580c', '#ffffff', '#1e293b']
   };
 
   let activeChiefTab = 'fur';
 
-  function renderChiefSvg(c, size = 100) {
-    // 1. Одежда
-    let outfitSvg = '';
-    if (c.outfit === 'suit') {
-      outfitSvg = `<path d="M22 84 Q50 72 78 84 L86 100 H14 Z" fill="#0f172a"/>
-                   <polygon points="50,78 44,92 56,92" fill="#fff"/>
-                   <polygon points="50,85 48,97 50,100 52,97" fill="${c.color}"/>`;
-    } else if (c.outfit === 'cyber') {
-      outfitSvg = `<path d="M18 82 L50 75 L82 82 L88 100 H12 Z" fill="#1e293b"/>
-                   <path d="M34 84 L50 94 L66 84" stroke="${c.color}" stroke-width="3" fill="none"/>`;
-    } else if (c.outfit === 'space') {
-      outfitSvg = `<path d="M20 80 Q50 72 80 80 L88 100 H12 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
-                   <circle cx="50" cy="90" r="5" fill="${c.color}"/>`;
-    } else {
-      outfitSvg = `<path d="M22 82 Q50 72 78 82 L86 100 H14 Z" fill="${c.color}"/>
-                   <path d="M46 76 L50 86 L54 76" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"/>`;
-    }
+  function renderChubbyChiefSvg(c, size = 100) {
+    // 1. Полосатый пухлый хвост сбоку
+    const tailSvg = `
+      <!-- Хвост -->
+      <path d="M38 72 C22 74, 8 68, 12 55 C16 46, 26 50, 42 62 Z" fill="${c.fur}" stroke="#2a2e39" stroke-width="2.5" stroke-linejoin="round"/>
+      <!-- Полоски на хвосте -->
+      <path d="M14 54 C17 50, 22 52, 26 57" stroke="${c.dark}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <path d="M22 61 C26 58, 30 60, 34 66" stroke="${c.dark}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+    `;
 
-    // 2. Ушки енота
+    // 2. Ушки енота с черным контуром и белой каёмкой
     const earsSvg = `
-      <polygon points="26,20 38,40 18,36" fill="${c.fur}" stroke="#0f172a" stroke-width="1.5"/>
-      <polygon points="26,23 35,37 21,35" fill="#f8fafc"/>
-      <polygon points="74,20 62,40 82,36" fill="${c.fur}" stroke="#0f172a" stroke-width="1.5"/>
-      <polygon points="74,23 65,37 79,35" fill="#f8fafc"/>
+      <path d="M42 28 C39 16, 46 12, 50 20 Z" fill="${c.fur}" stroke="#2a2e39" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M43 25 C41 18, 46 16, 48 22 Z" fill="#ffffff"/>
+      <path d="M68 28 C71 16, 64 12, 60 20 Z" fill="${c.fur}" stroke="#2a2e39" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M67 25 C69 18, 64 16, 62 22 Z" fill="#ffffff"/>
     `;
 
-    // 3. Форма мордочки енота (с пушистыми щёчками)
-    const headBase = `
-      <path d="M22 46 C20 32, 80 32, 78 46 C86 52, 86 64, 76 70 C68 76, 32 76, 24 70 C14 64, 14 52, 22 46 Z" fill="${c.fur}" stroke="#0f172a" stroke-width="1.5"/>
-      <!-- Белые пушистые щеки -->
-      <path d="M22 55 Q35 52 42 62 Q30 70 24 67 Z" fill="#f8fafc"/>
-      <path d="M78 55 Q65 52 58 62 Q70 70 76 67 Z" fill="#f8fafc"/>
+    // 3. Тело-фасолина (главная пухлая тушка)
+    const bodySvg = `
+      <path d="M45 28 C35 34, 34 64, 40 76 C46 84, 68 84, 74 76 C80 64, 76 34, 65 28 C58 24, 52 24, 45 28 Z" fill="${c.fur}" stroke="#2a2e39" stroke-width="2.5" stroke-linejoin="round"/>
+      <!-- Тень снизу тушки -->
+      <path d="M42 74 C48 83, 66 83, 72 74 C66 79, 48 79, 42 74 Z" fill="rgba(0,0,0,0.15)"/>
     `;
 
-    // 4. Фирменная маска енота вокруг глаз
-    let maskSvg = '';
-    if (c.mask === 'bandit') {
-      maskSvg = `
-        <ellipse cx="36" cy="50" rx="12" ry="7" fill="#0f172a" transform="rotate(-10 36 50)"/>
-        <ellipse cx="64" cy="50" rx="12" ry="7" fill="#0f172a" transform="rotate(10 64 50)"/>
-      `;
-    } else if (c.mask === 'cyber') {
-      maskSvg = `<polygon points="24,46 76,46 68,56 32,56" fill="${c.color}" opacity="0.8"/>`;
-    } else if (c.mask === 'sharp') {
-      maskSvg = `<polygon points="20,44 46,52 36,58" fill="#0f172a"/><polygon points="80,44 54,52 64,58" fill="#0f172a"/>`;
-    } else if (c.mask === 'stripes') {
-      maskSvg = `<path d="M26 44 L44 54" stroke="#0f172a" stroke-width="4"/><path d="M74 44 L56 54" stroke="#0f172a" stroke-width="4"/>`;
-    }
+    // 4. Характерная маска енота на мордочке
+    const maskSvg = `
+      <path d="M42 36 C38 42, 40 50, 48 48 C51 45, 52 42, 55 42 C58 42, 59 45, 62 48 C70 50, 72 42, 68 36 C63 32, 47 32, 42 36 Z" fill="${c.dark}" stroke="#2a2e39" stroke-width="1.5" stroke-linejoin="round"/>
+    `;
 
-    // 5. Глаза
+    // 5. Большой пухлый животик кремового цвета
+    const bellySvg = `
+      <path d="M46 54 C40 58, 42 78, 54 81 C66 84, 72 74, 70 58 C68 48, 52 46, 46 54 Z" fill="${c.belly}" stroke="#2a2e39" stroke-width="2"/>
+    `;
+
+    // 6. Глазки-бусинки и носик
     let eyesSvg = '';
-    if (c.eyes === 'stars') {
-      eyesSvg = `<text x="31" y="55" font-size="12" fill="#ffb703">★</text><text x="59" y="55" font-size="12" fill="#ffb703">★</text>`;
-    } else if (c.eyes === 'wink') {
-      eyesSvg = `<circle cx="36" cy="50" r="3.5" fill="#fff"/><circle cx="37" cy="49" r="1.5" fill="#0f172a"/>
-                 <path d="M60 50 Q64 46 68 50" stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none"/>`;
-    } else if (c.eyes === 'laser') {
-      eyesSvg = `<line x1="26" y1="50" x2="74" y2="50" stroke="#ff0055" stroke-width="3.5"/>
-                 <circle cx="36" cy="50" r="2.5" fill="#fff"/><circle cx="64" cy="50" r="2.5" fill="#fff"/>`;
-    } else if (c.eyes === 'shades') {
-      eyesSvg = `<rect x="24" y="44" width="22" height="11" rx="2" fill="#111" stroke="#fff" stroke-width="1"/>
-                 <rect x="54" y="44" width="22" height="11" rx="2" fill="#111" stroke="#fff" stroke-width="1"/>
-                 <line x1="46" y1="48" x2="54" y2="48" stroke="#fff" stroke-width="2"/>`;
-    } else if (c.eyes === 'vr') {
-      eyesSvg = `<rect x="24" y="42" width="52" height="15" rx="5" fill="#0f172a" stroke="${c.color}" stroke-width="2"/>
-                 <line x1="28" y1="49" x2="72" y2="49" stroke="${c.color}" stroke-width="2"/>`;
+    if (c.eyes === 'glasses') {
+      eyesSvg = `
+        <!-- Круглые ретро-очки -->
+        <circle cx="48" cy="43" r="6.5" fill="rgba(255,255,255,0.45)" stroke="#eab308" stroke-width="2.2"/>
+        <circle cx="62" cy="43" r="6.5" fill="rgba(255,255,255,0.45)" stroke="#eab308" stroke-width="2.2"/>
+        <line x1="54.5" y1="43" x2="55.5" y2="43" stroke="#eab308" stroke-width="2.2"/>
+        <circle cx="48" cy="43" r="2" fill="#1e293b"/>
+        <circle cx="62" cy="43" r="2" fill="#1e293b"/>
+      `;
+    } else if (c.eyes === 'visor') {
+      eyesSvg = `
+        <!-- Мягкая розовая/неоновая маска-визор -->
+        <path d="M42 39 C40 37, 70 37, 68 39 C72 44, 70 48, 64 48 C58 48, 52 46, 46 48 C40 48, 38 44, 42 39 Z" fill="${c.color}" stroke="#2a2e39" stroke-width="2"/>
+        <circle cx="46" cy="43" r="1.5" fill="#fff" opacity="0.8"/>
+        <circle cx="64" cy="43" r="1.5" fill="#fff" opacity="0.8"/>
+      `;
+    } else if (c.eyes === 'goggles') {
+      eyesSvg = `
+        <ellipse cx="48" cy="43" rx="6" ry="6" fill="#f43f5e" stroke="#2a2e39" stroke-width="2.2"/>
+        <ellipse cx="62" cy="43" rx="6" ry="6" fill="#f43f5e" stroke="#2a2e39" stroke-width="2.2"/>
+        <line x1="54" y1="43" x2="56" y2="43" stroke="#2a2e39" stroke-width="2.5"/>
+        <circle cx="46.5" cy="41.5" r="1.5" fill="#fff"/>
+        <circle cx="60.5" cy="41.5" r="1.5" fill="#fff"/>
+      `;
+    } else if (c.eyes === 'blinds') {
+      eyesSvg = `
+        <rect x="42" y="38" width="13" height="10" rx="2" fill="#f97316" stroke="#2a2e39" stroke-width="1.8"/>
+        <rect x="56" y="38" width="13" height="10" rx="2" fill="#f97316" stroke="#2a2e39" stroke-width="1.8"/>
+        <line x1="42" y1="42" x2="55" y2="42" stroke="#fff" stroke-width="1.5"/>
+        <line x1="56" y1="42" x2="69" y2="42" stroke="#fff" stroke-width="1.5"/>
+        <line x1="53" y1="41" x2="58" y2="41" stroke="#2a2e39" stroke-width="2"/>
+      `;
+    } else if (c.eyes === 'eyepatch') {
+      eyesSvg = `
+        <circle cx="48" cy="43" r="5.5" fill="#111827" stroke="#2a2e39" stroke-width="1.8"/>
+        <line x1="41" y1="36" x2="68" y2="48" stroke="#111827" stroke-width="1.8"/>
+        <circle cx="62" cy="43" r="2.2" fill="#1e293b"/>
+      `;
     } else {
-      eyesSvg = `<circle cx="36" cy="50" r="4" fill="#ffffff"/><circle cx="37" cy="49" r="2" fill="#0f172a"/>
-                 <circle cx="64" cy="50" r="4" fill="#ffffff"/><circle cx="65" cy="49" r="2" fill="#0f172a"/>`;
+      eyesSvg = `
+        <!-- Обычные аккуратные глазки-бусинки -->
+        <circle cx="48" cy="43" r="2.4" fill="#1e293b"/>
+        <circle cx="62" cy="43" r="2.4" fill="#1e293b"/>
+        <circle cx="47.5" cy="42" r="0.8" fill="#ffffff"/>
+        <circle cx="61.5" cy="42" r="0.8" fill="#ffffff"/>
+      `;
     }
 
-    // 6. Носик и ротик
-    let mouthSvg = '';
-    const noseSvg = `<polygon points="50,57 46,53 54,53" fill="#0f172a"/>`;
+    // Носик и ротик
+    const faceFeatures = `
+      <ellipse cx="55" cy="46" rx="2.2" ry="1.6" fill="#1e293b"/>
+      <path d="M53.5 48.5 Q55 50.5 56.5 48.5" stroke="#1e293b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    `;
 
-    if (c.mouth === 'tooth') {
-      mouthSvg = `<path d="M46 62 Q50 67 54 62" stroke="#0f172a" stroke-width="2" fill="none"/><polygon points="48,62 50,65 52,62" fill="#fff"/>`;
-    } else if (c.mouth === 'tongue') {
-      mouthSvg = `<path d="M46 62 Q50 67 54 62 Z" fill="#0f172a"/><path d="M48 64 Q50 70 52 64 Z" fill="#f43f5e"/>`;
-    } else if (c.mouth === 'open') {
-      mouthSvg = `<path d="M45 61 Q50 71 55 61 Z" fill="#e11d48"/>`;
-    } else if (c.mouth === 'mask') {
-      mouthSvg = `<rect x="40" y="58" width="20" height="10" rx="3" fill="#334155" stroke="${c.color}" stroke-width="1"/>`;
-    } else {
-      mouthSvg = `<path d="M45 62 Q50 66 55 62" stroke="#0f172a" stroke-width="2" stroke-linecap="round" fill="none"/>`;
+    // 7. Лапки (маленькие круглые лапки снизу и по бокам)
+    const pawsSvg = `
+      <ellipse cx="44" cy="79" rx="4" ry="2.5" fill="${c.fur}" stroke="#2a2e39" stroke-width="2"/>
+      <ellipse cx="66" cy="79" rx="4" ry="2.5" fill="${c.fur}" stroke="#2a2e39" stroke-width="2"/>
+      <ellipse cx="38" cy="56" rx="3.5" ry="5.5" fill="${c.fur}" stroke="#2a2e39" stroke-width="2" transform="rotate(-15 38 56)"/>
+      <ellipse cx="72" cy="56" rx="3.5" ry="5.5" fill="${c.fur}" stroke="#2a2e39" stroke-width="2" transform="rotate(15 72 56)"/>
+    `;
+
+    // 8. Одежда / Пояс / Жилетка
+    let outfitSvg = '';
+    if (c.outfit === 'vest') {
+      outfitSvg = `
+        <path d="M42 56 C40 68, 43 78, 49 78 C47 70, 48 62, 50 56 Z" fill="${c.color}" stroke="#2a2e39" stroke-width="2"/>
+        <path d="M68 56 C70 68, 67 78, 61 78 C63 70, 62 62, 60 56 Z" fill="${c.color}" stroke="#2a2e39" stroke-width="2"/>
+        <!-- Воротничок -->
+        <path d="M46 54 L52 60" stroke="#f59e0b" stroke-width="2"/>
+        <path d="M64 54 L58 60" stroke="#f59e0b" stroke-width="2"/>
+      `;
+    } else if (c.outfit === 'vest_open') {
+      outfitSvg = `
+        <path d="M41 54 C39 64, 42 74, 46 76 C45 68, 47 62, 48 54 Z" fill="#f97316" stroke="#2a2e39" stroke-width="2"/>
+        <path d="M69 54 C71 64, 68 74, 64 76 C65 68, 63 62, 62 54 Z" fill="#f97316" stroke="#2a2e39" stroke-width="2"/>
+      `;
+    } else if (c.outfit === 'belt_buckle') {
+      outfitSvg = `
+        <path d="M42 69 C48 74, 62 74, 68 69 L69 74 C62 79, 48 79, 41 74 Z" fill="#1e293b" stroke="#2a2e39" stroke-width="2"/>
+        <rect x="52" y="69.5" width="6" height="5.5" rx="1.5" fill="#38bdf8" stroke="#2a2e39" stroke-width="1.5"/>
+      `;
+    } else if (c.outfit === 'belt_bag') {
+      outfitSvg = `
+        <path d="M42 70 C48 74, 62 74, 68 70 L69 75 C62 79, 48 79, 41 75 Z" fill="#78350f" stroke="#2a2e39" stroke-width="2"/>
+        <circle cx="55" cy="73" r="3" fill="#f59e0b" stroke="#2a2e39" stroke-width="1.5"/>
+      `;
+    } else if (c.outfit === 'cape_amulet') {
+      outfitSvg = `
+        <path d="M46 52 C50 56, 60 56, 64 52 L62 56 C58 60, 52 60, 48 56 Z" fill="#f43f5e" stroke="#2a2e39" stroke-width="1.8"/>
+        <circle cx="55" cy="57" r="4.5" fill="#fbbf24" stroke="#2a2e39" stroke-width="1.8"/>
+      `;
     }
 
-    // 7. Головные уборы
+    // 9. Головные уборы из референса
     let hatSvg = '';
-    if (c.hat === 'cap') {
-      hatSvg = `<path d="M26 38 Q50 18 74 38 Z" fill="${c.color}"/>
-                <path d="M68 34 Q86 36 92 41 Q76 45 64 39 Z" fill="${c.color}"/>`;
-    } else if (c.hat === 'crown') {
-      hatSvg = `<polygon points="32,32 38,14 46,24 50,10 54,24 62,14 68,32" fill="#ffb703" stroke="#fff" stroke-width="1.5"/>`;
-    } else if (c.hat === 'headset') {
-      hatSvg = `<path d="M20 44 Q50 16 80 44" fill="none" stroke="#64748b" stroke-width="4.5"/>
-                <rect x="15" y="42" width="7" height="14" rx="3" fill="${c.color}"/>
-                <rect x="78" y="42" width="7" height="14" rx="3" fill="${c.color}"/>`;
-    } else if (c.hat === 'halo') {
-      hatSvg = `<ellipse cx="50" cy="18" rx="22" ry="6" fill="none" stroke="#ffb703" stroke-width="3"/>`;
+    if (c.hat === 'cowboy') {
+      hatSvg = `
+        <ellipse cx="55" cy="27" rx="19" ry="5.5" fill="#92400e" stroke="#2a2e39" stroke-width="2.2" transform="rotate(-5 55 27)"/>
+        <path d="M45 25 C45 15, 63 15, 63 25 Z" fill="#b45309" stroke="#2a2e39" stroke-width="2.2"/>
+        <ellipse cx="54" cy="22" rx="4" ry="1.5" fill="#78350f"/>
+      `;
+    } else if (c.hat === 'viking') {
+      hatSvg = `
+        <path d="M46 27 C46 17, 64 17, 64 27 Z" fill="#f59e0b" stroke="#2a2e39" stroke-width="2.2"/>
+        <rect x="44" y="25" width="22" height="4" rx="2" fill="#78350f" stroke="#2a2e39" stroke-width="1.5"/>
+        <!-- Рога -->
+        <path d="M44 26 C38 24, 38 18, 40 16 C42 20, 46 22, 46 26 Z" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>
+        <path d="M66 26 C72 24, 72 18, 70 16 C68 20, 64 22, 64 26 Z" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>
+      `;
+    } else if (c.hat === 'santa') {
+      hatSvg = `
+        <path d="M45 26 C48 10, 72 12, 70 26 Z" fill="#ea580c" stroke="#2a2e39" stroke-width="2.2"/>
+        <path d="M68 20 Q76 26 74 34" stroke="#ea580c" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="74" cy="35" r="3.5" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>
+        <rect x="44" y="24" width="23" height="4.5" rx="2" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>
+      `;
     } else if (c.hat === 'beanie') {
-      hatSvg = `<path d="M28 38 Q50 18 72 38 Z" fill="${c.color}"/><circle cx="50" cy="20" r="4.5" fill="#fff"/>`;
-    } else if (c.hat === 'space') {
-      hatSvg = `<circle cx="50" cy="46" r="32" fill="none" stroke="#e2e8f0" stroke-width="4" opacity="0.65"/>`;
+      hatSvg = `
+        <path d="M44 27 C44 17, 66 17, 66 27 Z" fill="${c.color}" stroke="#2a2e39" stroke-width="2.2"/>
+        <path d="M64 25 C74 24, 77 28, 72 30 Z" fill="${c.color}" stroke="#2a2e39" stroke-width="1.8"/>
+      `;
+    } else if (c.hat === 'propeller') {
+      hatSvg = `
+        <path d="M47 26 C47 19, 63 19, 63 26 Z" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/>
+        <line x1="55" y1="19" x2="55" y2="15" stroke="#2a2e39" stroke-width="2"/>
+        <line x1="48" y1="15" x2="62" y2="15" stroke="#eab308" stroke-width="3" stroke-linecap="round"/>
+      `;
+    } else if (c.hat === 'beret') {
+      hatSvg = `
+        <path d="M45 28 C40 18, 68 16, 68 28 Z" fill="#3b82f6" stroke="#2a2e39" stroke-width="2.2" transform="rotate(-8 55 24)"/>
+        <circle cx="53" cy="18" r="2" fill="#1d4ed8"/>
+      `;
+    } else if (c.hat === 'feathers') {
+      hatSvg = `
+        <ellipse cx="55" cy="27" rx="14" ry="2.5" fill="#10b981" stroke="#2a2e39" stroke-width="1.8"/>
+        <path d="M52 26 C50 14, 56 12, 54 26 Z" fill="#3b82f6" stroke="#2a2e39" stroke-width="1.8"/>
+        <path d="M56 26 C56 16, 62 14, 58 26 Z" fill="#38bdf8" stroke="#2a2e39" stroke-width="1.8"/>
+      `;
+    } else if (c.hat === 'halo') {
+      hatSvg = `
+        <ellipse cx="55" cy="16" rx="15" ry="4.5" fill="none" stroke="#facc15" stroke-width="3" filter="drop-shadow(0 0 4px #facc15)"/>
+      `;
     }
 
     return `
-      <svg viewBox="0 0 100 100" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
-        ${outfitSvg}
+      <svg viewBox="0 0 110 110" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+        <!-- Тень под енотом -->
+        <ellipse cx="56" cy="84" rx="20" ry="4" fill="rgba(0,0,0,0.3)"/>
+        ${tailSvg}
         ${earsSvg}
-        ${headBase}
+        ${bodySvg}
         ${maskSvg}
+        ${bellySvg}
+        ${pawsSvg}
+        ${outfitSvg}
         ${eyesSvg}
-        ${noseSvg}
-        ${mouthSvg}
+        ${faceFeatures}
         ${hatSvg}
       </svg>
     `;
@@ -2059,8 +2121,8 @@
     const builderPreview = document.getElementById('builderAvatarPreview');
     const profileBubble = document.getElementById('myProfileAvatarBubble');
     
-    if (builderPreview) builderPreview.innerHTML = renderChiefSvg(chiefAvatar, 110);
-    if (profileBubble) profileBubble.innerHTML = renderChiefSvg(chiefAvatar, 58);
+    if (builderPreview) builderPreview.innerHTML = renderChubbyChiefSvg(chiefAvatar, 120);
+    if (profileBubble) profileBubble.innerHTML = renderChubbyChiefSvg(chiefAvatar, 62);
   }
 
   function switchChiefTab(category, btn) {
@@ -2072,13 +2134,22 @@
     if (!grid) return;
 
     if (category === 'color') {
-      grid.innerHTML = CHIEF_DATA.color.map(col => `
+      grid.innerHTML = CHIEF_PRESETS.color.map(col => `
         <div class="builder-item-choice ${chiefAvatar.color === col ? 'selected' : ''}" onclick="setChiefPart('color', '${col}')">
           <div class="builder-color-dot" style="background:${col};"></div>
         </div>
       `).join('');
+    } else if (category === 'fur') {
+      grid.innerHTML = CHIEF_PRESETS.fur.map(item => `
+        <div class="builder-item-choice ${chiefAvatar.fur === item.id ? 'selected' : ''}" onclick="setChiefFur('${item.id}', '${item.dark}')">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <div style="width:16px; height:16px; border-radius:50%; background:${item.id}; border:1.5px solid ${item.dark};"></div>
+            <span>${item.name}</span>
+          </div>
+        </div>
+      `).join('');
     } else {
-      const items = CHIEF_DATA[category] || [];
+      const items = CHIEF_PRESETS[category] || [];
       grid.innerHTML = items.map(item => `
         <div class="builder-item-choice ${chiefAvatar[category] === item.id ? 'selected' : ''}" onclick="setChiefPart('${category}', '${item.id}')">
           ${item.name}
@@ -2087,26 +2158,36 @@
     }
   }
 
+  function setChiefFur(fur, dark) {
+    triggerHaptic('light');
+    chiefAvatar.fur = fur;
+    chiefAvatar.dark = dark;
+    localStorage.setItem('openhall_chubby_chief', JSON.stringify(chiefAvatar));
+    updateChiefAvatarDisplays();
+    switchChiefTab('fur');
+  }
+
   function setChiefPart(part, value) {
     triggerHaptic('light');
     chiefAvatar[part] = value;
-    localStorage.setItem('openhall_chief_avatar', JSON.stringify(chiefAvatar));
+    localStorage.setItem('openhall_chubby_chief', JSON.stringify(chiefAvatar));
     updateChiefAvatarDisplays();
     switchChiefTab(activeChiefTab);
   }
 
   function randomizeChiefAvatar() {
     triggerHaptic('medium');
+    const randomFur = CHIEF_PRESETS.fur[Math.floor(Math.random() * CHIEF_PRESETS.fur.length)];
     chiefAvatar = {
-      fur: CHIEF_DATA.fur[Math.floor(Math.random() * CHIEF_DATA.fur.length)].id,
-      mask: CHIEF_DATA.mask[Math.floor(Math.random() * CHIEF_DATA.mask.length)].id,
-      eyes: CHIEF_DATA.eyes[Math.floor(Math.random() * CHIEF_DATA.eyes.length)].id,
-      mouth: CHIEF_DATA.mouth[Math.floor(Math.random() * CHIEF_DATA.mouth.length)].id,
-      hat: CHIEF_DATA.hat[Math.floor(Math.random() * CHIEF_DATA.hat.length)].id,
-      outfit: CHIEF_DATA.outfit[Math.floor(Math.random() * CHIEF_DATA.outfit.length)].id,
-      color: CHIEF_DATA.color[Math.floor(Math.random() * CHIEF_DATA.color.length)]
+      fur: randomFur.id,
+      belly: '#fbf5e6',
+      dark: randomFur.dark,
+      hat: CHIEF_PRESETS.hat[Math.floor(Math.random() * CHIEF_PRESETS.hat.length)].id,
+      eyes: CHIEF_PRESETS.eyes[Math.floor(Math.random() * CHIEF_PRESETS.eyes.length)].id,
+      outfit: CHIEF_PRESETS.outfit[Math.floor(Math.random() * CHIEF_PRESETS.outfit.length)].id,
+      color: CHIEF_PRESETS.color[Math.floor(Math.random() * CHIEF_PRESETS.color.length)]
     };
-    localStorage.setItem('openhall_chief_avatar', JSON.stringify(chiefAvatar));
+    localStorage.setItem('openhall_chubby_chief', JSON.stringify(chiefAvatar));
     updateChiefAvatarDisplays();
     switchChiefTab(activeChiefTab);
   }
@@ -2128,12 +2209,12 @@
       });
       const data = await res.json();
       if (data.status === 'ok') {
-        alert('Енот Чиф успешно сохранен!');
+        alert('Чиф успешно сохранен!');
         document.getElementById('user_display_name').textContent = data.user.custom_handle || data.user.name;
         fetchFeed();
       }
     } catch (e) {
-      alert('Енот сохранен локально!');
+      alert('Чиф сохранен локально!');
     }
   }
 
@@ -2486,9 +2567,9 @@
       title.textContent = `Профиль ${data.name}`;
       const tierBadge = (data.reviews_count >= 10 || data.projects_count >= 1) ? '👑 Syndicate Partner' : ((data.reviews_count >= 3) ? '⚡️ Certified Reviewer' : '✦ Community Scout');
 
-      let userChiefSvg = renderChiefSvg(chiefAvatar, 52);
+      let userChiefSvg = renderChubbyChiefSvg(chiefAvatar, 52);
       try {
-        if (data.avatar_json) userChiefSvg = renderChiefSvg(JSON.parse(data.avatar_json), 52);
+        if (data.avatar_json) userChiefSvg = renderChubbyChiefSvg(JSON.parse(data.avatar_json), 52);
       } catch (e) {}
 
       body.innerHTML = `
@@ -2565,7 +2646,7 @@
 
       const authorBadgeHtml = p.submitted_by ? `
         <div class="author-badge ios-btn-tap" onclick="openUserProfile('${p.submitted_by}')">
-          <div class="author-avatar-bubble">${renderChiefSvg(chiefAvatar, 26)}</div>
+          <div class="author-avatar-bubble">${renderChubbyChiefSvg(chiefAvatar, 28)}</div>
           <span class="author-name-text">${escapeHtml(p.author_name || 'Фаундер')}</span>
         </div>
       ` : '';
@@ -2764,7 +2845,7 @@
         return `
           <div class="review-item">
             <div class="author-badge ios-btn-tap" style="margin-bottom:6px;">
-              <div class="author-avatar-bubble">${renderChiefSvg(chiefAvatar, 26)}</div>
+              <div class="author-avatar-bubble">${renderChubbyChiefSvg(chiefAvatar, 28)}</div>
               <span class="author-name-text">${escapeHtml(r.author_name)}</span>
             </div>
             <div class="review-item-header">
