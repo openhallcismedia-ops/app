@@ -840,11 +840,11 @@
     }
 
     .score-banner.score-perfect {
-      border-color: var(--emerald);
+      border-color: var(--gold);
     }
 
     body.light-theme .score-banner.score-perfect {
-      border: 2px solid #059669;
+      border: 2px solid #d97706;
     }
 
     .score-left span {
@@ -1486,7 +1486,7 @@
     <h1 id="t_score_title">Рецензия проекта</h1>
     <p class="subtitle" id="t_score_sub">Оценка от участников сообщества по 5 критериям</p>
 
-    <!-- Четкая привязка к оцениваемому проекту -->
+    <!-- Индикатор выбранного проекта -->
     <div class="scoring-target-badge" id="scoringTargetBox">
       <div>
         <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; font-weight:700; color:var(--text-sub);" id="t_evaluating_label">Оцениваемый бот</span>
@@ -1704,7 +1704,7 @@
     <span class="nav-label" id="t_nav_top">Топ</span>
   </button>
 
-  <!-- Векторная иконка Чифа в единой стилистике интерфейса -->
+  <!-- Векторная иконка Чифа -->
   <button class="nav-btn ios-btn-tap" onclick="switchTab('agent')">
     <svg class="nav-icon" viewBox="0 0 24 24">
       <path d="M4 8.5 7.5 4 10 7.5"></path>
@@ -2803,7 +2803,7 @@
       v_good: "Համայնքի կողմից հավանված",
       v_mid: "Ունի ներուժ",
       v_low: "Կարիք ունի լրամշակման",
-      read_reviews: "Կարդալ ակնարկները →",
+      read_reviews: "Читать отзывы →",
       reviews_loading: "Ակնարկների բեռնում...",
       reviews_empty: "Այս նախագծի համար դեռ ակնարկներ չկան:",
       reviews_no_comment: "Առանց մեկնաբանության",
@@ -2993,21 +2993,21 @@
 
     const t = i18n[currentLang];
 
-    // Мягкий порог перехода: плавно раскрывается от 6.5 к 10.0
+    // Плавный переход от Изумруда к Золоту (без розового)
     let dynamicAccentColor = null;
 
-    if (avgNum >= 6.5) {
-      // Плавная интерполяция от 0 (на 6.5) до 1 (на 10.0)
-      const factor = Math.min(Math.max((avgNum - 6.5) / 3.5, 0), 1);
+    if (avgNum >= 7.0) {
+      // Фактор от 0 (на 7.0) до 1 (на 10.0)
+      const factor = Math.min(Math.max((avgNum - 7.0) / 3.0, 0), 1);
       
-      // Мягкое тёплое золото: [251, 191, 36] (#fbbf24)
-      // Благородный Rose Gold: [244, 114, 182] (#f472b6)
-      dynamicAccentColor = interpolateColor([251, 191, 36], [244, 114, 182], factor);
+      // Изумруд: [0, 229, 153] (#00e599)
+      // Чистое Золото: [255, 183, 3] (#ffb703)
+      dynamicAccentColor = interpolateColor([0, 229, 153], [255, 183, 3], factor);
       
       document.documentElement.style.setProperty('--slider-thumb-color', dynamicAccentColor);
-      totalEl.style.backgroundImage = `linear-gradient(135deg, ${dynamicAccentColor}, #f472b6)`;
+      totalEl.style.backgroundImage = `linear-gradient(135deg, ${dynamicAccentColor}, #fb8500)`;
       scoreBannerBox.style.borderColor = dynamicAccentColor;
-      scoreBannerBox.style.boxShadow = `0 4px 20px rgba(244, 114, 182, ${(factor * 0.18).toFixed(2)})`;
+      scoreBannerBox.style.boxShadow = `0 4px 20px rgba(255, 183, 3, ${(factor * 0.22).toFixed(2)})`;
     } else {
       document.documentElement.style.removeProperty('--slider-thumb-color');
       totalEl.style.backgroundImage = 'var(--grad-main)';
@@ -3017,7 +3017,7 @@
 
     if (avg >= 9.0) {
       verdictEl.textContent = t.v_top;
-      verdictEl.style.color = dynamicAccentColor || 'var(--emerald)';
+      verdictEl.style.color = dynamicAccentColor || 'var(--gold)';
       scoreBannerBox.classList.add('score-perfect');
     } else if (avg >= 7.0) {
       verdictEl.textContent = t.v_good;
@@ -3025,7 +3025,7 @@
       scoreBannerBox.classList.remove('score-perfect');
     } else if (avg >= 5.0) {
       verdictEl.textContent = t.v_mid;
-      verdictEl.style.color = dynamicAccentColor || 'var(--text-sub)';
+      verdictEl.style.color = 'var(--text-sub)';
       scoreBannerBox.classList.remove('score-perfect');
     } else {
       verdictEl.textContent = t.v_low;
@@ -3033,15 +3033,15 @@
       scoreBannerBox.classList.remove('score-perfect');
     }
 
-    // Деликатная подсветка значений критериев без визуального шума
+    // Деликатная подсветка критериев
     sliders.forEach(item => {
       const v = Number(item.el.value);
-      if (v >= 7.0) {
-        const factorItem = (v - 7.0) / 3.0;
-        const colorItem = interpolateColor([251, 191, 36], [244, 114, 182], factorItem);
+      if (v >= 8.0) {
+        const factorItem = (v - 8.0) / 2.0;
+        const colorItem = interpolateColor([0, 229, 153], [255, 183, 3], factorItem);
         item.valEl.style.color = colorItem;
         item.valEl.style.borderColor = colorItem;
-        item.valEl.style.backgroundColor = `rgba(244, 114, 182, ${(factorItem * 0.08).toFixed(2)})`;
+        item.valEl.style.backgroundColor = `rgba(255, 183, 3, ${(factorItem * 0.12).toFixed(2)})`;
       } else {
         item.valEl.style.color = '';
         item.valEl.style.borderColor = '';
