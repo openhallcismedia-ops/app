@@ -80,7 +80,7 @@
       padding-top: 140px;
       padding-left: calc(14px + env(safe-area-inset-left, 0px));
       padding-right: calc(14px + env(safe-area-inset-right, 0px));
-      padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px));
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -809,6 +809,7 @@
       color: #334155;
     }
 
+    /* Индикатор текущего оцениваемого проекта */
     .scoring-target-badge {
       display: flex;
       align-items: center;
@@ -935,7 +936,6 @@
       line-height: 1.4;
     }
 
-    /* Подсказка текущего значения ползунка */
     .slider-hint-text {
       font-size: 11px;
       font-weight: 600;
@@ -1043,6 +1043,131 @@
     }
 
     body.light-theme .rank-score {
+      color: #059669;
+    }
+
+    /* --- Улучшенная кастомизация профиля --- */
+    .profile-live-preview {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      background: var(--input-bg);
+      border: 1px solid var(--tag-border);
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+    .avatar-preview-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .avatar-main-bubble {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      transition: all 0.3s var(--spring-ease);
+      position: relative;
+    }
+
+    /* Эффекты Aura для аватара */
+    .aura-none { box-shadow: 0 2px 8px rgba(0,0,0,0.25); border: 2px solid transparent; }
+    .aura-neon { box-shadow: 0 0 16px var(--emerald), inset 0 0 8px rgba(255,255,255,0.4); border: 2px solid #fff; }
+    .aura-gold { box-shadow: 0 0 18px var(--gold), inset 0 0 10px rgba(255,235,160,0.6); border: 2px solid #fff3bf; }
+    .aura-cyber { box-shadow: 0 0 16px var(--cyan), inset 0 0 8px rgba(255,255,255,0.4); border: 2px solid #e0f2fe; }
+
+    .avatar-preset-row {
+      display: flex;
+      gap: 9px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+      padding: 4px 2px 8px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .avatar-preset-row::-webkit-scrollbar { display: none; }
+
+    .avatar-preset-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1.5px solid var(--tag-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 21px;
+      cursor: pointer;
+      background: var(--tag-bg);
+      transition: all 0.2s var(--spring-ease);
+      flex-shrink: 0;
+    }
+    .avatar-preset-btn.selected {
+      border-color: var(--emerald);
+      background: rgba(0, 229, 153, 0.15);
+      transform: scale(1.1);
+    }
+    body.light-theme .avatar-preset-btn.selected {
+      background: #ecfdf5;
+      border-color: #059669;
+    }
+
+    .color-preset-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+      padding: 4px 2px 8px;
+      scrollbar-width: none;
+    }
+    .color-preset-row::-webkit-scrollbar { display: none; }
+
+    .color-preset-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.2s var(--spring-ease), border-color 0.2s ease;
+      flex-shrink: 0;
+    }
+    .color-preset-dot.selected {
+      transform: scale(1.18);
+      border-color: #ffffff;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+    }
+
+    .aura-selector-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .aura-chip {
+      flex: 1;
+      text-align: center;
+      padding: 8px 6px;
+      background: var(--tag-bg);
+      border: 1px solid var(--tag-border);
+      color: var(--text-sub);
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .aura-chip.selected {
+      border-color: var(--emerald);
+      color: var(--emerald);
+      background: rgba(0, 229, 153, 0.12);
+    }
+    body.light-theme .aura-chip.selected {
+      background: #ecfdf5;
+      border-color: #059669;
       color: #059669;
     }
 
@@ -1263,51 +1388,6 @@
       color: var(--text-sub);
     }
 
-    .avatar-preset-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 14px;
-      overflow-x: auto;
-      padding-bottom: 6px;
-    }
-    .avatar-preset-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 2px solid var(--tag-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      cursor: pointer;
-      background: var(--tag-bg);
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-    .avatar-preset-btn.selected {
-      border-color: var(--emerald);
-      transform: scale(1.12);
-      box-shadow: 0 0 12px rgba(0, 229, 153, 0.4);
-    }
-    .color-preset-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .color-preset-dot {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: transform 0.2s ease;
-    }
-    .color-preset-dot.selected {
-      transform: scale(1.18);
-      border-color: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
-
     .agent-chat-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -1495,7 +1575,6 @@
     <h1 id="t_score_title">Рецензия проекта</h1>
     <p class="subtitle" id="t_score_sub">Оценка от участников сообщества по 5 критериям</p>
 
-    <!-- Индикатор выбранного проекта -->
     <div class="scoring-target-badge" id="scoringTargetBox">
       <div>
         <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.8px; font-weight:700; color:var(--text-sub);" id="t_evaluating_label">Оцениваемый бот</span>
@@ -1522,7 +1601,7 @@
       </div>
       <div class="crit-desc" id="t_c1_desc">Оригинальность замысла и отличие от того, что уже есть на рынке.</div>
       <input type="range" id="c1" min="1" max="10" value="7">
-      <div class="slider-hint-text" id="hint1">Хорошая, понятная задумка</div>
+      <div class="slider-hint-text" id="hint1">Хороший, качественный уровень</div>
     </div>
 
     <div class="card tilt-card">
@@ -1532,7 +1611,7 @@
       </div>
       <div class="crit-desc" id="t_c2_desc">Вкус, оформление, аккуратность и насколько приятно этим пользоваться.</div>
       <input type="range" id="c2" min="1" max="10" value="7">
-      <div class="slider-hint-text" id="hint2">Аккуратный интерфейс</div>
+      <div class="slider-hint-text" id="hint2">Хороший, качественный уровень</div>
     </div>
 
     <div class="card tilt-card">
@@ -1542,7 +1621,7 @@
       </div>
       <div class="crit-desc" id="t_c3_desc">Насколько проект вовлекает людей и вызывает желание делиться с друзьями.</div>
       <input type="range" id="c3" min="1" max="10" value="7">
-      <div class="slider-hint-text" id="hint3">Вызывает интерес сообщества</div>
+      <div class="slider-hint-text" id="hint3">Хороший, качественный уровень</div>
     </div>
 
     <div class="card tilt-card">
@@ -1552,7 +1631,7 @@
       </div>
       <div class="crit-desc" id="t_c4_desc">Это уже рабочий продукт/материал или пока только черновой набросок?</div>
       <input type="range" id="c4" min="1" max="10" value="7">
-      <div class="slider-hint-text" id="hint4">Работающая стабильная бета</div>
+      <div class="slider-hint-text" id="hint4">Хороший, качественный уровень</div>
     </div>
 
     <div class="card tilt-card">
@@ -1562,7 +1641,7 @@
       </div>
       <div class="crit-desc" id="t_c5_desc">Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.</div>
       <input type="range" id="c5" min="1" max="10" value="7">
-      <div class="slider-hint-text" id="hint5">Хорошие перспективы роста</div>
+      <div class="slider-hint-text" id="hint5">Хороший, качественный уровень</div>
     </div>
 
     <div class="card tilt-card">
@@ -1613,7 +1692,9 @@
     <div class="card tilt-card profile-tier-card tier-obsidian" id="profileCard">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:12px;">
-          <div id="myProfileAvatarBubble" style="width:48px; height:48px; border-radius:50%; background:#10b981; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 4px 12px rgba(0,0,0,0.25);">🦊</div>
+          <div class="avatar-preview-wrapper">
+            <div id="myProfileAvatarBubble" class="avatar-main-bubble aura-none">🦊</div>
+          </div>
           <div>
             <h3 id="user_display_name" style="font-size:18px; margin-bottom:2px;">Участник комьюнити</h3>
             <span class="badge profile-status-badge" id="profileStatusBadge" style="margin-top:2px; display:inline-block;">Community Scout</span>
@@ -1628,13 +1709,26 @@
       </div>
     </div>
 
+    <!-- Блок продвинутой кастомизации -->
     <div class="card tilt-card">
       <h3 style="margin-bottom:6px;" id="t_custom_title">Кастомизация профиля</h3>
-      <p style="margin-bottom:12px; font-size:12px;" id="t_custom_desc">Выберите маскот, цвет и никнейм. Они будут видны на всех ваших проектах и рецензиях.</p>
+      <p style="margin-bottom:14px; font-size:12px;" id="t_custom_desc">Выберите маскот, градиент подложки и ауру свечения. Они будут видны всем участникам.</p>
 
-      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:8px;" id="t_custom_avatar_label">Выберите аватар</label>
+      <div class="profile-live-preview">
+        <div class="avatar-main-bubble" id="customLivePreviewAvatar" style="background:#10b981;">🦊</div>
+        <div>
+          <div style="font-size:13px; font-weight:800;" id="customLivePreviewName">@nickname</div>
+          <div style="font-size:11px; color:var(--text-sub);">Живое превью вашего бейджа</div>
+        </div>
+      </div>
+
+      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:8px;" id="t_custom_avatar_label">Маскот / Персонаж</label>
       <div class="avatar-preset-row" id="avatarPresetRow">
         <div class="avatar-preset-btn selected" onclick="selectAvatarIcon('🦊', this)">🦊</div>
+        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🦝', this)">🦝</div>
+        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🐺', this)">🐺</div>
+        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🦁', this)">🦁</div>
+        <div class="avatar-preset-btn" onclick="selectAvatarIcon('🦉', this)">🦉</div>
         <div class="avatar-preset-btn" onclick="selectAvatarIcon('⚡️', this)">⚡️</div>
         <div class="avatar-preset-btn" onclick="selectAvatarIcon('🤖', this)">🤖</div>
         <div class="avatar-preset-btn" onclick="selectAvatarIcon('🚀', this)">🚀</div>
@@ -1644,23 +1738,35 @@
         <div class="avatar-preset-btn" onclick="selectAvatarIcon('👑', this)">👑</div>
       </div>
 
-      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:8px;" id="t_custom_color_label">Цвет подложки</label>
+      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:8px;" id="t_custom_color_label">Палитра подложки</label>
       <div class="color-preset-row" id="colorPresetRow">
         <div class="color-preset-dot selected" style="background:#10b981;" onclick="selectAvatarBg('#10b981', this)"></div>
         <div class="color-preset-dot" style="background:#0284c7;" onclick="selectAvatarBg('#0284c7', this)"></div>
         <div class="color-preset-dot" style="background:#6366f1;" onclick="selectAvatarBg('#6366f1', this)"></div>
+        <div class="color-preset-dot" style="background:#8b5cf6;" onclick="selectAvatarBg('#8b5cf6', this)"></div>
         <div class="color-preset-dot" style="background:#ec4899;" onclick="selectAvatarBg('#ec4899', this)"></div>
         <div class="color-preset-dot" style="background:#f59e0b;" onclick="selectAvatarBg('#f59e0b', this)"></div>
-        <div class="color-preset-dot" style="background:#64748b;" onclick="selectAvatarBg('#64748b', this)"></div>
+        <div class="color-preset-dot" style="background:linear-gradient(135deg, #f43f5e, #fb923c);" onclick="selectAvatarBg('linear-gradient(135deg, #f43f5e, #fb923c)', this)"></div>
+        <div class="color-preset-dot" style="background:linear-gradient(135deg, #06b6d4, #3b82f6);" onclick="selectAvatarBg('linear-gradient(135deg, #06b6d4, #3b82f6)', this)"></div>
+        <div class="color-preset-dot" style="background:#334155;" onclick="selectAvatarBg('#334155', this)"></div>
+      </div>
+
+      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:8px;" id="t_custom_aura_label">Эффект ауры (Glow)</label>
+      <div class="aura-selector-row" id="auraSelectorRow">
+        <div class="aura-chip selected" onclick="selectAvatarAura('aura-none', this)">Строгий</div>
+        <div class="aura-chip" onclick="selectAvatarAura('aura-neon', this)">Изумруд</div>
+        <div class="aura-chip" onclick="selectAvatarAura('aura-gold', this)">Золото</div>
+        <div class="aura-chip" onclick="selectAvatarAura('aura-cyber', this)">Кибер</div>
       </div>
 
       <label for="customHandleInput" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;" id="t_custom_handle_label">Кастомный никнейм (например @alex_venture)</label>
-      <input type="text" id="customHandleInput" maxlength="30" placeholder="@nickname" style="margin-bottom:14px;">
+      <input type="text" id="customHandleInput" maxlength="30" placeholder="@nickname" style="margin-bottom:14px;" oninput="updateLivePreviewHandle(this.value)">
 
-      <button class="btn-small ios-btn-tap" style="width:100%; padding:12px;" onclick="saveCustomProfile()" id="t_save_profile_btn">Сохранить профиль</button>
+      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()" id="t_save_profile_btn">Сохранить профиль</button>
     </div>
 
-    <div class="card tilt-card" style="margin-bottom:60px;">
+    <!-- Форма подачи проекта -->
+    <div class="card tilt-card" style="margin-bottom:24px;">
       <h3 id="t_submit_title">Подать проект на аудит</h3>
       <p id="t_submit_desc">Хотите получить независимый скоринг и привлечь аудиторию? Отправьте заявку на добавление в витрину.</p>
 
@@ -1718,7 +1824,6 @@
     <span class="nav-label" id="t_nav_top">Топ</span>
   </button>
 
-  <!-- Векторная иконка Чифа -->
   <button class="nav-btn ios-btn-tap" onclick="switchTab('agent')">
     <svg class="nav-icon" viewBox="0 0 24 24">
       <path d="M4 8.5 7.5 4 10 7.5"></path>
@@ -1785,8 +1890,9 @@
   let selectedFormTags = new Set();
   let currentTheme = localStorage.getItem('openhall_theme') || 'dark';
 
-  let currentAvatarIcon = '🦊';
-  let currentAvatarBg = '#10b981';
+  let currentAvatarIcon = localStorage.getItem('openhall_av_icon') || '🦊';
+  let currentAvatarBg = localStorage.getItem('openhall_av_bg') || '#10b981';
+  let currentAvatarAura = localStorage.getItem('openhall_av_aura') || 'aura-none';
 
   function applyTheme(theme) {
     currentTheme = theme;
@@ -1955,7 +2061,7 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet')) return;
+    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet, .avatar-preset-row, .color-preset-row')) return;
     const diffX = e.changedTouches[0].clientX - touchStartX;
     const diffY = e.changedTouches[0].clientY - touchStartY;
 
@@ -2062,9 +2168,11 @@
     return div.innerHTML;
   }
 
+  /* --- Логика кастомизации профиля --- */
   function selectAvatarIcon(icon, el) {
     triggerHaptic('light');
     currentAvatarIcon = icon;
+    localStorage.setItem('openhall_av_icon', icon);
     document.querySelectorAll('.avatar-preset-btn').forEach(b => b.classList.remove('selected'));
     el.classList.add('selected');
     updateProfileAvatarPreview();
@@ -2073,29 +2181,58 @@
   function selectAvatarBg(color, el) {
     triggerHaptic('light');
     currentAvatarBg = color;
+    localStorage.setItem('openhall_av_bg', color);
     document.querySelectorAll('.color-preset-dot').forEach(d => d.classList.remove('selected'));
     el.classList.add('selected');
     updateProfileAvatarPreview();
   }
 
+  function selectAvatarAura(auraClass, el) {
+    triggerHaptic('light');
+    currentAvatarAura = auraClass;
+    localStorage.setItem('openhall_av_aura', auraClass);
+    document.querySelectorAll('.aura-chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    updateProfileAvatarPreview();
+  }
+
+  function updateLivePreviewHandle(val) {
+    const preview = document.getElementById('customLivePreviewName');
+    if (preview) {
+      preview.textContent = val.trim() ? (val.startsWith('@') ? val : `@${val}`) : '@nickname';
+    }
+  }
+
   function updateProfileAvatarPreview() {
     const bubble = document.getElementById('myProfileAvatarBubble');
-    if (bubble) {
-      bubble.textContent = currentAvatarIcon;
-      bubble.style.backgroundColor = currentAvatarBg;
-    }
+    const livePreview = document.getElementById('customLivePreviewAvatar');
+
+    [bubble, livePreview].forEach(el => {
+      if (el) {
+        el.textContent = currentAvatarIcon;
+        if (currentAvatarBg.includes('gradient')) {
+          el.style.background = currentAvatarBg;
+        } else {
+          el.style.background = '';
+          el.style.backgroundColor = currentAvatarBg;
+        }
+        el.className = `avatar-main-bubble ${currentAvatarAura}`;
+      }
+    });
   }
 
   async function saveCustomProfile() {
     triggerHaptic('success');
     const handleInput = document.getElementById('customHandleInput').value.trim();
+    const formattedHandle = handleInput ? (handleInput.startsWith('@') ? handleInput : `@${handleInput}`) : '';
+
     try {
       const res = await fetch(`${API_URL}/api/profile/custom`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           initData: tg?.initData || '',
-          custom_handle: handleInput,
+          custom_handle: formattedHandle,
           avatar_icon: currentAvatarIcon,
           avatar_bg: currentAvatarBg
         })
@@ -2104,6 +2241,7 @@
       if (data.status === 'ok') {
         alert('Профиль успешно обновлен!');
         document.getElementById('user_display_name').textContent = data.user.custom_handle || data.user.name;
+        updateLivePreviewHandle(data.user.custom_handle || data.user.name);
         fetchFeed();
       }
     } catch (e) {
@@ -2536,9 +2674,19 @@
 
         document.getElementById('user_display_name').textContent = u.custom_handle || u.name;
         document.getElementById('customHandleInput').value = u.custom_handle || '';
+        updateLivePreviewHandle(u.custom_handle || u.name);
 
-        currentAvatarIcon = u.avatar_icon || '🦊';
-        currentAvatarBg = u.avatar_bg || '#10b981';
+        currentAvatarIcon = u.avatar_icon || currentAvatarIcon;
+        currentAvatarBg = u.avatar_bg || currentAvatarBg;
+        
+        // Синхронизация селекторов
+        document.querySelectorAll('.avatar-preset-btn').forEach(b => {
+          b.classList.toggle('selected', b.textContent === currentAvatarIcon);
+        });
+        document.querySelectorAll('.color-preset-dot').forEach(d => {
+          d.classList.toggle('selected', d.style.background === currentAvatarBg || d.style.backgroundColor === currentAvatarBg);
+        });
+
         updateProfileAvatarPreview();
 
         const card = document.getElementById('profileCard');
@@ -2633,7 +2781,6 @@
     switchTab('scoring');
   }
 
-  // Текстовые подсказки для шкалы 1-10
   const scoreHints = {
     ru: [
       "",
@@ -2713,9 +2860,10 @@
       stat_reviews_label: "Рецензий",
       stat_projects_label: "Проектов подано",
       custom_title: "Кастомизация профиля",
-      custom_desc: "Выберите маскот, цвет и никнейм. Они будут видны на всех ваших проектах и рецензиях.",
-      custom_avatar_label: "Выберите аватар",
-      custom_color_label: "Цвет подложки",
+      custom_desc: "Выберите маскот, градиент подложки и ауру свечения. Они будут видны всем участникам.",
+      custom_avatar_label: "Маскот / Персонаж",
+      custom_color_label: "Палитра подложки",
+      custom_aura_label: "Эффект ауры (Glow)",
       custom_handle_label: "Кастомный никнейм (например @alex_venture)",
       save_profile_btn: "Сохранить профиль",
       submit_title: "Подать проект на аудит",
@@ -2776,9 +2924,10 @@
       stat_reviews_label: "Reviews",
       stat_projects_label: "Projects submitted",
       custom_title: "Profile Customization",
-      custom_desc: "Pick your mascot, background color, and handle. They appear on all your projects and reviews.",
-      custom_avatar_label: "Pick Avatar",
-      custom_color_label: "Background Color",
+      custom_desc: "Pick your mascot, background color, and glow aura. They appear everywhere.",
+      custom_avatar_label: "Mascot Character",
+      custom_color_label: "Badge Color Palette",
+      custom_aura_label: "Glow Aura Effect",
       custom_handle_label: "Custom handle (e.g. @alex_venture)",
       save_profile_btn: "Save Profile",
       submit_title: "Submit Project for Audit",
@@ -2840,8 +2989,9 @@
       stat_projects_label: "Ներկայացված նախագծեր",
       custom_title: "Պրոֆիլի կարգավորում",
       custom_desc: "Ընտրեք ավատարը և մականունը:",
-      custom_avatar_label: "Ընտրել ավատար",
+      custom_avatar_label: "Ավատար",
       custom_color_label: "Գույն",
+      custom_aura_label: "Աուրա",
       custom_handle_label: "Մականուն",
       save_profile_btn: "Պահպանել",
       submit_title: "Ներկայացնել նախագիծ",
@@ -2905,6 +3055,7 @@
       custom_desc: "აირჩიეთ ავატარი და მეტსახელი:",
       custom_avatar_label: "ავატარი",
       custom_color_label: "ფერი",
+      custom_aura_label: "აურა",
       custom_handle_label: "მეტსახელი",
       save_profile_btn: "შენახვა",
       submit_title: "პროექტის შეტანა აუდიტზე",
@@ -3005,6 +3156,7 @@
     updateText('t_custom_desc', t.custom_desc);
     updateText('t_custom_avatar_label', t.custom_avatar_label);
     updateText('t_custom_color_label', t.custom_color_label);
+    updateText('t_custom_aura_label', t.custom_aura_label);
     updateText('t_custom_handle_label', t.custom_handle_label);
     updateText('t_save_profile_btn', t.save_profile_btn);
     updateText('t_submit_title', t.submit_title);
@@ -3047,13 +3199,10 @@
     totalEl.textContent = avg;
 
     const t = i18n[currentLang];
-
-    // Мягкий переход в золотой акцент (без розового)
     let dynamicAccentColor = null;
 
     if (avgNum >= 7.0) {
       const factor = Math.min(Math.max((avgNum - 7.0) / 3.0, 0), 1);
-      // [0, 229, 153] (#00e599 Изумруд) -> [255, 183, 3] (#ffb703 Золото)
       dynamicAccentColor = interpolateColor([0, 229, 153], [255, 183, 3], factor);
       
       document.documentElement.style.setProperty('--slider-thumb-color', dynamicAccentColor);
@@ -3085,7 +3234,6 @@
       scoreBannerBox.classList.remove('score-perfect');
     }
 
-    // Подсветка подсказок и значений каждого критерия
     sliders.forEach(item => {
       const v = Number(item.el.value);
       if (v >= 8.0) {
@@ -3332,6 +3480,7 @@
   updateCommunityStrip();
   setInterval(updateCommunityStrip, 45000);
   applyTiltToAll();
+  updateProfileAvatarPreview();
 </script>
 
 </body>
