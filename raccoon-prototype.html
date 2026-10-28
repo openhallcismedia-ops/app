@@ -1,1 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Raccoon Prototype — Open Hall</title>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #0c0f14;
+    color: #e5e5e5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 40px 20px;
+  }
+  h1 {
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #6a7a8f;
+    margin: 0;
+    font-weight: 700;
+  }
+  .row {
+    display: flex;
+    gap: 36px;
+    align-items: flex-end;
+    background: rgba(255,255,255,0.03);
+    padding: 36px 48px;
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,0.08);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .cell span {
+    font-size: 11px;
+    color: #5a6478;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .sizes {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    padding: 20px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+  }
+  .dark-card {
+    background: #0a0d12;
+    border: 1px solid #1a2030;
+    border-radius: 16px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .light-card {
+    background: #f0f0f0;
+    border-radius: 16px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .light-card span { color: #333; font-size: 12px; font-weight: 600; }
+  .dark-card span { color: #ccc; font-size: 12px; font-weight: 600; }
+</style>
+</head>
+<body>
 
+<h1>Raccoon — Prototype v1</h1>
+
+<!-- Определение SVG (используется во всех размерах ниже) -->
+<svg width="0" height="0" style="position:absolute" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <g id="raccoon" stroke-linecap="round" stroke-linejoin="round">
+      <!-- тень под енотом -->
+      <ellipse cx="100" cy="190" rx="52" ry="5" fill="rgba(0,0,0,0.3)"/>
+
+      <!-- ХВОСТ (за телом) -->
+      <path d="M 152 165 Q 198 172 198 130 Q 198 92 172 86"
+            fill="none" stroke="#3A3540" stroke-width="34"/>
+      <path d="M 152 165 Q 198 172 198 130 Q 198 92 172 86"
+            fill="none" stroke="#A8A4B5" stroke-width="27"/>
+      <path d="M 152 165 Q 198 172 198 130 Q 198 92 172 86"
+            fill="none" stroke="#4A4458" stroke-width="27"
+            stroke-dasharray="9 26"/>
+
+      <!-- УШИ (за головой) -->
+      <circle cx="74" cy="34" r="16" fill="#A8A4B5" stroke="#3A3540" stroke-width="4"/>
+      <circle cx="74" cy="36" r="9" fill="#F2A8B8"/>
+      <circle cx="126" cy="34" r="16" fill="#A8A4B5" stroke="#3A3540" stroke-width="4"/>
+      <circle cx="126" cy="36" r="9" fill="#F2A8B8"/>
+
+      <!-- СИЛУЭТ (тело + голова одним путём) -->
+      <path d="M 100 22
+               C 135 22, 158 48, 158 90
+               C 158 105, 168 130, 165 155
+               C 162 172, 140 180, 100 180
+               C 60 180, 38 172, 35 155
+               C 32 130, 42 105, 42 90
+               C 42 48, 65 22, 100 22 Z"
+            fill="#A8A4B5" stroke="#3A3540" stroke-width="4.5"/>
+
+      <!-- ЖИВОТ (кремовый) -->
+      <ellipse cx="100" cy="140" rx="44" ry="40" fill="#FDF6E8"/>
+
+      <!-- ЛАПКИ (нижние) -->
+      <ellipse cx="78" cy="176" rx="14" ry="8" fill="#A8A4B5" stroke="#3A3540" stroke-width="4"/>
+      <ellipse cx="122" cy="176" rx="14" ry="8" fill="#A8A4B5" stroke="#3A3540" stroke-width="4"/>
+
+      <!-- РУЧКИ (по бокам) -->
+      <ellipse cx="38" cy="128" rx="9" ry="13" fill="#A8A4B5" stroke="#3A3540" stroke-width="4"/>
+      <ellipse cx="162" cy="128" rx="9" ry="13" fill="#A8A4B5" stroke="#3A3540" stroke-width="4"/>
+
+      <!-- ЛИЦО (кремовое пятно) -->
+      <ellipse cx="100" cy="90" rx="42" ry="35" fill="#FDF6E8"/>
+
+      <!-- МАСКА (тёмная полоса) -->
+      <path d="M 62 86
+               Q 62 72, 82 74
+               Q 100 78, 118 74
+               Q 138 72, 138 86
+               Q 138 97, 122 95
+               Q 108 93, 100 90
+               Q 92 93, 78 95
+               Q 62 97, 62 86 Z"
+            fill="#4A4458"/>
+
+      <!-- ГЛАЗА (большие с бликами) -->
+      <ellipse cx="78" cy="85" rx="11" ry="13" fill="#1E1B26"/>
+      <circle cx="83" cy="79" r="4.5" fill="#FFFFFF"/>
+      <circle cx="74" cy="92" r="2" fill="#FFFFFF" opacity="0.85"/>
+
+      <ellipse cx="122" cy="85" rx="11" ry="13" fill="#1E1B26"/>
+      <circle cx="127" cy="79" r="4.5" fill="#FFFFFF"/>
+      <circle cx="118" cy="92" r="2" fill="#FFFFFF" opacity="0.85"/>
+
+      <!-- НОС -->
+      <path d="M 94 99 Q 100 96, 106 99 Q 105 105, 100 106 Q 95 105, 94 99 Z" fill="#3A3540"/>
+
+      <!-- РОТ (лёгкая улыбка) -->
+      <path d="M 92 112 Q 96 116, 100 112 Q 104 116, 108 112"
+            fill="none" stroke="#3A3540" stroke-width="3"/>
+
+      <!-- ЩЁКИ (румянец) -->
+      <ellipse cx="64" cy="107" rx="10" ry="6" fill="#F2A8B8" opacity="0.55"/>
+      <ellipse cx="136" cy="107" rx="10" ry="6" fill="#F2A8B8" opacity="0.55"/>
+    </g>
+  </defs>
+</svg>
+
+<!-- Большие превью -->
+<div class="row">
+  <div class="cell">
+    <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <use href="#raccoon"/>
+    </svg>
+    <span>200px — превью</span>
+  </div>
+  <div class="cell">
+    <svg width="120" height="120" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <use href="#raccoon"/>
+    </svg>
+    <span>120px — профиль</span>
+  </div>
+</div>
+
+<!-- Превью в реальных контекстах -->
+<div class="row">
+  <div class="cell">
+    <div class="dark-card">
+      <svg width="64" height="64" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <use href="#raccoon"/>
+      </svg>
+      <span>64px</span>
+    </div>
+    <span>тёмная тема</span>
+  </div>
+
+  <div class="cell">
+    <div class="light-card">
+      <svg width="64" height="64" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <use href="#raccoon"/>
+      </svg>
+      <span>64px</span>
+    </div>
+    <span>светлая тема</span>
+  </div>
+
+  <div class="cell">
+    <div class="dark-card">
+      <svg width="28" height="28" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <use href="#raccoon"/>
+      </svg>
+      <span>28px (в ленте)</span>
+    </div>
+    <span>author badge</span>
+  </div>
+</div>
+
+<!-- Полоска «как в community strip» -->
+<div class="row" style="gap: 8px; padding: 20px 24px;">
+  <svg width="32" height="32" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><use href="#raccoon"/></svg>
+  <svg width="32" height="32" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><use href="#raccoon"/></svg>
+  <svg width="32" height="32" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><use href="#raccoon"/></svg>
+  <svg width="32" height="32" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><use href="#raccoon"/></svg>
+  <svg width="32" height="32" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><use href="#raccoon"/></svg>
+  <svg width="32" height="32" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><use href="#raccoon"/></svg>
+</div>
+
+</body>
+</html>
