@@ -630,19 +630,17 @@
       border-color: var(--emerald);
     }
     .author-avatar-bubble {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      background: var(--card-bg);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-    }
-    .author-avatar-bubble svg {
-      width: 100%;
-      height: 100%;
+      font-size: 12px;
+      background: rgba(0, 229, 153, 0.15);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+      color: var(--emerald);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
     }
     .author-name-text {
       font-size: 11px;
@@ -1039,71 +1037,6 @@
 
     body.light-theme .rank-score {
       color: #059669;
-    }
-
-    /* --- Галерея 15 Енотов Чифов --- */
-    .chief-avatar-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 14px;
-      background: var(--input-bg);
-      border: 1px solid var(--tag-border);
-      border-radius: 20px;
-      margin-bottom: 18px;
-    }
-
-    .chief-avatar-preview {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(14, 20, 32, 0.7) 100%);
-      border: 2.5px solid var(--emerald);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .chief-avatar-preview svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    .chief-gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      width: 100%;
-      margin-top: 14px;
-    }
-
-    .chief-item-card {
-      aspect-ratio: 1;
-      border-radius: 14px;
-      background: var(--tag-bg);
-      border: 1.5px solid var(--tag-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s var(--spring-ease);
-      padding: 2px;
-      overflow: hidden;
-    }
-
-    .chief-item-card svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    .chief-item-card.selected {
-      border-color: var(--emerald);
-      background: rgba(0, 229, 153, 0.16);
-      transform: scale(1.08);
-      box-shadow: 0 4px 12px rgba(0, 229, 153, 0.3);
     }
 
     .bottom-nav {
@@ -1593,7 +1526,7 @@
 
     <div class="agent-chat-card">
       <div id="agent-messages" class="agent-messages">
-        <div class="agent-msg agent-msg-bot" id="agent-welcome-msg">Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Спрашивай о проектах, оценках или подаче!</div>
+        <div class="agent-msg agent-msg-bot" id="agent-welcome-msg">Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Расскажу как работает скоринг, оценю твою идею или помогу грамотно заполнить заявку на добавление проекта. Спрашивай!</div>
       </div>
       <div class="agent-input-row">
         <textarea id="agentInput" rows="1" placeholder="Спросить у Чифа..."></textarea>
@@ -1605,12 +1538,14 @@
   <!-- ВКЛАДКА 4: ПРОФИЛЬ -->
   <div id="tab-profile" class="tab-view">
     <h1 id="t_prof_title">Профиль участника</h1>
-    <p class="subtitle" id="t_prof_sub">Личная статистика и выбор персонажа</p>
+    <p class="subtitle" id="t_prof_sub">Личная статистика и статус в сообществе</p>
 
     <div class="card tilt-card profile-tier-card tier-obsidian" id="profileCard">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:14px;">
-          <div class="author-avatar-bubble" style="width:64px; height:64px; border:2.5px solid var(--emerald);" id="myProfileAvatarBubble"></div>
+          <div id="myProfileAvatarBubble" style="width:54px; height:54px; border-radius:50%; background:rgba(0,229,153,0.15); border:2px solid var(--emerald); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--emerald);">
+            👤
+          </div>
           <div>
             <h3 id="user_display_name" style="font-size:18px; margin-bottom:2px;">Участник комьюнити</h3>
             <span class="badge" id="profileStatusBadge" style="margin-top:2px; display:inline-block;">Community Scout</span>
@@ -1625,23 +1560,15 @@
       </div>
     </div>
 
-    <!-- Галерея 15 Енотов Чифов из референса -->
+    <!-- Настройки профиля -->
     <div class="card tilt-card">
-      <h3 style="margin-bottom:6px;">Выберите своего Чифа</h3>
-      <p style="margin-bottom:14px; font-size:12px;">15 каноничных образов енота. Нажмите на любого, чтобы примерить его на свой профиль.</p>
-
-      <div class="chief-avatar-box">
-        <div class="chief-avatar-preview" id="chiefBigPreview"></div>
-        <div style="font-size:14px; font-weight:800; color:var(--text-main);" id="chiefCurrentName">Чиф Ковбой</div>
-        <div style="font-size:11px; color:var(--text-sub); margin-top:2px;" id="chiefCurrentDesc">Шляпа рейнджера и повязка на глаз[cite: 1]</div>
-
-        <div class="chief-gallery-grid" id="chiefGalleryGrid"></div>
-      </div>
+      <h3 style="margin-bottom:6px;">Настройки профиля</h3>
+      <p style="margin-bottom:14px; font-size:12px;">Укажите имя или ник, который будет виден на ваших проектах и рецензиях.</p>
 
       <label for="customHandleInput" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;">Отображаемый ник</label>
       <input type="text" id="customHandleInput" maxlength="30" placeholder="@nickname" style="margin-bottom:14px;">
 
-      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить профиль</button>
+      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить ник</button>
     </div>
 
     <!-- Подача проекта -->
@@ -1744,158 +1671,6 @@
   let currentTab = 'feed';
   let activeProject = 'Open Hall Bot';
   let projectChosen = false;
-  let currentChiefId = localStorage.getItem('openhall_chosen_chief') || 'cowboy';
-
-  // 15 Каноничных Енотов из референса
-  const RACCOON_CHARACTERS = [
-    { id: 'cowboy', name: 'Чиф Ковбой', desc: 'Шляпа рейнджера и повязка на глаз', hat: 'cowboy', eyes: 'eyepatch', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'steampunk', name: 'Чиф Стимпанк', desc: 'Круглые медные очки и кожаный пояс', hat: 'derby', eyes: 'steampunk_glasses', vest: 'belt', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'viking', name: 'Чиф Викинг', desc: 'Шлем с рогами и набедренная повязка', hat: 'viking', eyes: 'normal', vest: 'skirt', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'gentleman', name: 'Чиф Джентльмен', desc: 'Раскрытый зонтик и золотой амулет', hat: 'umbrella', eyes: 'normal', vest: 'pink_cape', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'santa', name: 'Чиф Праздничный', desc: 'Колпак Санты с белым помпоном', hat: 'santa', eyes: 'normal', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'adventurer', name: 'Чиф Авантюрист', desc: 'Синий жилет с эмблемой черепа', hat: 'none', eyes: 'normal', vest: 'blue_skull', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'explorer', name: 'Чиф Следопыт', desc: 'Оранжевый жилет с пряжкой', hat: 'none', eyes: 'normal', vest: 'orange_vest', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'diver', name: 'Чиф Водолаз', desc: 'Розовая маска-визор для плавания', hat: 'none', eyes: 'pink_visor', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'cyclist', name: 'Чиф Спортсмен', desc: 'Розовые очки авиаторы на резинке', hat: 'goggles_head', eyes: 'normal', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'hipster', name: 'Чиф Профессор', desc: 'Синий берет и круглые очки', hat: 'blue_cap', eyes: 'round_shades', vest: 'none', fur: '#9d91ba', belly: '#fbf5e6' },
-    { id: 'propeller', name: 'Чиф Вертушка', desc: 'Кепка с пропеллером и очки-жалюзи', hat: 'propeller', eyes: 'blinds', vest: 'none', fur: '#9d91ba', belly: '#fbf5e6' },
-    { id: 'chieftain', name: 'Чиф Вождь', desc: 'Сине-зеленый плюмаж из перьев', hat: 'feathers', eyes: 'normal', vest: 'sash', fur: '#9d91ba', belly: '#fbf5e6' },
-    { id: 'sleepy', name: 'Чиф Соня', desc: 'Повязка для сна на глазах', hat: 'none', eyes: 'sleep_mask', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'dizzy', name: 'Чиф Оглушённый', desc: 'Звёзды над головой и спиральки в глазах', hat: 'stars_head', eyes: 'spiral', vest: 'orange_collar', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'pure', name: 'Чиф Классик', desc: 'Оригинальный пухлый енот Чиф', hat: 'none', eyes: 'normal', vest: 'belt_simple', fur: '#8c95a6', belly: '#fbf5e6' }
-  ];
-
-  function getRaccoonSvg(r, size = 100) {
-    const tail = `
-      <path d="M38 72 C22 74, 8 68, 12 55 C16 46, 26 50, 42 62 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M14 54 C17 50, 22 52, 26 57" stroke="#373c48" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-      <path d="M22 61 C26 58, 30 60, 34 66" stroke="#373c48" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-    `;
-    const ears = `
-      <path d="M42 27 C39 16, 46 12, 50 20 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.2"/>
-      <path d="M43 25 C41 18, 46 16, 48 22 Z" fill="#ffffff"/>
-      <path d="M68 27 C71 16, 64 12, 60 20 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.2"/>
-      <path d="M67 25 C69 18, 64 16, 62 22 Z" fill="#ffffff"/>
-    `;
-    const body = `<path d="M45 28 C35 34, 34 64, 40 76 C46 84, 68 84, 74 76 C80 64, 76 34, 65 28 C58 24, 52 24, 45 28 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.5"/>`;
-    const mask = `<path d="M42 36 C38 42, 40 50, 48 48 C51 45, 52 42, 55 42 C58 42, 59 45, 62 48 C70 50, 72 42, 68 36 C63 32, 47 32, 42 36 Z" fill="#373c48" stroke="#2a2e39" stroke-width="1.5"/>`;
-    const belly = `<path d="M46 54 C40 58, 42 78, 54 81 C66 84, 72 74, 70 58 C68 48, 52 46, 46 54 Z" fill="${r.belly}" stroke="#2a2e39" stroke-width="2"/>`;
-
-    let eyesSvg = '';
-    if (r.eyes === 'eyepatch') {
-      eyesSvg = `<circle cx="48" cy="43" r="5.5" fill="#111827" stroke="#2a2e39" stroke-width="1.8"/><line x1="41" y1="36" x2="68" y2="48" stroke="#111827" stroke-width="1.8"/><circle cx="62" cy="43" r="2.4" fill="#1e293b"/>`;
-    } else if (r.eyes === 'steampunk_glasses') {
-      eyesSvg = `<circle cx="48" cy="43" r="6.5" fill="rgba(255,255,255,0.4)" stroke="#eab308" stroke-width="2.2"/><circle cx="62" cy="43" r="6.5" fill="rgba(255,255,255,0.4)" stroke="#eab308" stroke-width="2.2"/><line x1="54.5" y1="43" x2="55.5" y2="43" stroke="#eab308" stroke-width="2.2"/><circle cx="48" cy="43" r="2" fill="#1e293b"/><circle cx="62" cy="43" r="2" fill="#1e293b"/>`;
-    } else if (r.eyes === 'pink_visor' || r.eyes === 'sleep_mask') {
-      eyesSvg = `<path d="M41 40 Q55 38 69 40 Q71 47 64 48 Q55 46 46 48 Q39 47 41 40 Z" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><circle cx="45" cy="43" r="1.5" fill="#fff" opacity="0.8"/><circle cx="65" cy="43" r="1.5" fill="#fff" opacity="0.8"/>`;
-    } else if (r.eyes === 'blinds') {
-      eyesSvg = `<rect x="42" y="38" width="13" height="10" rx="2" fill="#f97316" stroke="#2a2e39" stroke-width="1.8"/><rect x="56" y="38" width="13" height="10" rx="2" fill="#f97316" stroke="#2a2e39" stroke-width="1.8"/><line x1="42" y1="42" x2="55" y2="42" stroke="#fff" stroke-width="1.5"/><line x1="56" y1="42" x2="69" y2="42" stroke="#fff" stroke-width="1.5"/>`;
-    } else if (r.eyes === 'round_shades') {
-      eyesSvg = `<circle cx="48" cy="43" r="6" fill="#1e293b" stroke="#2a2e39" stroke-width="2"/><circle cx="62" cy="43" r="6" fill="#1e293b" stroke="#2a2e39" stroke-width="2"/><line x1="54" y1="43" x2="56" y2="43" stroke="#2a2e39" stroke-width="2"/>`;
-    } else if (r.eyes === 'spiral') {
-      eyesSvg = `<circle cx="48" cy="43" r="3.5" fill="none" stroke="#1e293b" stroke-width="1.8"/><circle cx="62" cy="43" r="3.5" fill="none" stroke="#1e293b" stroke-width="1.8"/>`;
-    } else {
-      eyesSvg = `<circle cx="48" cy="43" r="2.4" fill="#1e293b"/><circle cx="47.5" cy="42" r="0.8" fill="#fff"/><circle cx="62" cy="43" r="2.4" fill="#1e293b"/><circle cx="61.5" cy="42" r="0.8" fill="#fff"/>`;
-    }
-
-    const noseMouth = `
-      <ellipse cx="55" cy="46" rx="2.2" ry="1.6" fill="#1e293b"/>
-      <path d="M53.5 48.5 Q55 50.5 56.5 48.5" stroke="#1e293b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-      <ellipse cx="44" cy="79" rx="4" ry="2.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2"/>
-      <ellipse cx="66" cy="79" rx="4" ry="2.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2"/>
-      <ellipse cx="38" cy="56" rx="3.5" ry="5.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2" transform="rotate(-15 38 56)"/>
-      <ellipse cx="72" cy="56" rx="3.5" ry="5.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2" transform="rotate(15 72 56)"/>
-    `;
-
-    let vestSvg = '';
-    if (r.vest === 'blue_skull') {
-      vestSvg = `<path d="M41 54 C39 66, 42 78, 50 78 C48 68, 49 60, 50 54 Z" fill="#0284c7" stroke="#2a2e39" stroke-width="2"/><path d="M69 54 C71 66, 68 78, 60 78 C62 68, 61 60, 60 54 Z" fill="#0284c7" stroke="#2a2e39" stroke-width="2"/><circle cx="55" cy="66" r="4.5" fill="#f43f5e"/><text x="52.5" y="69" font-size="8" fill="#fff">☠</text>`;
-    } else if (r.vest === 'orange_vest') {
-      vestSvg = `<path d="M41 54 C39 66, 42 78, 50 78 C48 68, 49 60, 50 54 Z" fill="#ea580c" stroke="#2a2e39" stroke-width="2"/><path d="M69 54 C71 66, 68 78, 60 78 C62 68, 61 60, 60 54 Z" fill="#ea580c" stroke="#2a2e39" stroke-width="2"/><path d="M42 70 C48 74, 62 74, 68 70 L69 75 C62 79, 48 79, 41 75 Z" fill="#0284c7" stroke="#2a2e39" stroke-width="2"/><rect x="52" y="70" width="6" height="5.5" rx="1.5" fill="#facc15" stroke="#2a2e39" stroke-width="1.5"/>`;
-    } else if (r.vest === 'pink_cape') {
-      vestSvg = `<path d="M45 53 C49 57, 61 57, 65 53 L63 58 C59 62, 51 62, 47 58 Z" fill="#f472b6" stroke="#2a2e39" stroke-width="1.8"/><circle cx="55" cy="59" r="4.5" fill="#fbbf24" stroke="#2a2e39" stroke-width="1.8"/>`;
-    } else if (r.vest === 'belt' || r.vest === 'belt_simple') {
-      vestSvg = `<path d="M42 69 C48 74, 62 74, 68 69 L69 74 C62 79, 48 79, 41 74 Z" fill="#1e293b" stroke="#2a2e39" stroke-width="2"/><circle cx="55" cy="73" r="3" fill="#f59e0b" stroke="#2a2e39" stroke-width="1.5"/>`;
-    } else if (r.vest === 'skirt') {
-      vestSvg = `<path d="M42 71 C48 75, 62 75, 68 71 L69 77 C62 82, 48 82, 41 77 Z" fill="#78350f" stroke="#2a2e39" stroke-width="2"/>`;
-    } else if (r.vest === 'sash') {
-      vestSvg = `<path d="M43 70 C48 74, 62 74, 67 70 L68 75 C62 79, 48 79, 42 75 Z" fill="#d97706" stroke="#2a2e39" stroke-width="2"/><circle cx="64" cy="74" r="3" fill="#fff" stroke="#2a2e39" stroke-width="1.5"/>`;
-    }
-
-    let hatSvg = '';
-    if (r.hat === 'cowboy') {
-      hatSvg = `<ellipse cx="55" cy="27" rx="19" ry="5.5" fill="#92400e" stroke="#2a2e39" stroke-width="2.2" transform="rotate(-5 55 27)"/><path d="M45 25 C45 15, 63 15, 63 25 Z" fill="#b45309" stroke="#2a2e39" stroke-width="2.2"/>`;
-    } else if (r.hat === 'viking') {
-      hatSvg = `<path d="M46 27 C46 17, 64 17, 64 27 Z" fill="#f59e0b" stroke="#2a2e39" stroke-width="2.2"/><path d="M44 26 C38 24, 38 18, 40 16 C42 20, 46 22, 46 26 Z" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/><path d="M66 26 C72 24, 72 18, 70 16 C68 20, 64 22, 64 26 Z" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>`;
-    } else if (r.hat === 'santa') {
-      hatSvg = `<path d="M45 26 C48 10, 72 12, 70 26 Z" fill="#ea580c" stroke="#2a2e39" stroke-width="2.2"/><path d="M68 20 Q76 26 74 34" stroke="#ea580c" stroke-width="6" stroke-linecap="round"/><circle cx="74" cy="35" r="3.5" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/><rect x="44" y="24" width="23" height="4.5" rx="2" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>`;
-    } else if (r.hat === 'umbrella') {
-      hatSvg = `<path d="M35 24 Q55 6 75 24 Z" fill="#78716c" stroke="#2a2e39" stroke-width="2"/><line x1="55" y1="24" x2="55" y2="46" stroke="#2a2e39" stroke-width="2.5"/>`;
-    } else if (r.hat === 'propeller') {
-      hatSvg = `<path d="M47 26 C47 19, 63 19, 63 26 Z" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><line x1="55" y1="19" x2="55" y2="15" stroke="#2a2e39" stroke-width="2"/><line x1="48" y1="15" x2="62" y2="15" stroke="#eab308" stroke-width="3" stroke-linecap="round"/>`;
-    } else if (r.hat === 'feathers') {
-      hatSvg = `<ellipse cx="55" cy="27" rx="14" ry="2.5" fill="#10b981" stroke="#2a2e39" stroke-width="1.8"/><path d="M52 26 C50 14, 56 12, 54 26 Z" fill="#3b82f6" stroke="#2a2e39" stroke-width="1.8"/><path d="M56 26 C56 16, 62 14, 58 26 Z" fill="#38bdf8" stroke="#2a2e39" stroke-width="1.8"/>`;
-    } else if (r.hat === 'derby') {
-      hatSvg = `<ellipse cx="55" cy="27" rx="15" ry="3.5" fill="#b45309" stroke="#2a2e39" stroke-width="2"/><path d="M47 26 C47 18, 63 18, 63 26 Z" fill="#d97706" stroke="#2a2e39" stroke-width="2"/>`;
-    } else if (r.hat === 'blue_cap') {
-      hatSvg = `<path d="M45 28 C40 18, 68 16, 68 28 Z" fill="#3b82f6" stroke="#2a2e39" stroke-width="2.2" transform="rotate(-8 55 24)"/><circle cx="53" cy="18" r="2" fill="#1d4ed8"/>`;
-    } else if (r.hat === 'goggles_head') {
-      hatSvg = `<ellipse cx="48" cy="22" rx="6" ry="6" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><ellipse cx="62" cy="22" rx="6" ry="6" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><line x1="42" y1="23" x2="68" y2="23" stroke="#2563eb" stroke-width="2.5"/>`;
-    } else if (r.hat === 'stars_head') {
-      hatSvg = `<ellipse cx="55" cy="18" rx="18" ry="4" fill="none" stroke="#fff" stroke-width="2" opacity="0.8"/><text x="50" y="16" font-size="12" fill="#ffb703">★</text>`;
-    }
-
-    return `
-      <svg viewBox="0 0 110 110" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="56" cy="84" rx="20" ry="4" fill="rgba(0,0,0,0.3)"/>
-        ${tail}
-        ${ears}
-        ${body}
-        ${mask}
-        ${belly}
-        ${vestSvg}
-        ${noseMouth}
-        ${eyesSvg}
-        ${hatSvg}
-      </svg>
-    `;
-  }
-
-  function renderChiefGallery() {
-    const grid = document.getElementById('chiefGalleryGrid');
-    if (!grid) return;
-
-    grid.innerHTML = RACCOON_CHARACTERS.map(c => `
-      <div class="chief-item-card ios-btn-tap ${c.id === currentChiefId ? 'selected' : ''}" onclick="selectChief('${c.id}')">
-        ${getRaccoonSvg(c, 52)}
-      </div>
-    `).join('');
-
-    updateCurrentChiefDisplay();
-  }
-
-  function selectChief(id) {
-    currentChiefId = id;
-    localStorage.setItem('openhall_chosen_chief', id);
-    document.querySelectorAll('.chief-item-card').forEach((el, idx) => {
-      el.classList.toggle('selected', RACCOON_CHARACTERS[idx].id === id);
-    });
-    updateCurrentChiefDisplay();
-    triggerHaptic('light');
-  }
-
-  function updateCurrentChiefDisplay() {
-    const c = RACCOON_CHARACTERS.find(it => it.id === currentChiefId) || RACCOON_CHARACTERS[0];
-    const bigPreview = document.getElementById('chiefBigPreview');
-    const profileBubble = document.getElementById('myProfileAvatarBubble');
-    const nameEl = document.getElementById('chiefCurrentName');
-    const descEl = document.getElementById('chiefCurrentDesc');
-
-    if (bigPreview) bigPreview.innerHTML = getRaccoonSvg(c, 120);
-    if (profileBubble) profileBubble.innerHTML = getRaccoonSvg(c, 64);
-    if (nameEl) nameEl.textContent = c.name;
-    if (descEl) descEl.textContent = c.desc;
-  }
 
   async function saveCustomProfile() {
     triggerHaptic('success');
@@ -1908,15 +1683,14 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           initData: tg?.initData || '',
-          custom_handle: formattedHandle,
-          avatar_json: currentChiefId
+          custom_handle: formattedHandle
         })
       });
-      alert('Профиль и персонаж успешно сохранены!');
+      alert('Профиль успешно обновлен!');
       if (formattedHandle) document.getElementById('user_display_name').textContent = formattedHandle;
       fetchFeed();
     } catch (e) {
-      alert('Персонаж сохранен локально!');
+      alert('Ошибка сохранения профиля');
     }
   }
 
@@ -2183,11 +1957,9 @@
       const safeOriginalNameJs = escapeHtml(p.name).replace(/'/g, "\\'");
       const delay = Math.min(index * 60, 400);
 
-      const authorRaccoon = RACCOON_CHARACTERS.find(it => it.id === p.author_avatar) || RACCOON_CHARACTERS[0];
-
       const authorBadgeHtml = p.submitted_by ? `
         <div class="author-badge ios-btn-tap" onclick="openUserProfile('${p.submitted_by}')">
-          <div class="author-avatar-bubble">${getRaccoonSvg(authorRaccoon, 28)}</div>
+          <div class="author-avatar-bubble">👤</div>
           <span class="author-name-text">${escapeHtml(p.author_name || 'Фаундер')}</span>
         </div>
       ` : '';
@@ -2383,12 +2155,10 @@
           ? `<div class="review-comment">${escapeHtml(displayComments[i])}</div>`
           : `<div class="review-comment" style="color:var(--text-sub); font-style:italic;">${i18n[currentLang].reviews_no_comment}</div>`;
 
-        const reviewerRaccoon = RACCOON_CHARACTERS.find(it => it.id === r.author_avatar) || RACCOON_CHARACTERS[0];
-
         return `
           <div class="review-item">
             <div class="author-badge ios-btn-tap" style="margin-bottom:6px;">
-              <div class="author-avatar-bubble">${getRaccoonSvg(reviewerRaccoon, 28)}</div>
+              <div class="author-avatar-bubble">👤</div>
               <span class="author-name-text">${escapeHtml(r.author_name)}</span>
             </div>
             <div class="review-item-header">
@@ -2439,12 +2209,6 @@
         document.getElementById('user_display_name').textContent = u.custom_handle || u.name;
         document.getElementById('customHandleInput').value = u.custom_handle || '';
 
-        if (u.avatar_json && RACCOON_CHARACTERS.some(it => it.id === u.avatar_json)) {
-          currentChiefId = u.avatar_json;
-        }
-
-        renderChiefGallery();
-
         const card = document.getElementById('profileCard');
         const badge = document.getElementById('profileStatusBadge');
         const icon = document.getElementById('tierIcon');
@@ -2494,7 +2258,6 @@
     const stripCard = document.getElementById('app-community-strip');
     if (tabId === 'profile') {
       if (stripCard) stripCard.style.display = 'none';
-      renderChiefGallery();
     } else {
       if (stripCard) stripCard.style.display = 'block';
     }
@@ -2625,7 +2388,7 @@
       agent_title: "Чиф 🦝",
       agent_sub: "AI-помощник Open Hall",
       agent_placeholder: "Спросить у Чифа...",
-      agent_welcome: "Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Спрашивай о проектах, оценках или подаче!",
+      agent_welcome: "Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Расскажу как работает скоринг, оценю твою идею или помогу грамотно заполнить заявку на добавление проекта. Спрашивай!",
       agent_error: "Не удалось получить ответ. Попробуйте ещё раз.",
       feed_title: "Лента проектов",
       feed_sub: "Проекты на оценке у комьюнити",
@@ -2652,7 +2415,7 @@
       top_title: "Рейтинг проектов",
       top_sub: "Лидеры по оценкам участников комьюнити",
       prof_title: "Профиль участника",
-      prof_sub: "Личная статистика и выбор персонажа",
+      prof_sub: "Личная статистика и статус в сообществе",
       stat_reviews_label: "Рецензий",
       stat_projects_label: "Проектов подано",
       submit_title: "Подать проект на аудит",
@@ -2709,7 +2472,7 @@
       top_title: "Project Leaderboard",
       top_sub: "Highest-rated projects by community votes",
       prof_title: "Member Profile",
-      prof_sub: "Personal statistics and character pick",
+      prof_sub: "Personal statistics and standing",
       stat_reviews_label: "Reviews",
       stat_projects_label: "Projects submitted",
       submit_title: "Submit Project for Audit",
@@ -2780,7 +2543,7 @@
       v_good: "Հավանված",
       v_mid: "Ունի ներուժ",
       v_low: "Լրամշակման կարիք ունի",
-      read_reviews: "Կարդալ ակնարկները →",
+      read_reviews: "Читать отзывы →",
       reviews_loading: "Բեռնում...",
       reviews_empty: "Ակնարկներ դեռ չկան:",
       reviews_no_comment: "Առանց մեկնաբանության",
@@ -3083,7 +2846,7 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet, .chief-gallery-grid')) return;
+    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet')) return;
     const diffX = e.changedTouches[0].clientX - touchStartX;
     const diffY = e.changedTouches[0].clientY - touchStartY;
 
@@ -3255,11 +3018,9 @@
       title.textContent = `Профиль ${data.name}`;
       const tierBadge = (data.reviews_count >= 10 || data.projects_count >= 1) ? '👑 Syndicate Partner' : ((data.reviews_count >= 3) ? '⚡️ Certified Reviewer' : '✦ Community Scout');
 
-      const userRaccoon = RACCOON_CHARACTERS.find(it => it.id === data.avatar_json) || RACCOON_CHARACTERS[0];
-
       body.innerHTML = `
         <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
-          <div style="width:64px; height:64px; border-radius:50%; overflow:hidden; border:2px solid var(--emerald); box-shadow:0 4px 14px rgba(0,0,0,0.3);">${getRaccoonSvg(userRaccoon, 64)}</div>
+          <div style="width:52px; height:52px; border-radius:50%; background:rgba(0,229,153,0.15); border:2px solid var(--emerald); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--emerald);">👤</div>
           <div>
             <h3 style="font-size:18px; font-weight:800;">${escapeHtml(data.name)}</h3>
             <span class="badge" style="display:inline-block; margin-top:4px; font-size:10px;">${tierBadge}</span>
@@ -3296,7 +3057,6 @@
   updateCommunityStrip();
   setInterval(updateCommunityStrip, 45000);
   applyTiltToAll();
-  renderChiefGallery();
 </script>
 
 </body>
