@@ -26,9 +26,6 @@
       --tag-border: rgba(255, 255, 255, 0.14);
       --tag-color: #b0bfd4;
       --shadow-color: rgba(0, 0, 0, 0.45);
-      --node-bg: rgba(0, 229, 153, 0.08);
-      --node-border: rgba(0, 229, 153, 0.35);
-      --node-color: #00e599;
       --spring-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -51,9 +48,6 @@
       --tag-border: #cbd5e1;
       --tag-color: #334155;
       --shadow-color: rgba(15, 23, 42, 0.06);
-      --node-bg: #ecfdf5;
-      --node-border: #a7f3d0;
-      --node-color: #059669;
     }
 
     * {
@@ -357,74 +351,6 @@
       background: #059669;
       color: #ffffff;
       box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
-    }
-
-    .community-strip-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 12px 14px;
-      margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 16px var(--shadow-color);
-      transition: background 0.35s ease, border-color 0.35s ease;
-    }
-
-    .community-avatars-row {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      overflow-x: auto;
-      padding: 4px 2px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .community-avatars-row::-webkit-scrollbar {
-      display: none;
-    }
-
-    .user-node {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--node-bg);
-      border: 1px solid var(--node-border);
-      color: var(--node-color);
-      transition: transform 0.25s var(--spring-ease);
-    }
-
-    .user-node svg {
-      width: 15px;
-      height: 15px;
-      fill: currentColor;
-    }
-
-    .user-node.user-gold {
-      background: radial-gradient(circle, #ffb703 0%, #fb8500 100%);
-      border: 1.5px solid #ffe8a3;
-      color: #ffffff;
-      box-shadow: 0 0 14px rgba(251, 133, 0, 0.55);
-      transform: scale(1.15);
-      z-index: 2;
-      animation: goldBreathe 2.4s ease-in-out infinite alternate;
-    }
-
-    body.light-theme .user-node.user-gold {
-      background: #f59e0b;
-      border: 1.5px solid #fde68a;
-      color: #ffffff;
-      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
-    }
-
-    @keyframes goldBreathe {
-      0% { transform: scale(1.12); }
-      100% { transform: scale(1.2); }
     }
 
     .tags-filter-bar {
@@ -1376,7 +1302,7 @@
       opacity: 0.5;
     }
 
-    /* Нативное всплывающее уведомление (Toast) */
+    /* Нативное уведомление Toast без блокировки экрана */
     .app-toast {
       position: fixed;
       top: 24px;
@@ -1446,10 +1372,6 @@
         <button class="lang-btn ios-btn-tap" onclick="setLanguage('ge')">GE</button>
       </div>
     </div>
-  </div>
-
-  <div class="community-strip-card" id="app-community-strip">
-    <div class="community-avatars-row" id="communityAvatarsRow"></div>
   </div>
 
   <!-- ВКЛАДКА 1: ЛЕНТА -->
@@ -1708,7 +1630,7 @@
   let activeProject = 'Open Hall Bot';
   let projectChosen = false;
 
-  // Безопасный вызов нативного уведомления (без блокирующего окна браузера с адресом сайта)
+  // Нативный toast без блокирующего браузерного диалога с доменом
   function showToast(text) {
     if (tg?.showAlert) {
       tg.showAlert(text);
@@ -2303,13 +2225,6 @@
       moveNavIndicator(tabId);
     }
 
-    const stripCard = document.getElementById('app-community-strip');
-    if (tabId === 'profile') {
-      if (stripCard) stripCard.style.display = 'none';
-    } else {
-      if (stripCard) stripCard.style.display = 'block';
-    }
-
     window.scrollTo(0, 0);
 
     if (tabId === 'top') fetchLeaderboard();
@@ -2831,281 +2746,4 @@
       const centerX = bounds.width / 2;
       const centerY = bounds.height / 2;
 
-      const rotateX = ((y - centerY) / centerY) * -5;
-      const rotateY = ((x - centerX) / centerX) * 5;
-
-      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.01, 1.01, 1.01)`;
-      card.style.setProperty('--mouse-x', `${(x / bounds.width) * 100}%`);
-      card.style.setProperty('--mouse-y', `${(y / bounds.height) * 100}%`);
-    }
-
-    function handleLeave() {
-      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-      card.style.setProperty('--mouse-x', `50%`);
-      card.style.setProperty('--mouse-y', `20%`);
-    }
-
-    card.addEventListener('touchstart', updateBounds, { passive: true });
-    card.addEventListener('touchmove', handleMove, { passive: true });
-    card.addEventListener('touchend', handleLeave, { passive: true });
-  }
-
-  function applyTiltToAll() {
-    document.querySelectorAll('.card').forEach(c => {
-      if (!c.dataset.tiltInit) {
-        c.dataset.tiltInit = 'true';
-        init3DTilt(c);
-      }
-    });
-  }
-
-  function initDoubleTap(card) {
-    let lastTap = 0;
-    card.addEventListener('touchend', (e) => {
-      if (e.target.closest('button, input, textarea, a, .read-reviews-btn, .tag, .author-badge')) return;
-      const now = Date.now();
-      if (now - lastTap < 300) {
-        const touch = e.changedTouches[0];
-        const rect = card.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
-
-        const heart = document.createElement('div');
-        heart.className = 'reaction-heart';
-        heart.innerHTML = '✦';
-        heart.style.left = `${x}px`;
-        heart.style.top = `${y}px`;
-        card.appendChild(heart);
-
-        triggerHaptic('medium');
-        setTimeout(() => heart.remove(), 750);
-      }
-      lastTap = now;
-    });
-  }
-
-  const tabsOrder = ['feed', 'scoring', 'top', 'agent', 'profile'];
-  let touchStartX = 0;
-  let touchStartY = 0;
-
-  document.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
-  document.addEventListener('touchend', (e) => {
-    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet')) return;
-    const diffX = e.changedTouches[0].clientX - touchStartX;
-    const diffY = e.changedTouches[0].clientY - touchStartY;
-
-    if (Math.abs(diffX) > 65 && Math.abs(diffY) < 45) {
-      const curIndex = tabsOrder.indexOf(currentTab);
-      if (diffX < 0 && curIndex < tabsOrder.length - 1) {
-        triggerHaptic('light');
-        switchTab(tabsOrder[curIndex + 1]);
-      } else if (diffX > 0 && curIndex > 0) {
-        triggerHaptic('light');
-        switchTab(tabsOrder[curIndex - 1]);
-      }
-    }
-  }, { passive: true });
-
-  const bottomNavEl = document.querySelector('.bottom-nav');
-  let navShowTimeout;
-  document.addEventListener('focusin', (e) => {
-    if (e.target.matches('input, textarea')) {
-      clearTimeout(navShowTimeout);
-      bottomNavEl?.classList.add('nav-hidden');
-    }
-  });
-  document.addEventListener('focusout', (e) => {
-    if (e.target.matches('input, textarea')) {
-      clearTimeout(navShowTimeout);
-      navShowTimeout = setTimeout(() => bottomNavEl?.classList.remove('nav-hidden'), 200);
-    }
-  });
-
-  function hidePreloader() {
-    const preloader = document.getElementById('app-preloader');
-    if (preloader) {
-      preloader.classList.add('hidden');
-      setTimeout(() => preloader.remove(), 500);
-    }
-  }
-  window.addEventListener('load', () => setTimeout(hidePreloader, 600));
-  setTimeout(hidePreloader, 3000);
-
-  const humanSvg = `<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
-
-  async function updateCommunityStrip() {
-    const row = document.getElementById('communityAvatarsRow');
-    let userSlot = 24;
-
-    try {
-      const res = await fetch(`${API_URL}/api/community/strip`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ initData: tg?.initData || '' })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        userSlot = data.userSlot;
-      }
-    } catch (e) {}
-
-    let nodesHtml = '';
-    for (let i = 1; i <= 50; i++) {
-      const isMe = (i === userSlot);
-      nodesHtml += `<div class="user-node ${isMe ? 'user-gold' : ''}" id="${isMe ? 'myGoldSlot' : ''}">${humanSvg}</div>`;
-    }
-    row.innerHTML = nodesHtml;
-
-    setTimeout(() => {
-      const mySlot = document.getElementById('myGoldSlot');
-      if (mySlot) mySlot.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }, 350);
-  }
-
-  async function translateTexts(texts, target) {
-    if (target === 'ru' || !texts || texts.length === 0) return texts;
-    try {
-      const res = await fetch(`${API_URL}/api/translate-batch`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ texts, target })
-      });
-      const data = await res.json();
-      if (data && Array.isArray(data.translations) && data.translations.length === texts.length) {
-        return data.translations;
-      }
-      return texts;
-    } catch (err) {
-      console.error('Ошибка перевода:', err);
-      return texts;
-    }
-  }
-
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str || '';
-    return div.innerHTML;
-  }
-
-  async function openMyContentModal(type) {
-    triggerHaptic('medium');
-    const modal = document.getElementById('my-content-modal');
-    const title = document.getElementById('myContentModalTitle');
-    const body = document.getElementById('my-content-modal-body');
-
-    modal.classList.add('open');
-    body.innerHTML = '<p>Загрузка...</p>';
-
-    title.textContent = (type === 'projects') ? 'Мои поданные проекты' : 'Мои оставленные рецензии';
-
-    try {
-      const res = await fetch(`${API_URL}/api/profile/my-content?type=${type}&initData=${encodeURIComponent(tg?.initData || '')}`);
-      const data = await res.json();
-      const items = data.items || [];
-
-      if (items.length === 0) {
-        body.innerHTML = `<p style="color:var(--text-sub);">Список пока пуст.</p>`;
-        return;
-      }
-
-      if (type === 'projects') {
-        body.innerHTML = items.map(p => {
-          const statusText = p.status === 'approved' ? '✅ Опубликован' : (p.status === 'rejected' ? '❌ Отклонен' : '⏳ На модерации');
-          return `
-            <div class="review-item">
-              <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-                <h4 style="font-size:15px; font-weight:800;">${escapeHtml(p.name)}</h4>
-                <span style="font-size:11px; font-weight:700;">${statusText}</span>
-              </div>
-              <p style="font-size:12px; color:var(--text-sub); margin-bottom:8px;">${escapeHtml(p.description)}</p>
-              <div style="font-size:10px; color:var(--text-sub);">${new Date(p.created_at).toLocaleDateString()}</div>
-            </div>
-          `;
-        }).join('');
-      } else {
-        body.innerHTML = items.map(r => `
-          <div class="review-item">
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-              <h4 style="font-size:15px; font-weight:800;">${escapeHtml(r.project)}</h4>
-              <span style="font-size:14px; font-weight:800; color:var(--emerald);">${r.score} / 10</span>
-            </div>
-            <div style="font-size:11px; color:var(--cyan); margin-bottom:6px; font-weight:700;">${escapeHtml(r.verdict)}</div>
-            <p style="font-size:12px; color:var(--text-main); margin-bottom:6px;">${escapeHtml(r.comment || 'Без комментария')}</p>
-            <div style="font-size:10px; color:var(--text-sub);">${new Date(r.created_at).toLocaleDateString()}</div>
-          </div>
-        `).join('');
-      }
-    } catch (e) {
-      body.innerHTML = '<p style="color:#ef4444;">Ошибка загрузки</p>';
-    }
-  }
-
-  function closeMyContentModal() {
-    triggerHaptic('light');
-    document.getElementById('my-content-modal').classList.remove('open');
-  }
-
-  async function openUserProfile(userId) {
-    if (!userId) return;
-    triggerHaptic('medium');
-    const modal = document.getElementById('user-profile-modal');
-    const title = document.getElementById('userProfileModalTitle');
-    const body = document.getElementById('user-profile-modal-body');
-
-    modal.classList.add('open');
-    body.innerHTML = '<p>Загрузка профиля...</p>';
-
-    try {
-      const res = await fetch(`${API_URL}/api/user/${userId}`);
-      const data = await res.json();
-
-      title.textContent = `Профиль ${data.name}`;
-      const tierBadge = (data.reviews_count >= 10 || data.projects_count >= 1) ? '👑 Syndicate Partner' : ((data.reviews_count >= 3) ? '⚡️ Certified Reviewer' : '✦ Community Scout');
-
-      body.innerHTML = `
-        <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
-          <div style="width:52px; height:52px; border-radius:50%; background:rgba(0,229,153,0.15); border:2px solid var(--emerald); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--emerald);">👤</div>
-          <div>
-            <h3 style="font-size:18px; font-weight:800;">${escapeHtml(data.name)}</h3>
-            <span class="badge" style="display:inline-block; margin-top:4px; font-size:10px;">${tierBadge}</span>
-          </div>
-        </div>
-
-        <div class="project-tags" style="margin-bottom:18px;">
-          <span class="tag">Рецензий: ${data.reviews_count || 0}</span>
-          <span class="tag">Проектов: ${data.projects_count || 0}</span>
-        </div>
-      `;
-    } catch (e) {
-      body.innerHTML = '<p style="color:#ef4444;">Не удалось загрузить профиль</p>';
-    }
-  }
-
-  function closeUserProfileModal() {
-    triggerHaptic('light');
-    document.getElementById('user-profile-modal').classList.remove('open');
-  }
-
-  if (tg?.initDataUnsafe?.user?.first_name) {
-    document.getElementById('user_display_name').textContent = tg.initDataUnsafe.user.first_name;
-  }
-
-  const userLang = tg?.initDataUnsafe?.user?.language_code;
-  if (userLang === 'hy' || userLang === 'am') setLanguage('am');
-  else if (userLang === 'ka' || userLang === 'ge') setLanguage('ge');
-  else if (userLang === 'en') setLanguage('en');
-  else setLanguage('ru');
-
-  fetchFeed();
-  fetchProfile();
-  updateCommunityStrip();
-  setInterval(updateCommunityStrip, 45000);
-  applyTiltToAll();
-</script>
-
-</body>
-</html>
+      const
