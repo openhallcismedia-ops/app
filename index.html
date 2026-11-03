@@ -636,13 +636,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      background: var(--card-bg);
+      font-size: 13px;
+      background: rgba(0, 229, 153, 0.15);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+      color: var(--emerald);
       box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-    }
-    .author-avatar-bubble svg {
-      width: 100%;
-      height: 100%;
     }
     .author-name-text {
       font-size: 11px;
@@ -663,10 +661,20 @@
       background: linear-gradient(135deg, rgba(0, 229, 153, 0.12) 0%, var(--card-bg) 100%);
       border-color: rgba(0, 229, 153, 0.45);
     }
+    body.light-theme .profile-tier-card.tier-emerald {
+      background: #ffffff;
+      border: 1.5px solid #059669;
+      box-shadow: 0 6px 20px rgba(5, 150, 105, 0.12);
+    }
 
     .profile-tier-card.tier-gold {
       background: linear-gradient(135deg, rgba(251, 133, 0, 0.14) 0%, var(--card-bg) 100%);
       border-color: rgba(255, 183, 3, 0.55);
+    }
+    body.light-theme .profile-tier-card.tier-gold {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      box-shadow: 0 6px 20px rgba(217, 119, 6, 0.15);
     }
 
     .skeleton-card {
@@ -680,6 +688,34 @@
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
       margin-bottom: 10px;
+    }
+
+    body.light-theme .skeleton-bar {
+      background: #e2e8f0;
+      animation: none;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .reaction-heart {
+      position: absolute;
+      pointer-events: none;
+      font-size: 40px;
+      color: var(--emerald);
+      transform: translate(-50%, -50%) scale(0);
+      animation: heartPop 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      z-index: 50;
+      text-shadow: 0 0 20px rgba(0, 229, 153, 0.8);
+    }
+
+    @keyframes heartPop {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+      40% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+      70% { transform: translate(-50%, -60px) scale(1); opacity: 0.9; }
+      100% { transform: translate(-50%, -90px) scale(0.6); opacity: 0; }
     }
 
     .ios-btn-tap {
@@ -699,6 +735,18 @@
       flex-shrink: 0;
     }
 
+    body.light-theme .btn-small {
+      background: #059669;
+      border: none;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
+    }
+
+    .btn-small.touch-active, .btn-small:active {
+      transform: scale(0.92);
+      opacity: 0.85;
+    }
+
     .read-reviews-btn {
       display: inline-flex;
       align-items: center;
@@ -710,6 +758,17 @@
       border-radius: 10px;
       background: rgba(0, 180, 216, 0.1);
       border: 1px solid rgba(0, 180, 216, 0.25);
+    }
+
+    body.light-theme .read-reviews-btn {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #15803d;
+    }
+
+    .read-reviews-btn.touch-active, .read-reviews-btn:active {
+      transform: scale(0.92);
+      opacity: 0.85;
     }
 
     .btn-action {
@@ -729,6 +788,30 @@
       color: #061017;
     }
 
+    .btn-action.touch-active, .btn-action:active {
+      transform: scale(0.95);
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(0, 229, 153, 0.12);
+      border: 1px solid rgba(0, 229, 153, 0.35);
+      color: var(--emerald);
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 10px;
+      display: none;
+    }
+
+    body.light-theme .btn-secondary {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+    }
+
     .scoring-target-badge {
       display: flex;
       align-items: center;
@@ -739,6 +822,10 @@
       padding: 12px 16px;
       margin-bottom: 14px;
       box-shadow: 0 2px 10px var(--shadow-color);
+    }
+    body.light-theme .scoring-target-badge {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
     }
 
     .score-banner {
@@ -751,6 +838,39 @@
       justify-content: space-between;
       margin-bottom: 20px;
       box-shadow: 0 4px 16px var(--shadow-color);
+      transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .score-banner.score-perfect {
+      border-color: var(--gold);
+    }
+
+    body.light-theme .score-banner.score-perfect {
+      border: 2px solid #d97706;
+    }
+
+    .score-left span {
+      font-size: 12px;
+      color: var(--text-sub);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .score-verdict {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--cyan);
+      transition: color 0.25s ease;
+    }
+
+    body.light-theme .score-verdict {
+      color: #0284c7;
+    }
+
+    .score-right {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
     }
 
     .big-num {
@@ -761,6 +881,17 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
+      transition: transform 0.2s var(--spring-ease), filter 0.25s ease;
+    }
+
+    .big-num.pulse {
+      transform: scale(1.14);
+    }
+
+    .max-num {
+      font-size: 16px;
+      color: var(--text-sub);
+      font-weight: 600;
     }
 
     .crit-header {
@@ -786,6 +917,18 @@
       border-radius: 9px;
       min-width: 42px;
       text-align: center;
+      display: inline-block;
+      transition: transform 0.18s var(--spring-ease), color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    body.light-theme .crit-val {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+      color: #047857;
+    }
+
+    .crit-val.pulse {
+      transform: scale(1.18);
     }
 
     .crit-desc {
@@ -802,6 +945,7 @@
       background: var(--track-bg);
       border-radius: 4px;
       outline: none;
+      transition: background 0.25s ease;
     }
 
     input[type=range]::-webkit-slider-thumb {
@@ -813,6 +957,12 @@
       cursor: pointer;
       box-shadow: 0 0 10px rgba(0, 229, 153, 0.4);
       border: 2.5px solid #fff;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    body.light-theme input[type=range]::-webkit-slider-thumb {
+      background: var(--slider-thumb-color, #059669);
+      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
     }
 
     input[type=text], textarea {
@@ -826,6 +976,11 @@
       outline: none;
       user-select: text;
       -webkit-user-select: text;
+      transition: border 0.2s ease, background 0.35s ease;
+    }
+
+    input[type=text]:focus, textarea:focus {
+      border-color: var(--emerald);
     }
 
     textarea {
@@ -833,69 +988,55 @@
       resize: none;
     }
 
-    /* --- Галерея 15 Енотов Чифов --- */
-    .chief-avatar-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 14px;
-      background: var(--input-bg);
-      border: 1px solid var(--tag-border);
-      border-radius: 20px;
-      margin-bottom: 18px;
-    }
-
-    .chief-avatar-preview {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(14, 20, 32, 0.7) 100%);
-      border: 2.5px solid var(--emerald);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-      margin-bottom: 14px;
+    .rank-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      justify-content: space-between;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px var(--shadow-color);
+      transition: transform 0.25s var(--spring-ease), background 0.25s ease;
     }
 
-    .chief-avatar-preview svg {
-      width: 100%;
-      height: 100%;
+    .rank-item.touch-active, .rank-item:active {
+      transform: scale(0.97);
+      opacity: 0.9;
     }
 
-    .chief-gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      width: 100%;
-      margin-top: 14px;
+    .rank-num {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-sub);
+      width: 28px;
     }
 
-    .chief-item-card {
-      aspect-ratio: 1;
-      border-radius: 14px;
-      background: var(--tag-bg);
-      border: 1.5px solid var(--tag-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s var(--spring-ease);
-      padding: 2px;
-      overflow: hidden;
+    .rank-info {
+      flex: 1;
+      margin-left: 8px;
     }
 
-    .chief-item-card svg {
-      width: 100%;
-      height: 100%;
+    .rank-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
     }
 
-    .chief-item-card.selected {
-      border-color: var(--emerald);
-      background: rgba(0, 229, 153, 0.16);
-      transform: scale(1.08);
-      box-shadow: 0 4px 12px rgba(0, 229, 153, 0.3);
+    .rank-cat {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .rank-score {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--emerald);
+    }
+
+    body.light-theme .rank-score {
+      color: #059669;
     }
 
     .bottom-nav {
@@ -915,7 +1056,7 @@
       padding: 0 10px;
       z-index: 999;
       box-shadow: 0 10px 30px var(--shadow-color);
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, background 0.35s ease;
     }
 
     .bottom-nav.nav-hidden {
@@ -938,6 +1079,11 @@
       z-index: 0;
     }
 
+    body.light-theme .nav-indicator {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+    }
+
     .nav-btn {
       background: transparent;
       border: none;
@@ -952,6 +1098,11 @@
       padding: 6px 0 4px;
       position: relative;
       z-index: 1;
+      transition: color 0.25s ease, transform 0.25s var(--spring-ease);
+    }
+
+    .nav-btn.touch-active, .nav-btn:active {
+      transform: scale(0.85);
     }
 
     .nav-icon {
@@ -963,19 +1114,146 @@
       stroke-linecap: round;
       stroke-linejoin: round;
       margin-bottom: 4px;
+      transition: stroke 0.2s ease, transform 0.2s ease;
     }
 
     .nav-btn.active .nav-icon {
       stroke: var(--emerald);
+      transform: translateY(-1px);
+    }
+
+    body.light-theme .nav-btn.active .nav-icon {
+      stroke: #059669;
     }
 
     .nav-btn.active {
       color: var(--emerald);
     }
 
+    body.light-theme .nav-btn.active {
+      color: #059669;
+    }
+
     .nav-label {
       font-size: 11px;
       font-weight: 700;
+      letter-spacing: 0.1px;
+      white-space: nowrap;
+    }
+
+    .app-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 2000;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .app-modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .app-modal-sheet {
+      width: 100%;
+      max-width: 480px;
+      max-height: 82vh;
+      background: var(--modal-bg);
+      border: 1px solid var(--card-border);
+      border-bottom: none;
+      border-radius: 26px 26px 0 0;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      box-shadow: 0 -10px 40px var(--shadow-color);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .app-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--tag-border);
+      flex-shrink: 0;
+    }
+
+    .app-modal-header h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .app-modal-close {
+      background: var(--tag-bg);
+      border: none;
+      color: var(--text-sub);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 19px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .app-modal-body {
+      overflow-y: auto;
+      padding: 16px 20px 28px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .review-item {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px var(--shadow-color);
+    }
+
+    .review-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .review-score {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--emerald);
+    }
+
+    body.light-theme .review-score {
+      color: #059669;
+    }
+
+    .review-verdict {
+      font-size: 11px;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+
+    body.light-theme .review-verdict {
+      color: #0284c7;
+    }
+
+    .review-comment {
+      font-size: 13px;
+      color: var(--text-main);
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .review-date {
+      font-size: 11px;
+      color: var(--text-sub);
     }
 
     .agent-chat-card {
@@ -993,6 +1271,7 @@
     .agent-messages {
       flex: 1;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       padding: 16px;
       display: flex;
       flex-direction: column;
@@ -1005,13 +1284,18 @@
       border-radius: 16px;
       font-size: 13.5px;
       line-height: 1.45;
+      white-space: pre-wrap;
       word-break: break-word;
+      animation: cardIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+      user-select: text;
+      -webkit-user-select: text;
     }
 
     .agent-msg-bot {
       align-self: flex-start;
       background: var(--tag-bg);
       border: 1px solid var(--card-border);
+      border-bottom-left-radius: 4px;
       color: var(--text-main);
     }
 
@@ -1020,6 +1304,34 @@
       background: var(--grad-main);
       color: #ffffff;
       font-weight: 600;
+      border-bottom-right-radius: 4px;
+    }
+
+    .agent-msg-typing {
+      align-self: flex-start;
+      display: flex;
+      gap: 4px;
+      padding: 13px 16px;
+      background: var(--tag-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+    }
+
+    .agent-msg-typing span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-sub);
+      animation: typingBounce 1.1s infinite ease-in-out;
+    }
+
+    .agent-msg-typing span:nth-child(2) { animation-delay: 0.15s; }
+    .agent-msg-typing span:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-4px); opacity: 1; }
     }
 
     .agent-input-row {
@@ -1055,7 +1367,16 @@
       flex-shrink: 0;
     }
 
-    /* Нативное уведомление Toast */
+    .agent-send-btn.touch-active, .agent-send-btn:active {
+      transform: scale(0.9);
+      opacity: 0.9;
+    }
+
+    .agent-send-btn:disabled {
+      opacity: 0.5;
+    }
+
+    /* Нативное всплывающее уведомление (Toast) */
     .app-toast {
       position: fixed;
       top: 24px;
@@ -1064,18 +1385,25 @@
       background: rgba(18, 24, 38, 0.95);
       border: 1px solid var(--emerald);
       color: #ffffff;
-      padding: 10px 18px;
-      border-radius: 16px;
+      padding: 12px 20px;
+      border-radius: 18px;
       font-size: 13px;
       font-weight: 700;
       z-index: 99999;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       transition: transform 0.35s var(--spring-ease), opacity 0.3s ease;
       opacity: 0;
       pointer-events: none;
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    body.light-theme .app-toast {
+      background: #ffffff;
+      border: 1.5px solid #059669;
+      color: #0f172a;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
     }
 
     .app-toast.visible {
@@ -1087,7 +1415,7 @@
 <body>
 
 <div class="fixed-app-background"></div>
-<div id="app-toast" class="app-toast"><span>✨</span><span id="toast-text">Сообщение</span></div>
+<div id="app-toast" class="app-toast"><span>✨</span><span id="toast-text">Уведомление</span></div>
 
 <div class="bg-blob blob-1"></div>
 <div class="blob-2 bg-blob"></div>
@@ -1212,11 +1540,12 @@
     </div>
 
     <div class="card tilt-card">
-      <label for="comment" style="display:block; font-size:14px; font-weight:700; margin-bottom:8px;">Заметка к оценке (необязательно)</label>
+      <label for="comment" style="display:block; font-size:14px; font-weight:700; margin-bottom:8px;" id="t_commentLabel">Заметка к оценке (необязательно)</label>
       <textarea id="comment" placeholder="В чем главные плюсы и что авторам стоит доработать?"></textarea>
     </div>
 
     <button class="btn-action ios-btn-tap" id="submitBtn">Оставить рецензию</button>
+    <button class="btn-secondary ios-btn-tap" id="shareBtn">Поделиться оценкой</button>
   </div>
 
   <!-- ВКЛАДКА 3: ТОП -->
@@ -1233,7 +1562,7 @@
 
     <div class="agent-chat-card">
       <div id="agent-messages" class="agent-messages">
-        <div class="agent-msg agent-msg-bot">Привет! Я Чиф 🦝 — твой проводник по Open Hall. Спрашивай о проектах, оценках или подаче!</div>
+        <div class="agent-msg agent-msg-bot" id="agent-welcome-msg">Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Расскажу как работает скоринг, оценю твою идею или помогу грамотно заполнить заявку на добавление проекта. Спрашивай!</div>
       </div>
       <div class="agent-input-row">
         <textarea id="agentInput" rows="1" placeholder="Спросить у Чифа..."></textarea>
@@ -1245,12 +1574,14 @@
   <!-- ВКЛАДКА 4: ПРОФИЛЬ -->
   <div id="tab-profile" class="tab-view">
     <h1 id="t_prof_title">Профиль участника</h1>
-    <p class="subtitle" id="t_prof_sub">Личная статистика и выбор персонажа</p>
+    <p class="subtitle" id="t_prof_sub">Личная статистика и статус в сообществе</p>
 
     <div class="card tilt-card profile-tier-card tier-obsidian" id="profileCard">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:14px;">
-          <div class="author-avatar-bubble" style="width:64px; height:64px; border:2.5px solid var(--emerald);" id="myProfileAvatarBubble"></div>
+          <div id="myProfileAvatarBubble" style="width:54px; height:54px; border-radius:50%; background:rgba(0,229,153,0.15); border:2px solid var(--emerald); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--emerald);">
+            👤
+          </div>
           <div>
             <h3 id="user_display_name" style="font-size:18px; margin-bottom:2px;">Участник комьюнити</h3>
             <span class="badge" id="profileStatusBadge" style="margin-top:2px; display:inline-block;">Community Scout</span>
@@ -1260,28 +1591,20 @@
       </div>
       
       <div class="project-tags">
-        <span class="tag" id="t_stat_reviews">Рецензий: —</span>
-        <span class="tag" id="t_stat_projects">Проектов: —</span>
+        <span class="tag tag-interactive" id="t_stat_reviews" onclick="openMyContentModal('reviews')">Рецензий: —</span>
+        <span class="tag tag-interactive" id="t_stat_projects" onclick="openMyContentModal('projects')">Проектов: —</span>
       </div>
     </div>
 
-    <!-- Выбор Чифа -->
+    <!-- Настройки профиля -->
     <div class="card tilt-card">
-      <h3 style="margin-bottom:6px;">Выберите своего Чифа</h3>
-      <p style="margin-bottom:14px; font-size:12px;">15 каноничных образов енота. Нажмите на любого, чтобы примерить его на свой профиль[cite: 1, 2].</p>
-
-      <div class="chief-avatar-box">
-        <div class="chief-avatar-preview" id="chiefBigPreview"></div>
-        <div style="font-size:14px; font-weight:800; color:var(--text-main);" id="chiefCurrentName">Чиф Ковбой</div>
-        <div style="font-size:11px; color:var(--text-sub); margin-top:2px;" id="chiefCurrentDesc">Шляпа рейнджера и повязка на глаз[cite: 1]</div>
-
-        <div class="chief-gallery-grid" id="chiefGalleryGrid"></div>
-      </div>
+      <h3 style="margin-bottom:6px;">Настройки профиля</h3>
+      <p style="margin-bottom:14px; font-size:12px;">Укажите имя или никнейм, который будет отображаться на ваших проектах и рецензиях.</p>
 
       <label for="customHandleInput" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;">Отображаемый ник</label>
       <input type="text" id="customHandleInput" maxlength="30" placeholder="@nickname" style="margin-bottom:14px;">
 
-      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить профиль</button>
+      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить ник</button>
     </div>
 
     <!-- Подача проекта -->
@@ -1317,23 +1640,23 @@
 
   <button class="nav-btn ios-btn-tap active" onclick="switchTab('feed')">
     <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
-    <span class="nav-label">Лента</span>
+    <span class="nav-label" id="t_nav_feed">Лента</span>
   </button>
   <button class="nav-btn ios-btn-tap" onclick="switchTab('scoring')">
     <svg class="nav-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-    <span class="nav-label">Оценка</span>
+    <span class="nav-label" id="t_nav_score">Оценка</span>
   </button>
   <button class="nav-btn ios-btn-tap" onclick="switchTab('top')">
     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/><path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"/><path d="M4 22h16"/><path d="M6 3h12v7a6 6 0 0 1-12 0V3z"/></svg>
-    <span class="nav-label">Топ</span>
+    <span class="nav-label" id="t_nav_top">Топ</span>
   </button>
   <button class="nav-btn ios-btn-tap" onclick="switchTab('agent')">
     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 8.5 7.5 4 10 7.5"/><path d="M20 8.5 16.5 4 14 7.5"/><path d="M3.5 14.5c0-4.42 3.8-8 8.5-8s8.5 3.58 8.5 8c0 4.2-3.4 7.5-8.5 7.5s-8.5-3.3-8.5-7.5Z"/><circle cx="8.5" cy="13.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="13.5" r="1.25" fill="currentColor"/></svg>
-    <span class="nav-label">Чиф</span>
+    <span class="nav-label" id="t_nav_agent">Чиф</span>
   </button>
   <button class="nav-btn ios-btn-tap" onclick="switchTab('profile')">
     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    <span class="nav-label">Профиль</span>
+    <span class="nav-label" id="t_nav_prof">Профиль</span>
   </button>
 </nav>
 
@@ -1384,9 +1707,8 @@
   let currentTab = 'feed';
   let activeProject = 'Open Hall Bot';
   let projectChosen = false;
-  let currentChiefId = localStorage.getItem('openhall_chosen_chief') || 'cowboy';
 
-  // Всплывающее уведомление без браузерного заголовка
+  // Безопасный вызов нативного уведомления (без блокирующего окна браузера с адресом сайта)
   function showToast(text) {
     if (tg?.showAlert) {
       tg.showAlert(text);
@@ -1400,157 +1722,6 @@
     setTimeout(() => toast.classList.remove('visible'), 2400);
   }
 
-  // 15 Каноничных Енотов из референса
-  const RACCOON_CHARACTERS = [
-    { id: 'cowboy', name: 'Чиф Ковбой', desc: 'Шляпа рейнджера и повязка на глаз', hat: 'cowboy', eyes: 'eyepatch', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'steampunk', name: 'Чиф Стимпанк', desc: 'Круглые медные очки и кожаный пояс', hat: 'derby', eyes: 'steampunk_glasses', vest: 'belt', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'viking', name: 'Чиф Викинг', desc: 'Шлем с рогами и набедренная повязка', hat: 'viking', eyes: 'normal', vest: 'skirt', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'gentleman', name: 'Чиф Джентльмен', desc: 'Раскрытый зонтик и золотой амулет', hat: 'umbrella', eyes: 'normal', vest: 'pink_cape', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'santa', name: 'Чиф Праздничный', desc: 'Колпак Санты с белым помпоном', hat: 'santa', eyes: 'normal', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'adventurer', name: 'Чиф Авантюрист', desc: 'Синий жилет с эмблемой черепа', hat: 'none', eyes: 'normal', vest: 'blue_skull', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'explorer', name: 'Чиф Следопыт', desc: 'Оранжевый жилет с пряжкой', hat: 'none', eyes: 'normal', vest: 'orange_vest', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'diver', name: 'Чиф Водолаз', desc: 'Розовая маска-визор для плавания', hat: 'none', eyes: 'pink_visor', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'cyclist', name: 'Чиф Спортсмен', desc: 'Розовые очки авиаторы на резинке', hat: 'goggles_head', eyes: 'normal', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'hipster', name: 'Чиф Профессор', desc: 'Синий берет и круглые очки', hat: 'blue_cap', eyes: 'round_shades', vest: 'none', fur: '#9d91ba', belly: '#fbf5e6' },
-    { id: 'propeller', name: 'Чиф Вертушка', desc: 'Кепка с пропеллером и очки-жалюзи', hat: 'propeller', eyes: 'blinds', vest: 'none', fur: '#9d91ba', belly: '#fbf5e6' },
-    { id: 'chieftain', name: 'Чиф Вождь', desc: 'Сине-зеленый плюмаж из перьев', hat: 'feathers', eyes: 'normal', vest: 'sash', fur: '#9d91ba', belly: '#fbf5e6' },
-    { id: 'sleepy', name: 'Чиф Соня', desc: 'Повязка для сна на глазах', hat: 'none', eyes: 'sleep_mask', vest: 'none', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'dizzy', name: 'Чиф Оглушённый', desc: 'Звёзды над головой и спиральки в глазах', hat: 'stars_head', eyes: 'spiral', vest: 'orange_collar', fur: '#8c95a6', belly: '#fbf5e6' },
-    { id: 'pure', name: 'Чиф Классик', desc: 'Оригинальный пухлый енот Чиф', hat: 'none', eyes: 'normal', vest: 'belt_simple', fur: '#8c95a6', belly: '#fbf5e6' }
-  ];
-
-  function getRaccoonSvg(r, size = 100) {
-    const tail = `
-      <path d="M38 72 C22 74, 8 68, 12 55 C16 46, 26 50, 42 62 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M14 54 C17 50, 22 52, 26 57" stroke="#373c48" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-      <path d="M22 61 C26 58, 30 60, 34 66" stroke="#373c48" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-    `;
-    const ears = `
-      <path d="M42 27 C39 16, 46 12, 50 20 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.2"/>
-      <path d="M43 25 C41 18, 46 16, 48 22 Z" fill="#ffffff"/>
-      <path d="M68 27 C71 16, 64 12, 60 20 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.2"/>
-      <path d="M67 25 C69 18, 64 16, 62 22 Z" fill="#ffffff"/>
-    `;
-    const body = `<path d="M45 28 C35 34, 34 64, 40 76 C46 84, 68 84, 74 76 C80 64, 76 34, 65 28 C58 24, 52 24, 45 28 Z" fill="${r.fur}" stroke="#2a2e39" stroke-width="2.5"/>`;
-    const mask = `<path d="M42 36 C38 42, 40 50, 48 48 C51 45, 52 42, 55 42 C58 42, 59 45, 62 48 C70 50, 72 42, 68 36 C63 32, 47 32, 42 36 Z" fill="#373c48" stroke="#2a2e39" stroke-width="1.5"/>`;
-    const belly = `<path d="M46 54 C40 58, 42 78, 54 81 C66 84, 72 74, 70 58 C68 48, 52 46, 46 54 Z" fill="${r.belly}" stroke="#2a2e39" stroke-width="2"/>`;
-
-    let eyesSvg = '';
-    if (r.eyes === 'eyepatch') {
-      eyesSvg = `<circle cx="48" cy="43" r="5.5" fill="#111827" stroke="#2a2e39" stroke-width="1.8"/><line x1="41" y1="36" x2="68" y2="48" stroke="#111827" stroke-width="1.8"/><circle cx="62" cy="43" r="2.4" fill="#1e293b"/>`;
-    } else if (r.eyes === 'steampunk_glasses') {
-      eyesSvg = `<circle cx="48" cy="43" r="6.5" fill="rgba(255,255,255,0.4)" stroke="#eab308" stroke-width="2.2"/><circle cx="62" cy="43" r="6.5" fill="rgba(255,255,255,0.4)" stroke="#eab308" stroke-width="2.2"/><line x1="54.5" y1="43" x2="55.5" y2="43" stroke="#eab308" stroke-width="2.2"/><circle cx="48" cy="43" r="2" fill="#1e293b"/><circle cx="62" cy="43" r="2" fill="#1e293b"/>`;
-    } else if (r.eyes === 'pink_visor' || r.eyes === 'sleep_mask') {
-      eyesSvg = `<path d="M41 40 Q55 38 69 40 Q71 47 64 48 Q55 46 46 48 Q39 47 41 40 Z" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><circle cx="45" cy="43" r="1.5" fill="#fff" opacity="0.8"/><circle cx="65" cy="43" r="1.5" fill="#fff" opacity="0.8"/>`;
-    } else if (r.eyes === 'blinds') {
-      eyesSvg = `<rect x="42" y="38" width="13" height="10" rx="2" fill="#f97316" stroke="#2a2e39" stroke-width="1.8"/><rect x="56" y="38" width="13" height="10" rx="2" fill="#f97316" stroke="#2a2e39" stroke-width="1.8"/><line x1="42" y1="42" x2="55" y2="42" stroke="#fff" stroke-width="1.5"/><line x1="56" y1="42" x2="69" y2="42" stroke="#fff" stroke-width="1.5"/>`;
-    } else if (r.eyes === 'round_shades') {
-      eyesSvg = `<circle cx="48" cy="43" r="6" fill="#1e293b" stroke="#2a2e39" stroke-width="2"/><circle cx="62" cy="43" r="6" fill="#1e293b" stroke="#2a2e39" stroke-width="2"/>`;
-    } else if (r.eyes === 'spiral') {
-      eyesSvg = `<circle cx="48" cy="43" r="3.5" fill="none" stroke="#1e293b" stroke-width="1.8"/><circle cx="62" cy="43" r="3.5" fill="none" stroke="#1e293b" stroke-width="1.8"/>`;
-    } else {
-      eyesSvg = `<circle cx="48" cy="43" r="2.4" fill="#1e293b"/><circle cx="47.5" cy="42" r="0.8" fill="#fff"/><circle cx="62" cy="43" r="2.4" fill="#1e293b"/><circle cx="61.5" cy="42" r="0.8" fill="#fff"/>`;
-    }
-
-    const noseMouth = `
-      <ellipse cx="55" cy="46" rx="2.2" ry="1.6" fill="#1e293b"/>
-      <path d="M53.5 48.5 Q55 50.5 56.5 48.5" stroke="#1e293b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-      <ellipse cx="44" cy="79" rx="4" ry="2.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2"/>
-      <ellipse cx="66" cy="79" rx="4" ry="2.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2"/>
-      <ellipse cx="38" cy="56" rx="3.5" ry="5.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2" transform="rotate(-15 38 56)"/>
-      <ellipse cx="72" cy="56" rx="3.5" ry="5.5" fill="${r.fur}" stroke="#2a2e39" stroke-width="2" transform="rotate(15 72 56)"/>
-    `;
-
-    let vestSvg = '';
-    if (r.vest === 'blue_skull') {
-      vestSvg = `<path d="M41 54 C39 66, 42 78, 50 78 C48 68, 49 60, 50 54 Z" fill="#0284c7" stroke="#2a2e39" stroke-width="2"/><path d="M69 54 C71 66, 68 78, 60 78 C62 68, 61 60, 60 54 Z" fill="#0284c7" stroke="#2a2e39" stroke-width="2"/><circle cx="55" cy="66" r="4.5" fill="#f43f5e"/><text x="52.5" y="69" font-size="8" fill="#fff">☠</text>`;
-    } else if (r.vest === 'orange_vest') {
-      vestSvg = `<path d="M41 54 C39 66, 42 78, 50 78 C48 68, 49 60, 50 54 Z" fill="#ea580c" stroke="#2a2e39" stroke-width="2"/><path d="M69 54 C71 66, 68 78, 60 78 C62 68, 61 60, 60 54 Z" fill="#ea580c" stroke="#2a2e39" stroke-width="2"/><path d="M42 70 C48 74, 62 74, 68 70 L69 75 C62 79, 48 79, 41 75 Z" fill="#0284c7" stroke="#2a2e39" stroke-width="2"/><rect x="52" y="70" width="6" height="5.5" rx="1.5" fill="#facc15" stroke="#2a2e39" stroke-width="1.5"/>`;
-    } else if (r.vest === 'pink_cape') {
-      vestSvg = `<path d="M45 53 C49 57, 61 57, 65 53 L63 58 C59 62, 51 62, 47 58 Z" fill="#f472b6" stroke="#2a2e39" stroke-width="1.8"/><circle cx="55" cy="59" r="4.5" fill="#fbbf24" stroke="#2a2e39" stroke-width="1.8"/>`;
-    } else if (r.vest === 'belt' || r.vest === 'belt_simple') {
-      vestSvg = `<path d="M42 69 C48 74, 62 74, 68 69 L69 74 C62 79, 48 79, 41 74 Z" fill="#1e293b" stroke="#2a2e39" stroke-width="2"/><circle cx="55" cy="73" r="3" fill="#f59e0b" stroke="#2a2e39" stroke-width="1.5"/>`;
-    } else if (r.vest === 'skirt') {
-      vestSvg = `<path d="M42 71 C48 75, 62 75, 68 71 L69 77 C62 82, 48 82, 41 77 Z" fill="#78350f" stroke="#2a2e39" stroke-width="2"/>`;
-    } else if (r.vest === 'sash') {
-      vestSvg = `<path d="M43 70 C48 74, 62 74, 67 70 L68 75 C62 79, 48 79, 42 75 Z" fill="#d97706" stroke="#2a2e39" stroke-width="2"/><circle cx="64" cy="74" r="3" fill="#fff" stroke="#2a2e39" stroke-width="1.5"/>`;
-    }
-
-    let hatSvg = '';
-    if (r.hat === 'cowboy') {
-      hatSvg = `<ellipse cx="55" cy="27" rx="19" ry="5.5" fill="#92400e" stroke="#2a2e39" stroke-width="2.2" transform="rotate(-5 55 27)"/><path d="M45 25 C45 15, 63 15, 63 25 Z" fill="#b45309" stroke="#2a2e39" stroke-width="2.2"/>`;
-    } else if (r.hat === 'viking') {
-      hatSvg = `<path d="M46 27 C46 17, 64 17, 64 27 Z" fill="#f59e0b" stroke="#2a2e39" stroke-width="2.2"/><path d="M44 26 C38 24, 38 18, 40 16 C42 20, 46 22, 46 26 Z" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/><path d="M66 26 C72 24, 72 18, 70 16 C68 20, 64 22, 64 26 Z" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>`;
-    } else if (r.hat === 'santa') {
-      hatSvg = `<path d="M45 26 C48 10, 72 12, 70 26 Z" fill="#ea580c" stroke="#2a2e39" stroke-width="2.2"/><path d="M68 20 Q76 26 74 34" stroke="#ea580c" stroke-width="6" stroke-linecap="round"/><circle cx="74" cy="35" r="3.5" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/><rect x="44" y="24" width="23" height="4.5" rx="2" fill="#fff" stroke="#2a2e39" stroke-width="1.8"/>`;
-    } else if (r.hat === 'umbrella') {
-      hatSvg = `<path d="M35 24 Q55 6 75 24 Z" fill="#78716c" stroke="#2a2e39" stroke-width="2"/><line x1="55" y1="24" x2="55" y2="46" stroke="#2a2e39" stroke-width="2.5"/>`;
-    } else if (r.hat === 'propeller') {
-      hatSvg = `<path d="M47 26 C47 19, 63 19, 63 26 Z" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><line x1="55" y1="19" x2="55" y2="15" stroke="#2a2e39" stroke-width="2"/><line x1="48" y1="15" x2="62" y2="15" stroke="#eab308" stroke-width="3" stroke-linecap="round"/>`;
-    } else if (r.hat === 'feathers') {
-      hatSvg = `<ellipse cx="55" cy="27" rx="14" ry="2.5" fill="#10b981" stroke="#2a2e39" stroke-width="1.8"/><path d="M52 26 C50 14, 56 12, 54 26 Z" fill="#3b82f6" stroke="#2a2e39" stroke-width="1.8"/><path d="M56 26 C56 16, 62 14, 58 26 Z" fill="#38bdf8" stroke="#2a2e39" stroke-width="1.8"/>`;
-    } else if (r.hat === 'derby') {
-      hatSvg = `<ellipse cx="55" cy="27" rx="15" ry="3.5" fill="#b45309" stroke="#2a2e39" stroke-width="2"/><path d="M47 26 C47 18, 63 18, 63 26 Z" fill="#d97706" stroke="#2a2e39" stroke-width="2"/>`;
-    } else if (r.hat === 'blue_cap') {
-      hatSvg = `<path d="M45 28 C40 18, 68 16, 68 28 Z" fill="#3b82f6" stroke="#2a2e39" stroke-width="2.2" transform="rotate(-8 55 24)"/><circle cx="53" cy="18" r="2" fill="#1d4ed8"/>`;
-    } else if (r.hat === 'goggles_head') {
-      hatSvg = `<ellipse cx="48" cy="22" rx="6" ry="6" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><ellipse cx="62" cy="22" rx="6" ry="6" fill="#f43f5e" stroke="#2a2e39" stroke-width="2"/><line x1="42" y1="23" x2="68" y2="23" stroke="#2563eb" stroke-width="2.5"/>`;
-    } else if (r.hat === 'stars_head') {
-      hatSvg = `<ellipse cx="55" cy="18" rx="18" ry="4" fill="none" stroke="#fff" stroke-width="2" opacity="0.8"/><text x="50" y="16" font-size="12" fill="#ffb703">★</text>`;
-    }
-
-    return `
-      <svg viewBox="0 0 110 110" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="56" cy="84" rx="20" ry="4" fill="rgba(0,0,0,0.3)"/>
-        ${tail}
-        ${ears}
-        ${body}
-        ${mask}
-        ${belly}
-        ${vestSvg}
-        ${noseMouth}
-        ${eyesSvg}
-        ${hatSvg}
-      </svg>
-    `;
-  }
-
-  function renderChiefGallery() {
-    const grid = document.getElementById('chiefGalleryGrid');
-    if (!grid) return;
-
-    grid.innerHTML = RACCOON_CHARACTERS.map(c => `
-      <div class="chief-item-card ios-btn-tap ${c.id === currentChiefId ? 'selected' : ''}" onclick="selectChief('${c.id}')">
-        ${getRaccoonSvg(c, 52)}
-      </div>
-    `).join('');
-
-    updateCurrentChiefDisplay();
-  }
-
-  function selectChief(id) {
-    currentChiefId = id;
-    localStorage.setItem('openhall_chosen_chief', id);
-    document.querySelectorAll('.chief-item-card').forEach((el, idx) => {
-      el.classList.toggle('selected', RACCOON_CHARACTERS[idx].id === id);
-    });
-    updateCurrentChiefDisplay();
-    triggerHaptic('light');
-  }
-
-  function updateCurrentChiefDisplay() {
-    const c = RACCOON_CHARACTERS.find(it => it.id === currentChiefId) || RACCOON_CHARACTERS[0];
-    const bigPreview = document.getElementById('chiefBigPreview');
-    const profileBubble = document.getElementById('myProfileAvatarBubble');
-    const nameEl = document.getElementById('chiefCurrentName');
-    const descEl = document.getElementById('chiefCurrentDesc');
-
-    if (bigPreview) bigPreview.innerHTML = getRaccoonSvg(c, 120);
-    if (profileBubble) profileBubble.innerHTML = getRaccoonSvg(c, 64);
-    if (nameEl) nameEl.textContent = c.name;
-    if (descEl) descEl.textContent = c.desc;
-  }
-
   async function saveCustomProfile() {
     triggerHaptic('success');
     const handleInput = document.getElementById('customHandleInput').value.trim();
@@ -1562,17 +1733,697 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           initData: tg?.initData || '',
-          custom_handle: formattedHandle,
-          avatar_json: currentChiefId
+          custom_handle: formattedHandle
         })
       });
       showToast('Профиль успешно обновлен!');
       if (formattedHandle) document.getElementById('user_display_name').textContent = formattedHandle;
       fetchFeed();
     } catch (e) {
-      showToast('Профиль сохранен локально');
+      showToast('Ошибка сохранения профиля');
     }
   }
+
+  const sliders = [
+    { el: document.getElementById('c1'), valEl: document.getElementById('val1') },
+    { el: document.getElementById('c2'), valEl: document.getElementById('val2') },
+    { el: document.getElementById('c3'), valEl: document.getElementById('val3') },
+    { el: document.getElementById('c4'), valEl: document.getElementById('val4') },
+    { el: document.getElementById('c5'), valEl: document.getElementById('val5') }
+  ];
+
+  const totalEl = document.getElementById('totalScore');
+  const verdictEl = document.getElementById('verdict');
+  const submitBtn = document.getElementById('submitBtn');
+  const shareBtn = document.getElementById('shareBtn');
+  const scoreBannerBox = document.getElementById('scoreBannerBox');
+
+  function interpolateColor(color1, color2, factor) {
+    const r = Math.round(color1[0] + factor * (color2[0] - color1[0]));
+    const g = Math.round(color1[1] + factor * (color2[1] - color1[1]));
+    const b = Math.round(color1[2] + factor * (color2[2] - color1[2]));
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  function calculate() {
+    let sum = 0;
+    sliders.forEach(item => {
+      const v = Number(item.el.value);
+      item.valEl.textContent = v;
+      sum += v;
+    });
+
+    const avgNum = sum / sliders.length;
+    const avg = avgNum.toFixed(1);
+    totalEl.textContent = avg;
+
+    const t = i18n[currentLang];
+    let dynamicAccentColor = null;
+
+    if (avgNum >= 7.0) {
+      const factor = Math.min(Math.max((avgNum - 7.0) / 3.0, 0), 1);
+      dynamicAccentColor = interpolateColor([0, 229, 153], [255, 183, 3], factor);
+      
+      document.documentElement.style.setProperty('--slider-thumb-color', dynamicAccentColor);
+      totalEl.style.backgroundImage = `linear-gradient(135deg, ${dynamicAccentColor}, #fb8500)`;
+      scoreBannerBox.style.borderColor = dynamicAccentColor;
+      scoreBannerBox.style.boxShadow = `0 4px 20px rgba(255, 183, 3, ${(factor * 0.22).toFixed(2)})`;
+    } else {
+      document.documentElement.style.removeProperty('--slider-thumb-color');
+      totalEl.style.backgroundImage = 'var(--grad-main)';
+      scoreBannerBox.style.borderColor = 'var(--card-border)';
+      scoreBannerBox.style.boxShadow = '0 4px 16px var(--shadow-color)';
+    }
+
+    if (avg >= 9.0) {
+      verdictEl.textContent = t.v_top;
+      verdictEl.style.color = dynamicAccentColor || 'var(--gold)';
+      scoreBannerBox.classList.add('score-perfect');
+    } else if (avg >= 7.0) {
+      verdictEl.textContent = t.v_good;
+      verdictEl.style.color = dynamicAccentColor || 'var(--cyan)';
+      scoreBannerBox.classList.remove('score-perfect');
+    } else if (avg >= 5.0) {
+      verdictEl.textContent = t.v_mid;
+      verdictEl.style.color = 'var(--text-sub)';
+      scoreBannerBox.classList.remove('score-perfect');
+    } else {
+      verdictEl.textContent = t.v_low;
+      verdictEl.style.color = '#ef4444';
+      scoreBannerBox.classList.remove('score-perfect');
+    }
+
+    sliders.forEach(item => {
+      const v = Number(item.el.value);
+      if (v >= 8.0) {
+        const factorItem = (v - 8.0) / 2.0;
+        const colorItem = interpolateColor([0, 229, 153], [255, 183, 3], factorItem);
+        item.valEl.style.color = colorItem;
+        item.valEl.style.borderColor = colorItem;
+        item.valEl.style.backgroundColor = `rgba(255, 183, 3, ${(factorItem * 0.12).toFixed(2)})`;
+      } else {
+        item.valEl.style.color = '';
+        item.valEl.style.borderColor = '';
+        item.valEl.style.backgroundColor = '';
+      }
+    });
+  }
+
+  function pulse(el) {
+    el.classList.remove('pulse');
+    void el.offsetWidth;
+    el.classList.add('pulse');
+    setTimeout(() => el.classList.remove('pulse'), 200);
+  }
+
+  sliders.forEach(item => {
+    item.el.addEventListener('input', () => {
+      if (item.el.value === "10") {
+        triggerHaptic('heavy');
+      } else {
+        triggerHaptic('light');
+      }
+      calculate();
+      pulse(item.valEl);
+      pulse(totalEl);
+    });
+  });
+
+  let isSubmitting = false;
+  submitBtn.addEventListener('click', async () => {
+    if (isSubmitting) return;
+    isSubmitting = true;
+    triggerHaptic('success');
+
+    const scoreVal = parseFloat(totalEl.textContent);
+    const verdictVal = verdictEl.textContent;
+
+    const payload = {
+      initData: tg?.initData || "",
+      project: activeProject,
+      score: scoreVal,
+      verdict: verdictVal,
+      comment: document.getElementById('comment').value
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Сохранение...";
+
+    try {
+      const res = await fetch(`${API_URL}/api/review`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+      showToast(`Оценка для «${activeProject}» отправлена на модерацию!`);
+      shareBtn.style.display = 'block';
+      shareBtn.textContent = `${i18n[currentLang].share_btn} «${activeProject}»`;
+    } catch (err) {
+      console.error("Ошибка сохранения:", err);
+      showToast("Не удалось сохранить оценку. Проверьте интернет.");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = `${i18n[currentLang].submitBtn}: «${activeProject}»`;
+      isSubmitting = false;
+    }
+  });
+
+  shareBtn.addEventListener('click', () => {
+    triggerHaptic('medium');
+    const scoreVal = parseFloat(totalEl.textContent);
+    const verdictVal = verdictEl.textContent;
+    const text = `Я оценил проект «${activeProject}» на ${scoreVal}/10 («${verdictVal}») в Open Hall Hub!\n\nПрисоединяйся к скорингу проектов сообщества 👇`;
+    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
+
+    if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl);
+    else window.open(shareUrl, '_blank');
+  });
+
+  const submitProjBtn = document.getElementById('submitProjBtn');
+  let isSubmittingProj = false;
+  submitProjBtn.addEventListener('click', async () => {
+    if (isSubmittingProj) return;
+
+    const nameEl = document.getElementById('newProjName');
+    const descEl = document.getElementById('newProjDesc');
+    const tags = Array.from(selectedFormTags);
+
+    const name = nameEl.value.trim();
+    const description = descEl.value.trim();
+
+    if (!name || !description) {
+      showToast('Заполните название и описание проекта.');
+      return;
+    }
+
+    isSubmittingProj = true;
+    triggerHaptic('success');
+    submitProjBtn.disabled = true;
+    submitProjBtn.textContent = 'Отправка...';
+
+    try {
+      const res = await fetch(`${API_URL}/api/projects`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          initData: tg?.initData || '',
+          name,
+          description,
+          tags: tags
+        })
+      });
+
+      if (res.status === 409) {
+        showToast('Проект с таким названием уже существует.');
+      } else if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      } else {
+        showToast(`Проект «${name}» отправлен на модерацию!`);
+        nameEl.value = '';
+        descEl.value = '';
+        selectedFormTags.clear();
+        document.querySelectorAll('.form-tag-item').forEach(el => el.classList.remove('selected'));
+        switchTab('feed');
+      }
+    } catch (err) {
+      console.error('Ошибка отправки проекта:', err);
+      showToast('Не удалось отправить заявку. Попробуйте снова.');
+    } finally {
+      submitProjBtn.disabled = false;
+      submitProjBtn.textContent = i18n[currentLang].btn_submit_proj;
+      isSubmittingProj = false;
+    }
+  });
+
+  function startScoring(projName) {
+    activeProject = projName;
+    projectChosen = true;
+    updateScoreTitle();
+    shareBtn.style.display = 'none';
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) submitBtn.textContent = `${i18n[currentLang].submitBtn}: «${activeProject}»`;
+    switchTab('scoring');
+  }
+
+  async function updateScoreTitle() {
+    const titleEl = document.getElementById('t_score_title');
+    const targetEl = document.getElementById('scoringTargetName');
+    const t = i18n[currentLang];
+    
+    if (targetEl) targetEl.textContent = activeProject;
+
+    if (!projectChosen) {
+      titleEl.textContent = t.score_title;
+      return;
+    }
+    if (currentLang === 'ru') {
+      titleEl.textContent = activeProject;
+      return;
+    }
+    const [translated] = await translateTexts([activeProject], currentLang);
+    titleEl.textContent = translated;
+  }
+
+  function renderFeedList() {
+    const feedContainer = document.getElementById('feed-list');
+    let projects = allProjectsData;
+
+    if (currentFilterTag !== 'all') {
+      projects = projects.filter(p => (p.tags || []).includes(currentFilterTag));
+    }
+
+    if (!projects || projects.length === 0) {
+      feedContainer.innerHTML = `<div class="card"><p>В этой категории пока нет проектов.</p></div>`;
+      return;
+    }
+
+    feedContainer.innerHTML = projects.map((p, index) => {
+      const tagsHtml = (p.tags || []).map(tag => `
+        <span class="tag tag-interactive" onclick="filterByTag('${escapeHtml(tag).replace(/'/g, "\\'")}', null)">#${escapeHtml(tag)}</span>
+      `).join('');
+      const safeDisplayName = escapeHtml(p.displayName || p.name);
+      const safeOriginalNameJs = escapeHtml(p.name).replace(/'/g, "\\'");
+      const delay = Math.min(index * 60, 400);
+
+      const authorBadgeHtml = p.submitted_by ? `
+        <div class="author-badge ios-btn-tap" onclick="openUserProfile('${p.submitted_by}')">
+          <div class="author-avatar-bubble">👤</div>
+          <span class="author-name-text">${escapeHtml(p.author_name || 'Фаундер')}</span>
+        </div>
+      ` : '';
+
+      return `
+        <div class="card stagger-in" style="animation-delay:${delay}ms">
+          ${authorBadgeHtml}
+          <h3>${safeDisplayName}</h3>
+          <p>${escapeHtml(p.displayDesc || p.description)}</p>
+          <div class="card-footer">
+            <div class="project-tags">${tagsHtml}</div>
+            <button class="btn-small ios-btn-tap" onclick="startScoring('${safeOriginalNameJs}')">${i18n[currentLang].btn_eval}</button>
+          </div>
+          <div style="margin-top:14px; text-align:right;">
+            <span class="read-reviews-btn ios-btn-tap" onclick="openReviews('${safeOriginalNameJs}')">${i18n[currentLang].read_reviews}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    applyTiltToAll();
+    document.querySelectorAll('#feed-list .card').forEach(initDoubleTap);
+  }
+
+  async function fetchFeed() {
+    const feedContainer = document.getElementById('feed-list');
+    try {
+      const res = await fetch(`${API_URL}/api/projects`);
+      const projects = await res.json();
+
+      if (!projects || projects.length === 0) {
+        feedContainer.innerHTML = `<div class="card"><p>Пока нет опубликованных проектов.</p></div>`;
+        return;
+      }
+
+      lastKnownProjectsCount = projects.length;
+
+      let displayNames = projects.map(p => p.name);
+      let displayDescs = projects.map(p => p.description);
+      if (currentLang !== 'ru') {
+        [displayNames, displayDescs] = await Promise.all([
+          translateTexts(displayNames, currentLang),
+          translateTexts(displayDescs, currentLang)
+        ]);
+      }
+
+      allProjectsData = projects.map((p, i) => ({
+        ...p,
+        displayName: displayNames[i],
+        displayDesc: displayDescs[i]
+      }));
+
+      updateTagsFilterBar(allProjectsData);
+      renderFeedList();
+    } catch (err) {
+      console.error("Ошибка загрузки ленты:", err);
+      feedContainer.innerHTML = `<div class="card"><p style="color:#ff5c5c;">Сервер просыпается... повторите через 15 секунд.</p></div>`;
+    }
+  }
+
+  async function checkForFeedUpdates() {
+    try {
+      const res = await fetch(`${API_URL}/api/projects`);
+      const projects = await res.json();
+      if (!Array.isArray(projects)) return;
+
+      if (lastKnownProjectsCount > 0 && projects.length > lastKnownProjectsCount) {
+        lastKnownProjectsCount = projects.length;
+        await fetchFeed();
+        triggerHaptic('success');
+        showToast('🎉 Проект прошёл модерацию и добавлен в ленту!');
+      } else {
+        lastKnownProjectsCount = projects.length;
+      }
+    } catch (e) {}
+  }
+
+  setInterval(checkForFeedUpdates, 6000);
+
+  function toggleFormTag(tag, element) {
+    triggerHaptic('light');
+    if (selectedFormTags.has(tag)) {
+      selectedFormTags.delete(tag);
+      element.classList.remove('selected');
+    } else {
+      if (selectedFormTags.size >= 4) {
+        showToast('Можно выбрать максимум 4 категории.');
+        return;
+      }
+      selectedFormTags.add(tag);
+      element.classList.add('selected');
+    }
+  }
+
+  async function fetchLeaderboard() {
+    const listContainer = document.getElementById('leaderboard-list');
+    try {
+      const res = await fetch(`${API_URL}/api/leaderboard`);
+      const items = await res.json();
+
+      if (!items || items.length === 0) {
+        listContainer.innerHTML = `
+          <div class="rank-item">
+            <div class="rank-info">
+              <div class="rank-title">Пока нет оценок</div>
+              <div class="rank-cat">Будьте первым, кто оценит проект!</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      let displayNames = items.map(it => it.project_name);
+      if (currentLang !== 'ru') {
+        displayNames = await translateTexts(displayNames, currentLang);
+      }
+
+      listContainer.innerHTML = items.map((item, index) => {
+        const rankNum = String(index + 1).padStart(2, '0');
+        const delay = Math.min(index * 60, 400);
+        const safeDisplayName = escapeHtml(displayNames[index]);
+        const safeOriginalNameJs = escapeHtml(item.project_name).replace(/'/g, "\\'");
+        return `
+          <div class="rank-item ios-btn-tap stagger-in" style="animation-delay:${delay}ms;" onclick="openReviews('${safeOriginalNameJs}')">
+            <span class="rank-num">${rankNum}</span>
+            <div class="rank-info">
+              <div class="rank-title">${safeDisplayName}</div>
+              <div class="rank-cat">Голосов: ${item.total_votes}</div>
+            </div>
+            <span class="rank-score">${item.avg_score}</span>
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error("Ошибка загрузки лидерборда:", err);
+      listContainer.innerHTML = `
+        <div class="rank-item">
+          <div class="rank-info">
+            <div class="rank-title" style="color:#ff5c5c;">Сервер просыпается...</div>
+            <div class="rank-cat">Повторите через 15 секунд</div>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  const reviewsModal = document.getElementById('reviews-modal');
+  const reviewsModalBody = document.getElementById('reviews-modal-body');
+
+  function formatReviewDate(iso) {
+    try {
+      const d = new Date(iso);
+      return d.toLocaleDateString(currentLang === 'ru' ? 'ru-RU' : 'en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch (e) {
+      return '';
+    }
+  }
+
+  async function openReviews(projectName) {
+    triggerHaptic('medium');
+    reviewsModalBody.innerHTML = `<p>${i18n[currentLang].reviews_loading}</p>`;
+    reviewsModal.classList.add('open');
+
+    if (currentLang !== 'ru') {
+      const [translatedTitle] = await translateTexts([projectName], currentLang);
+      document.getElementById('reviewsModalTitle').textContent = translatedTitle;
+    } else {
+      document.getElementById('reviewsModalTitle').textContent = projectName;
+    }
+
+    try {
+      const res = await fetch(`${API_URL}/api/reviews?project=${encodeURIComponent(projectName)}`);
+      const reviews = await res.json();
+
+      if (!reviews || reviews.length === 0) {
+        reviewsModalBody.innerHTML = `<p>${i18n[currentLang].reviews_empty}</p>`;
+        return;
+      }
+
+      let displayComments = reviews.map(r => r.comment || '');
+      let displayVerdicts = reviews.map(r => r.verdict || '');
+      if (currentLang !== 'ru') {
+        [displayComments, displayVerdicts] = await Promise.all([
+          translateTexts(displayComments, currentLang),
+          translateTexts(displayVerdicts, currentLang)
+        ]);
+      }
+
+      reviewsModalBody.innerHTML = reviews.map((r, i) => {
+        const commentHtml = displayComments[i]
+          ? `<div class="review-comment">${escapeHtml(displayComments[i])}</div>`
+          : `<div class="review-comment" style="color:var(--text-sub); font-style:italic;">${i18n[currentLang].reviews_no_comment}</div>`;
+
+        return `
+          <div class="review-item">
+            <div class="author-badge ios-btn-tap" style="margin-bottom:6px;">
+              <div class="author-avatar-bubble">👤</div>
+              <span class="author-name-text">${escapeHtml(r.author_name)}</span>
+            </div>
+            <div class="review-item-header">
+              <span class="review-score">${r.score} / 10</span>
+              <span class="review-verdict">${escapeHtml(displayVerdicts[i])}</span>
+            </div>
+            ${commentHtml}
+            <div class="review-date">${formatReviewDate(r.created_at)}</div>
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Ошибка загрузки рецензий:', err);
+      reviewsModalBody.innerHTML = `<p style="color:#ff5c5c;">${i18n[currentLang].reviews_error}</p>`;
+    }
+  }
+
+  function closeReviews() {
+    triggerHaptic('light');
+    reviewsModal.classList.remove('open');
+  }
+
+  let profileStats = { reviews_count: null, projects_submitted: null };
+
+  function renderProfileStats() {
+    const t = i18n[currentLang];
+    const r = profileStats.reviews_count;
+    const p = profileStats.projects_submitted;
+    const revEl = document.getElementById('t_stat_reviews');
+    const projEl = document.getElementById('t_stat_projects');
+    if (revEl) revEl.textContent = `${t.stat_reviews_label}: ${r === null ? '—' : r}`;
+    if (projEl) projEl.textContent = `${t.stat_projects_label}: ${p === null ? '—' : p}`;
+  }
+
+  async function fetchProfile() {
+    if (!tg?.initData) {
+      renderProfileStats();
+      return;
+    }
+    try {
+      const res = await fetch(`${API_URL}/api/profile?initData=${encodeURIComponent(tg.initData)}`);
+      const data = await res.json();
+      if (data.available && data.user) {
+        const u = data.user;
+        profileStats.reviews_count = data.reviews_count || 0;
+        profileStats.projects_submitted = data.projects_submitted || 0;
+
+        document.getElementById('user_display_name').textContent = u.custom_handle || u.name;
+        document.getElementById('customHandleInput').value = u.custom_handle || '';
+
+        const card = document.getElementById('profileCard');
+        const badge = document.getElementById('profileStatusBadge');
+        const icon = document.getElementById('tierIcon');
+        const count = profileStats.reviews_count;
+
+        card.classList.remove('tier-obsidian', 'tier-emerald', 'tier-gold');
+
+        if (count >= 10 || profileStats.projects_submitted >= 1) {
+          card.classList.add('tier-gold');
+          badge.textContent = 'Syndicate Partner';
+          icon.textContent = '👑';
+        } else if (count >= 3) {
+          card.classList.add('tier-emerald');
+          badge.textContent = 'Certified Reviewer';
+          icon.textContent = '⚡️';
+        } else {
+          card.classList.add('tier-obsidian');
+          badge.textContent = 'Community Scout';
+          icon.textContent = '✦';
+        }
+      }
+    } catch (err) {
+      console.error('Ошибка загрузки статистики профиля:', err);
+    }
+    renderProfileStats();
+  }
+
+  function moveNavIndicator(tabId) {
+    const indicator = document.getElementById('nav-indicator');
+    if (!indicator) return;
+    const index = ['feed', 'scoring', 'top', 'agent', 'profile'].indexOf(tabId);
+    if (index !== -1) indicator.style.transform = `translateX(${index * 100}%)`;
+  }
+
+  function switchTab(tabId) {
+    currentTab = tabId;
+    document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+    document.getElementById(`tab-${tabId}`)?.classList.add('active');
+    const idx = ['feed', 'scoring', 'top', 'agent', 'profile'].indexOf(tabId);
+    if (idx !== -1) {
+      document.querySelectorAll('.nav-btn')[idx]?.classList.add('active');
+      moveNavIndicator(tabId);
+    }
+
+    const stripCard = document.getElementById('app-community-strip');
+    if (tabId === 'profile') {
+      if (stripCard) stripCard.style.display = 'none';
+    } else {
+      if (stripCard) stripCard.style.display = 'block';
+    }
+
+    window.scrollTo(0, 0);
+
+    if (tabId === 'top') fetchLeaderboard();
+    if (tabId === 'profile') fetchProfile();
+    applyTiltToAll();
+  }
+
+  function updateTagsFilterBar(projects) {
+    const bar = document.getElementById('tagsFilterBar');
+    const tagsSet = new Set();
+
+    projects.forEach(p => {
+      (p.tags || []).forEach(t => {
+        if (t && t.trim()) tagsSet.add(t.trim());
+      });
+    });
+
+    const tagsArr = Array.from(tagsSet);
+    bar.innerHTML = `
+      <div class="filter-tag-chip ${currentFilterTag === 'all' ? 'active' : ''}" onclick="filterByTag('all', this)" id="t_tag_all">${i18n[currentLang].tag_all}</div>
+      ${tagsArr.map(t => `
+        <div class="filter-tag-chip ${currentFilterTag === t ? 'active' : ''}" onclick="filterByTag('${escapeHtml(t).replace(/'/g, "\\'")}', this)">#${escapeHtml(t)}</div>
+      `).join('')}
+    `;
+  }
+
+  function filterByTag(tag, element) {
+    triggerHaptic('light');
+    currentFilterTag = tag;
+    document.querySelectorAll('.filter-tag-chip').forEach(el => el.classList.remove('active'));
+    if (element) element.classList.add('active');
+    renderFeedList();
+  }
+
+  const agentMessagesEl = document.getElementById('agent-messages');
+  const agentInputEl = document.getElementById('agentInput');
+  const agentSendBtn = document.getElementById('agentSendBtn');
+  let agentHistory = [];
+  let isAgentSending = false;
+
+  function appendAgentMessage(role, text) {
+    const bubble = document.createElement('div');
+    bubble.className = role === 'user' ? 'agent-msg agent-msg-user' : 'agent-msg agent-msg-bot';
+    bubble.textContent = text;
+    agentMessagesEl.appendChild(bubble);
+    agentMessagesEl.scrollTop = agentMessagesEl.scrollHeight;
+    return bubble;
+  }
+
+  function appendAgentTyping() {
+    const typing = document.createElement('div');
+    typing.className = 'agent-msg-typing';
+    typing.id = 'agent-typing-indicator';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    agentMessagesEl.appendChild(typing);
+    agentMessagesEl.scrollTop = agentMessagesEl.scrollHeight;
+  }
+
+  function removeAgentTyping() {
+    const typing = document.getElementById('agent-typing-indicator');
+    if (typing) typing.remove();
+  }
+
+  async function sendAgentMessage() {
+    if (isAgentSending) return;
+    const text = agentInputEl.value.trim();
+    if (!text) return;
+
+    isAgentSending = true;
+    triggerHaptic('light');
+    appendAgentMessage('user', text);
+    agentHistory.push({ role: 'user', content: text });
+    agentInputEl.value = '';
+    agentInputEl.style.height = 'auto';
+    agentSendBtn.disabled = true;
+    appendAgentTyping();
+
+    try {
+      const res = await fetch(`${API_URL}/api/agent/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          initData: tg?.initData || '',
+          message: text,
+          history: agentHistory.slice(-12),
+          lang: currentLang
+        })
+      });
+      const data = await res.json();
+      removeAgentTyping();
+
+      if (data.available && data.reply) {
+        appendAgentMessage('bot', data.reply);
+        agentHistory.push({ role: 'assistant', content: data.reply });
+      } else {
+        appendAgentMessage('bot', i18n[currentLang].agent_error);
+      }
+    } catch (err) {
+      console.error('Ошибка агента:', err);
+      removeAgentTyping();
+      appendAgentMessage('bot', i18n[currentLang].agent_error);
+    } finally {
+      agentSendBtn.disabled = false;
+      isAgentSending = false;
+    }
+  }
+
+  agentSendBtn.addEventListener('click', sendAgentMessage);
+  agentInputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendAgentMessage();
+    }
+  });
 
   const i18n = {
     ru: {
@@ -1585,7 +2436,7 @@
       agent_title: "Чиф 🦝",
       agent_sub: "AI-помощник Open Hall",
       agent_placeholder: "Спросить у Чифа...",
-      agent_welcome: "Привет! Я Чиф 🦝 — твой проводник по Open Hall. Спрашивай о проектах, оценках или подаче!",
+      agent_welcome: "Привет! Я Чиф 🦝 — твой умный проводник по Open Hall. Расскажу как работает скоринг, оценю твою идею или помогу грамотно заполнить заявку на добавление проекта. Спрашивай!",
       agent_error: "Не удалось получить ответ. Попробуйте ещё раз.",
       feed_title: "Лента проектов",
       feed_sub: "Проекты на оценке у комьюнити",
@@ -1605,11 +2456,14 @@
       c4_desc: "Это уже рабочий продукт/материал или пока только черновой набросок?",
       c5_title: "5. Потенциал масштаба",
       c5_desc: "Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.",
+      commentLabel: "Заметка к оценке (необязательно)",
+      commentPlaceholder: "В чем главные плюсы и что авторам стоит доработать?",
       submitBtn: "Оставить рецензию",
+      share_btn: "Поделиться оценкой",
       top_title: "Рейтинг проектов",
       top_sub: "Лидеры по оценкам участников комьюнити",
       prof_title: "Профиль участника",
-      prof_sub: "Личная статистика и выбор персонажа",
+      prof_sub: "Личная статистика и статус в сообществе",
       stat_reviews_label: "Рецензий",
       stat_projects_label: "Проектов подано",
       submit_title: "Подать проект на аудит",
@@ -1623,7 +2477,11 @@
       v_good: "Одобрено сообществом",
       v_mid: "Есть потенциал",
       v_low: "Нужна доработка",
-      read_reviews: "Читать отзывы →"
+      read_reviews: "Читать отзывы →",
+      reviews_loading: "Загрузка рецензий...",
+      reviews_empty: "Пока никто не оставил рецензию на этот проект.",
+      reviews_no_comment: "Без комментария",
+      reviews_error: "Не удалось загрузить рецензии. Попробуйте ещё раз."
     },
     en: {
       preloader: "Syncing",
@@ -1655,11 +2513,14 @@
       c4_desc: "Is it an active, usable product or still an early concept draft?",
       c5_title: "5. Scale Potential",
       c5_desc: "Can the project grow into a major platform and reach a wide audience?",
+      commentLabel: "Review notes (optional)",
+      commentPlaceholder: "Key strengths and areas for improvement...",
       submitBtn: "Submit Review",
+      share_btn: "Share Review",
       top_title: "Project Leaderboard",
       top_sub: "Highest-rated projects by community votes",
       prof_title: "Member Profile",
-      prof_sub: "Personal statistics and character pick",
+      prof_sub: "Personal statistics and standing",
       stat_reviews_label: "Reviews",
       stat_projects_label: "Projects submitted",
       submit_title: "Submit Project for Audit",
@@ -1673,7 +2534,11 @@
       v_good: "Community Approved",
       v_mid: "Shows Potential",
       v_low: "Needs Work",
-      read_reviews: "Read reviews →"
+      read_reviews: "Read reviews →",
+      reviews_loading: "Loading reviews...",
+      reviews_empty: "No one has reviewed this project yet.",
+      reviews_no_comment: "No comment",
+      reviews_error: "Couldn't load reviews. Please try again."
     },
     am: {
       preloader: "Համաժամացում",
@@ -1705,7 +2570,10 @@
       c4_desc: "Արդյո՞ք սա գործող արդյունք է:",
       c5_title: "5. Մասշտաբի ներուժ",
       c5_desc: "Կարո՞ղ է արդյոք նախագիծը մեծանալ:",
+      commentLabel: "Գնահատականի նշումներ",
+      commentPlaceholder: "Առավելություններ և թերություններ...",
       submitBtn: "Ուղարկել ակնարկը",
+      share_btn: "Կիսվել գնահատականով",
       top_title: "Վարկանիշային աղյուսակ",
       top_sub: "Առաջատարներն ըստ ձայների",
       prof_title: "Մասնակցի պրոֆիլ",
@@ -1723,7 +2591,11 @@
       v_good: "Հավանված",
       v_mid: "Ունի ներուժ",
       v_low: "Լրամշակման կարիք ունի",
-      read_reviews: "Читать отзывы →"
+      read_reviews: "Читать отзывы →",
+      reviews_loading: "Բեռնում...",
+      reviews_empty: "Ակնարկներ դեռ չկան:",
+      reviews_no_comment: "Առանց մեկնաբանության",
+      reviews_error: "Չհաջողվեց բեռնել:"
     },
     ge: {
       preloader: "სინქრონიზაცია",
@@ -1755,7 +2627,10 @@
       c4_desc: "მოქმედი პროდუქტია თუ ჩანახატი?",
       c5_title: "5. მასშტაბის პოტენციალი",
       c5_desc: "შეუძლია თუ არა გაზრდა.",
+      commentLabel: "შენიშვნა",
+      commentPlaceholder: "პლიუსები და მინუსები...",
       submitBtn: "შეფასების გაგზავნა",
+      share_btn: "შეფასების გაზიარება",
       top_title: "რეიტინგი",
       top_sub: "ლიდერები",
       prof_title: "პროფილი",
@@ -1773,7 +2648,11 @@
       v_good: "მოწონებული",
       v_mid: "პოტენციალით",
       v_low: "საჭიროებს დამუშავებას",
-      read_reviews: "ნახვა →"
+      read_reviews: "ნახვა →",
+      reviews_loading: "იტვირთება...",
+      reviews_empty: "შეფასებები არ არის.",
+      reviews_no_comment: "კომენტარის გარეშე",
+      reviews_error: "შეცდომა ჩატვირთვისას."
     }
   };
 
@@ -1822,6 +2701,15 @@
     updateText('t_c4_desc', t.c4_desc);
     updateText('t_c5_title', t.c5_title);
     updateText('t_c5_desc', t.c5_desc);
+    updateText('t_commentLabel', t.commentLabel);
+    
+    const commInp = document.getElementById('comment');
+    if (commInp) commInp.placeholder = t.commentPlaceholder;
+
+    if (submitBtn) {
+      submitBtn.textContent = projectChosen ? `${t.submitBtn}: «${activeProject}»` : t.submitBtn;
+    }
+    if (shareBtn) shareBtn.textContent = `${t.share_btn} «${activeProject}»`;
 
     updateText('t_top_title', t.top_title);
     updateText('t_top_sub', t.top_sub);
@@ -2006,7 +2894,7 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet, .chief-gallery-grid')) return;
+    if (e.target.closest('input, textarea, .community-strip-card, .tags-filter-bar, .app-modal-sheet')) return;
     const diffX = e.changedTouches[0].clientX - touchStartX;
     const diffY = e.changedTouches[0].clientY - touchStartY;
 
@@ -2178,11 +3066,9 @@
       title.textContent = `Профиль ${data.name}`;
       const tierBadge = (data.reviews_count >= 10 || data.projects_count >= 1) ? '👑 Syndicate Partner' : ((data.reviews_count >= 3) ? '⚡️ Certified Reviewer' : '✦ Community Scout');
 
-      const userRaccoon = RACCOON_CHARACTERS.find(it => it.id === data.avatar_json) || RACCOON_CHARACTERS[0];
-
       body.innerHTML = `
         <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
-          <div style="width:64px; height:64px; border-radius:50%; overflow:hidden; border:2px solid var(--emerald); box-shadow:0 4px 14px rgba(0,0,0,0.3);">${getRaccoonSvg(userRaccoon, 64)}</div>
+          <div style="width:52px; height:52px; border-radius:50%; background:rgba(0,229,153,0.15); border:2px solid var(--emerald); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--emerald);">👤</div>
           <div>
             <h3 style="font-size:18px; font-weight:800;">${escapeHtml(data.name)}</h3>
             <span class="badge" style="display:inline-block; margin-top:4px; font-size:10px;">${tierBadge}</span>
@@ -2219,7 +3105,6 @@
   updateCommunityStrip();
   setInterval(updateCommunityStrip, 45000);
   applyTiltToAll();
-  renderChiefGallery();
 </script>
 
 </body>
