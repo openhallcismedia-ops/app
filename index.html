@@ -142,6 +142,7 @@
       100% { transform: translate(-20px, -25px) scale(0.95); }
     }
 
+    /* Автоматическое исчезновение прелоадера */
     .preloader {
       position: fixed;
       inset: 0;
@@ -151,13 +152,19 @@
       align-items: center;
       justify-content: center;
       z-index: 10000;
-      transition: opacity 0.35s ease, visibility 0.35s ease;
+      animation: autoHideLoader 1s forwards ease-in-out;
+    }
+
+    @keyframes autoHideLoader {
+      0%, 70% { opacity: 1; visibility: visible; }
+      100% { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
     }
 
     .preloader.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
 
     .preloader-content {
@@ -358,9 +365,6 @@
       box-shadow: 0 4px 16px var(--shadow-color);
       position: relative;
       overflow: hidden;
-      transform-style: preserve-3d;
-      perspective: 1000px;
-      transition: transform 0.25s var(--spring-ease);
     }
 
     .card h3 {
@@ -852,22 +856,6 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
-
-    .reaction-heart {
-      position: absolute;
-      pointer-events: none;
-      font-size: 40px;
-      color: var(--emerald);
-      transform: translate(-50%, -50%) scale(0);
-      animation: heartPop 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      z-index: 50;
-    }
-
-    @keyframes heartPop {
-      0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-      40% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
-      100% { transform: translate(-50%, -90px) scale(0.6); opacity: 0; }
-    }
   </style>
 </head>
 <body>
@@ -1114,19 +1102,18 @@
   // Безопасное снятие прелоадера
   function hidePreloader() {
     const preloader = document.getElementById('app-preloader');
-    if (preloader && !preloader.classList.contains('hidden')) {
+    if (preloader) {
       preloader.classList.add('hidden');
-      setTimeout(() => {
-        try { preloader.remove(); } catch (e) {}
-      }, 400);
+      preloader.style.display = 'none';
+      try { preloader.remove(); } catch(e) {}
     }
   }
 
-  window.addEventListener('DOMContentLoaded', () => setTimeout(hidePreloader, 400));
-  window.addEventListener('load', () => setTimeout(hidePreloader, 200));
-  setTimeout(hidePreloader, 2000);
+  // Принудительно гасим прелоадер сразу
+  hidePreloader();
+  setTimeout(hidePreloader, 300);
+  setTimeout(hidePreloader, 1000);
 
-  // Тактильный отклик Telegram
   function triggerHaptic(type = 'light') {
     if (tg?.HapticFeedback) {
       if (type === 'medium') tg.HapticFeedback.impactOccurred('medium');
@@ -1136,7 +1123,6 @@
     }
   }
 
-  // Нативное всплывающее уведомление
   function showToast(text) {
     if (tg?.showAlert) {
       tg.showAlert(text);
@@ -1150,7 +1136,6 @@
     setTimeout(() => toast.classList.remove('visible'), 2400);
   }
 
-  // Темы оформления
   function applyTheme(theme) {
     currentTheme = theme;
     localStorage.setItem('openhall_theme', theme);
@@ -1164,9 +1149,9 @@
       if (metaTheme) metaTheme.setAttribute('content', '#f8fafc');
 
       if (tg) {
-        if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#f8fafc');
-        if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#f8fafc');
-        if (typeof tg.setBottomBarColor === 'function') tg.setBottomBarColor('#f8fafc');
+        tg.setHeaderColor?.('#f8fafc');
+        tg.setBackgroundColor?.('#f8fafc');
+        tg.setBottomBarColor?.('#f8fafc');
       }
     } else {
       document.documentElement.classList.remove('light-theme');
@@ -1175,9 +1160,9 @@
       if (metaTheme) metaTheme.setAttribute('content', '#070a0f');
 
       if (tg) {
-        if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#070a0f');
-        if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#070a0f');
-        if (typeof tg.setBottomBarColor === 'function') tg.setBottomBarColor('#070a0f');
+        tg.setHeaderColor?.('#070a0f');
+        tg.setBackgroundColor?.('#070a0f');
+        tg.setBottomBarColor?.('#070a0f');
       }
     }
   }
@@ -1189,7 +1174,6 @@
 
   applyTheme(currentTheme);
 
-  // Адаптация под вырезы экрана Telegram
   function updateSafePadding() {
     if (!tg) return;
     const safeTop = (tg.safeAreaInset && tg.safeAreaInset.top) || 0;
@@ -1212,79 +1196,11 @@
       tg.onEvent('contentSafeAreaChanged', updateSafePadding);
       tg.onEvent('viewportChanged', updateSafePadding);
     }
-    [100, 300, 600, 1000, 1800].forEach(delay => setTimeout(updateSafePadding, delay));
+    [100, 300, 600, 1000].forEach(delay => setTimeout(updateSafePadding, delay));
     if (typeof tg.disableVerticalSwipes === 'function') tg.disableVerticalSwipes();
   }
 
-  // 3D-Tilt эффект для карточек
-  function init3DTilt(card) {
-    let bounds;
-    function updateBounds() { bounds = card.getBoundingClientRect(); }
-
-    function handleMove(e) {
-      if (!bounds) updateBounds();
-      const touch = e.touches ? e.touches[0] : e;
-      const x = touch.clientX - bounds.left;
-      const y = touch.clientY - bounds.top;
-
-      const centerX = bounds.width / 2;
-      const centerY = bounds.height / 2;
-
-      const rotateX = ((y - centerY) / centerY) * -5;
-      const rotateY = ((x - centerX) / centerX) * 5;
-
-      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.01, 1.01, 1.01)`;
-      card.style.setProperty('--mouse-x', `${(x / bounds.width) * 100}%`);
-      card.style.setProperty('--mouse-y', `${(y / bounds.height) * 100}%`);
-    }
-
-    function handleLeave() {
-      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-      card.style.setProperty('--mouse-x', `50%`);
-      card.style.setProperty('--mouse-y', `20%`);
-    }
-
-    card.addEventListener('touchstart', updateBounds, { passive: true });
-    card.addEventListener('touchmove', handleMove, { passive: true });
-    card.addEventListener('touchend', handleLeave, { passive: true });
-  }
-
-  function applyTiltToAll() {
-    document.querySelectorAll('.card').forEach(c => {
-      if (!c.dataset.tiltInit) {
-        c.dataset.tiltInit = 'true';
-        init3DTilt(c);
-      }
-    });
-  }
-
-  // Реакция на двойной тап (сердечко ✦)
-  function initDoubleTap(card) {
-    let lastTap = 0;
-    card.addEventListener('touchend', (e) => {
-      if (e.target.closest('button, input, textarea, a, .read-reviews-btn, .tag, .author-badge')) return;
-      const now = Date.now();
-      if (now - lastTap < 300) {
-        const touch = e.changedTouches[0];
-        const rect = card.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
-
-        const heart = document.createElement('div');
-        heart.className = 'reaction-heart';
-        heart.innerHTML = '✦';
-        heart.style.left = `${x}px`;
-        heart.style.top = `${y}px`;
-        card.appendChild(heart);
-
-        triggerHaptic('medium');
-        setTimeout(() => heart.remove(), 750);
-      }
-      lastTap = now;
-    });
-  }
-
-  // Переключение вкладок свайпом
+  // Навигация
   const tabsOrder = ['feed', 'scoring', 'top', 'agent', 'profile'];
   let touchStartX = 0;
   let touchStartY = 0;
@@ -1311,7 +1227,6 @@
     }
   }, { passive: true });
 
-  // Скрытие нижней панели при клавиатуре
   const bottomNavEl = document.querySelector('.bottom-nav');
   let navShowTimeout;
   document.addEventListener('focusin', (e) => {
@@ -1333,7 +1248,7 @@
     return div.innerHTML;
   }
 
-  // Модалка активности
+  // Модальные окна
   async function openMyContentModal(type) {
     triggerHaptic('medium');
     const modal = document.getElementById('my-content-modal');
@@ -1391,7 +1306,6 @@
     document.getElementById('my-content-modal').classList.remove('open');
   }
 
-  // Модалка профиля
   async function openUserProfile(userId) {
     if (!userId) return;
     triggerHaptic('medium');
@@ -1432,7 +1346,7 @@
     document.getElementById('user-profile-modal').classList.remove('open');
   }
 
-  // Фильтрация тегов
+  // Фильтр тегов
   function updateTagsFilterBar(projects) {
     const bar = document.getElementById('tagsFilterBar');
     const tagsSet = new Set();
@@ -1473,13 +1387,12 @@
       return;
     }
 
-    feedContainer.innerHTML = projects.map((p, index) => {
+    feedContainer.innerHTML = projects.map((p) => {
       const tagsHtml = (p.tags || []).map(tag => `
-        <span class="tag tag-interactive" onclick="filterByTag('${escapeHtml(tag).replace(/'/g, "\\'")}', null)">#${escapeHtml(tag)}</span>
+        <span class="tag" onclick="filterByTag('${escapeHtml(tag).replace(/'/g, "\\'")}', null)">#${escapeHtml(tag)}</span>
       `).join('');
       const safeDisplayName = escapeHtml(p.name);
       const safeOriginalNameJs = escapeHtml(p.name).replace(/'/g, "\\'");
-      const delay = Math.min(index * 60, 400);
 
       const authorBadgeHtml = p.submitted_by ? `
         <div class="author-badge" onclick="openUserProfile('${p.submitted_by}')">
@@ -1489,7 +1402,7 @@
       ` : '';
 
       return `
-        <div class="card" style="animation-delay:${delay}ms">
+        <div class="card">
           ${authorBadgeHtml}
           <h3>${safeDisplayName}</h3>
           <p>${escapeHtml(p.description)}</p>
@@ -1503,9 +1416,6 @@
         </div>
       `;
     }).join('');
-
-    applyTiltToAll();
-    document.querySelectorAll('#feed-list .card').forEach(initDoubleTap);
   }
 
   async function fetchFeed() {
@@ -1525,29 +1435,9 @@
       updateTagsFilterBar(allProjectsData);
       renderFeedList();
     } catch (err) {
-      console.error("Ошибка загрузки ленты:", err);
       feedContainer.innerHTML = `<div class="card"><p style="color:#ff5c5c;">Сервер просыпается... повторите через 15 секунд.</p></div>`;
     }
   }
-
-  async function checkForFeedUpdates() {
-    try {
-      const res = await fetch(`${API_URL}/api/projects`);
-      const projects = await res.json();
-      if (!Array.isArray(projects)) return;
-
-      if (lastKnownProjectsCount > 0 && projects.length > lastKnownProjectsCount) {
-        lastKnownProjectsCount = projects.length;
-        await fetchFeed();
-        triggerHaptic('success');
-        showToast('🎉 Проект прошёл модерацию и добавлен в ленту!');
-      } else {
-        lastKnownProjectsCount = projects.length;
-      }
-    } catch (e) {}
-  }
-
-  setInterval(checkForFeedUpdates, 6000);
 
   function toggleFormTag(tag, element) {
     triggerHaptic('light');
@@ -1585,11 +1475,10 @@
 
       listContainer.innerHTML = items.map((item, index) => {
         const rankNum = String(index + 1).padStart(2, '0');
-        const delay = Math.min(index * 60, 400);
         const safeDisplayName = escapeHtml(item.project_name);
         const safeOriginalNameJs = escapeHtml(item.project_name).replace(/'/g, "\\'");
         return `
-          <div class="rank-item" style="animation-delay:${delay}ms;" onclick="openReviews('${safeOriginalNameJs}')">
+          <div class="rank-item" onclick="openReviews('${safeOriginalNameJs}')">
             <span class="rank-num">${rankNum}</span>
             <div class="rank-info">
               <div class="rank-title">${safeDisplayName}</div>
@@ -1600,7 +1489,6 @@
         `;
       }).join('');
     } catch (err) {
-      console.error("Ошибка загрузки лидерборда:", err);
       listContainer.innerHTML = `
         <div class="rank-item">
           <div class="rank-info">
@@ -1612,7 +1500,7 @@
     }
   }
 
-  // Рецензии
+  // Отзывы
   const reviewsModal = document.getElementById('reviews-modal');
   const reviewsModalBody = document.getElementById('reviews-modal-body');
 
@@ -1661,7 +1549,6 @@
         `;
       }).join('');
     } catch (err) {
-      console.error('Ошибка загрузки рецензий:', err);
       reviewsModalBody.innerHTML = `<p style="color:#ff5c5c;">Не удалось загрузить рецензии.</p>`;
     }
   }
@@ -1678,4 +1565,349 @@
     const r = profileStats.reviews_count;
     const p = profileStats.projects_submitted;
     const revEl = document.getElementById('t_stat_reviews');
-    const projEl = document.getElementById('t_stat
+    const projEl = document.getElementById('t_stat_projects');
+    if (revEl) revEl.textContent = `Рецензий: ${r === null ? '—' : r}`;
+    if (projEl) projEl.textContent = `Проектов подано: ${p === null ? '—' : p}`;
+  }
+
+  async function fetchProfile() {
+    if (!tg?.initData) {
+      renderProfileStats();
+      return;
+    }
+    try {
+      const res = await fetch(`${API_URL}/api/profile?initData=${encodeURIComponent(tg.initData)}`);
+      const data = await res.json();
+      if (data.available && data.user) {
+        const u = data.user;
+        profileStats.reviews_count = data.reviews_count || 0;
+        profileStats.projects_submitted = data.projects_submitted || 0;
+
+        document.getElementById('user_display_name').textContent = u.custom_handle || u.name;
+        document.getElementById('customHandleInput').value = u.custom_handle || '';
+
+        const card = document.getElementById('profileCard');
+        const badge = document.getElementById('profileStatusBadge');
+        const icon = document.getElementById('tierIcon');
+        const count = profileStats.reviews_count;
+
+        card.classList.remove('tier-obsidian', 'tier-emerald', 'tier-gold');
+
+        if (count >= 10 || profileStats.projects_submitted >= 1) {
+          card.classList.add('tier-gold');
+          badge.textContent = 'Syndicate Partner';
+          icon.textContent = '👑';
+        } else if (count >= 3) {
+          card.classList.add('tier-emerald');
+          badge.textContent = 'Certified Reviewer';
+          icon.textContent = '⚡️';
+        } else {
+          card.classList.add('tier-obsidian');
+          badge.textContent = 'Community Scout';
+          icon.textContent = '✦';
+        }
+      }
+    } catch (err) {}
+    renderProfileStats();
+  }
+
+  async function saveCustomProfile() {
+    triggerHaptic('success');
+    const handleInput = document.getElementById('customHandleInput').value.trim();
+    const formattedHandle = handleInput ? (handleInput.startsWith('@') ? handleInput : `@${handleInput}`) : '';
+
+    try {
+      const res = await fetch(`${API_URL}/api/profile/custom`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          initData: tg?.initData || '',
+          custom_handle: formattedHandle
+        })
+      });
+      showToast('Профиль успешно обновлен!');
+      if (formattedHandle) document.getElementById('user_display_name').textContent = formattedHandle;
+      fetchFeed();
+    } catch (e) {
+      showToast('Ошибка сохранения профиля');
+    }
+  }
+
+  function moveNavIndicator(tabId) {
+    const indicator = document.getElementById('nav-indicator');
+    if (!indicator) return;
+    const index = ['feed', 'scoring', 'top', 'agent', 'profile'].indexOf(tabId);
+    if (index !== -1) indicator.style.transform = `translateX(${index * 100}%)`;
+  }
+
+  function switchTab(tabId) {
+    currentTab = tabId;
+    document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+    document.getElementById(`tab-${tabId}`)?.classList.add('active');
+    const idx = ['feed', 'scoring', 'top', 'agent', 'profile'].indexOf(tabId);
+    if (idx !== -1) {
+      document.querySelectorAll('.nav-btn')[idx]?.classList.add('active');
+      moveNavIndicator(tabId);
+    }
+
+    window.scrollTo(0, 0);
+
+    if (tabId === 'top') fetchLeaderboard();
+    if (tabId === 'profile') fetchProfile();
+  }
+
+  // Расчет баллов
+  const sliders = [
+    { el: document.getElementById('c1'), valEl: document.getElementById('val1') },
+    { el: document.getElementById('c2'), valEl: document.getElementById('val2') },
+    { el: document.getElementById('c3'), valEl: document.getElementById('val3') },
+    { el: document.getElementById('c4'), valEl: document.getElementById('val4') },
+    { el: document.getElementById('c5'), valEl: document.getElementById('val5') }
+  ];
+
+  const totalEl = document.getElementById('totalScore');
+  const verdictEl = document.getElementById('verdict');
+  const submitBtn = document.getElementById('submitBtn');
+  const shareBtn = document.getElementById('shareBtn');
+  const scoreBannerBox = document.getElementById('scoreBannerBox');
+
+  function calculate() {
+    let sum = 0;
+    sliders.forEach(item => {
+      const v = Number(item.el.value);
+      item.valEl.textContent = v;
+      sum += v;
+    });
+
+    const avgNum = sum / sliders.length;
+    const avg = avgNum.toFixed(1);
+    totalEl.textContent = avg;
+
+    if (avgNum >= 7.0) {
+      const factor = Math.min(Math.max((avgNum - 7.0) / 3.0, 0), 1);
+      const accent = `rgb(${Math.round(255 * factor)}, ${Math.round(229 - 46 * factor)}, ${Math.round(153 - 150 * factor)})`;
+      document.documentElement.style.setProperty('--slider-thumb-color', accent);
+      scoreBannerBox.style.borderColor = accent;
+    } else {
+      document.documentElement.style.removeProperty('--slider-thumb-color');
+      scoreBannerBox.style.borderColor = 'var(--card-border)';
+    }
+
+    if (avg >= 9.0) {
+      verdictEl.textContent = "Фаворит комьюнити";
+      verdictEl.style.color = 'var(--gold)';
+    } else if (avg >= 7.0) {
+      verdictEl.textContent = "Одобрено сообществом";
+      verdictEl.style.color = 'var(--cyan)';
+    } else if (avg >= 5.0) {
+      verdictEl.textContent = "Есть потенциал";
+      verdictEl.style.color = 'var(--text-sub)';
+    } else {
+      verdictEl.textContent = "Нужна доработка";
+      verdictEl.style.color = '#ef4444';
+    }
+  }
+
+  sliders.forEach(item => {
+    item.el.addEventListener('input', () => {
+      triggerHaptic('light');
+      calculate();
+    });
+  });
+
+  // Отправка оценки
+  let isSubmitting = false;
+  submitBtn.addEventListener('click', async () => {
+    if (isSubmitting) return;
+    isSubmitting = true;
+    triggerHaptic('success');
+
+    const scoreVal = parseFloat(totalEl.textContent);
+    const verdictVal = verdictEl.textContent;
+
+    const payload = {
+      initData: tg?.initData || "",
+      project: activeProject,
+      score: scoreVal,
+      verdict: verdictVal,
+      comment: document.getElementById('comment').value
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Сохранение...";
+
+    try {
+      const res = await fetch(`${API_URL}/api/review`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+      showToast(`Оценка для «${activeProject}» отправлена на модерацию!`);
+      shareBtn.style.display = 'block';
+      shareBtn.textContent = `Поделиться оценкой «${activeProject}»`;
+    } catch (err) {
+      showToast("Не удалось сохранить оценку. Проверьте интернет.");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = `Оставить рецензию: «${activeProject}»`;
+      isSubmitting = false;
+    }
+  });
+
+  shareBtn.addEventListener('click', () => {
+    triggerHaptic('medium');
+    const scoreVal = parseFloat(totalEl.textContent);
+    const verdictVal = verdictEl.textContent;
+    const text = `Я оценил проект «${activeProject}» на ${scoreVal}/10 («${verdictVal}») в Open Hall Hub!\n\nПрисоединяйся к скорингу проектов сообщества 👇`;
+    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
+
+    if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl);
+    else window.open(shareUrl, '_blank');
+  });
+
+  // Отправка проекта
+  const submitProjBtn = document.getElementById('submitProjBtn');
+  let isSubmittingProj = false;
+  submitProjBtn.addEventListener('click', async () => {
+    if (isSubmittingProj) return;
+
+    const nameEl = document.getElementById('newProjName');
+    const descEl = document.getElementById('newProjDesc');
+    const tags = Array.from(selectedFormTags);
+
+    const name = nameEl.value.trim();
+    const description = descEl.value.trim();
+
+    if (!name || !description) {
+      showToast('Заполните название и описание проекта.');
+      return;
+    }
+
+    isSubmittingProj = true;
+    triggerHaptic('success');
+    submitProjBtn.disabled = true;
+    submitProjBtn.textContent = 'Отправка...';
+
+    try {
+      const res = await fetch(`${API_URL}/api/projects`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          initData: tg?.initData || '',
+          name,
+          description,
+          tags: tags
+        })
+      });
+
+      if (res.status === 409) {
+        showToast('Проект с таким названием уже существует.');
+      } else if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      } else {
+        showToast(`Проект «${name}» отправлен на модерацию!`);
+        nameEl.value = '';
+        descEl.value = '';
+        selectedFormTags.clear();
+        document.querySelectorAll('.form-tag-item').forEach(el => el.classList.remove('selected'));
+        switchTab('feed');
+      }
+    } catch (err) {
+      showToast('Не удалось отправить заявку. Попробуйте снова.');
+    } finally {
+      submitProjBtn.disabled = false;
+      submitProjBtn.textContent = 'Опубликовать проект';
+      isSubmittingProj = false;
+    }
+  });
+
+  function startScoring(projName) {
+    activeProject = projName;
+    projectChosen = true;
+    document.getElementById('scoringTargetName').textContent = activeProject;
+    document.getElementById('t_score_title').textContent = activeProject;
+    shareBtn.style.display = 'none';
+    const sBtn = document.getElementById('submitBtn');
+    if (sBtn) sBtn.textContent = `Оставить рецензию: «${activeProject}»`;
+    switchTab('scoring');
+  }
+
+  // AI-Чат
+  const agentMessagesEl = document.getElementById('agent-messages');
+  const agentInputEl = document.getElementById('agentInput');
+  const agentSendBtn = document.getElementById('agentSendBtn');
+  let agentHistory = [];
+  let isAgentSending = false;
+
+  function appendAgentMessage(role, text) {
+    const bubble = document.createElement('div');
+    bubble.className = role === 'user' ? 'agent-msg agent-msg-user' : 'agent-msg agent-msg-bot';
+    bubble.textContent = text;
+    agentMessagesEl.appendChild(bubble);
+    agentMessagesEl.scrollTop = agentMessagesEl.scrollHeight;
+    return bubble;
+  }
+
+  async function sendAgentMessage() {
+    if (isAgentSending) return;
+    const text = agentInputEl.value.trim();
+    if (!text) return;
+
+    isAgentSending = true;
+    triggerHaptic('light');
+    appendAgentMessage('user', text);
+    agentHistory.push({ role: 'user', content: text });
+    agentInputEl.value = '';
+    agentInputEl.style.height = 'auto';
+    agentSendBtn.disabled = true;
+
+    try {
+      const res = await fetch(`${API_URL}/api/agent/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          initData: tg?.initData || '',
+          message: text,
+          history: agentHistory.slice(-12),
+          lang: 'ru'
+        })
+      });
+      const data = await res.json();
+
+      if (data.available && data.reply) {
+        appendAgentMessage('bot', data.reply);
+        agentHistory.push({ role: 'assistant', content: data.reply });
+      } else {
+        appendAgentMessage('bot', 'Не удалось получить ответ. Попробуйте ещё раз.');
+      }
+    } catch (err) {
+      appendAgentMessage('bot', 'Не удалось получить ответ. Попробуйте ещё раз.');
+    } finally {
+      agentSendBtn.disabled = false;
+      isAgentSending = false;
+    }
+  }
+
+  agentSendBtn.addEventListener('click', sendAgentMessage);
+  agentInputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendAgentMessage();
+    }
+  });
+
+  if (tg?.initDataUnsafe?.user?.first_name) {
+    document.getElementById('user_display_name').textContent = tg.initDataUnsafe.user.first_name;
+  }
+
+  calculate();
+  renderProfileStats();
+  fetchFeed();
+  fetchProfile();
+</script>
+</body>
+</html>
