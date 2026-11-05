@@ -251,7 +251,6 @@
       border: 1px solid #a7f3d0;
     }
 
-    /* Анимации нажатий */
     .ios-btn-tap, .btn-small, .btn-action, .btn-secondary, .read-reviews-btn, .theme-toggle-btn, .filter-tag-chip, .form-tag-item, .nav-btn, .rank-item {
       cursor: pointer;
       touch-action: manipulation;
@@ -919,7 +918,7 @@
 
     <div class="scoring-target-badge">
       <div>
-        <span style="font-size:11px; text-transform:uppercase; color:var(--text-sub); font-weight:700;">Оцениваемый бот</span>
+        <span style="font-size:11px; text-transform:uppercase; color:var(--text-sub); font-weight:700;">Оцениваемый проект</span>
         <h3 id="scoringTargetName" style="font-size:16px; font-weight:800; margin-top:2px;">Open Hall Bot</h3>
       </div>
       <button class="btn-small ios-btn-tap" onclick="switchTab('feed')" style="padding:6px 12px; font-size:11px;">Выбрать другой</button>
@@ -1782,7 +1781,7 @@
     });
   });
 
-  // Отправка оценки на модерацию (с передачей всех нужных полей)
+  // Отправка оценки на модерацию
   let isSubmitting = false;
   submitBtn.addEventListener('click', async () => {
     if (isSubmitting) return;
@@ -1834,7 +1833,7 @@
     else window.open(shareUrl, '_blank');
   });
 
-  // Отправка проекта на модерацию (с корректными полями)
+  // Отправка проекта на модерацию
   const submitProjBtn = document.getElementById('submitProjBtn');
   let isSubmittingProj = false;
   submitProjBtn.addEventListener('click', async () => {
