@@ -15,6 +15,8 @@
       --cyan: #00b4d8;
       --blue: #1877f2;
       --gold: #ffb703;
+      --bronze: #cd7f32;
+      --silver: #94a3b8;
       --grad-main: linear-gradient(135deg, #00e599, #00b4d8, #1877f2);
       --text-main: #ffffff;
       --text-sub: #8c9cb0;
@@ -37,6 +39,8 @@
       --cyan: #0284c7;
       --blue: #2563eb;
       --gold: #d97706;
+      --bronze: #b45309;
+      --silver: #64748b;
       --grad-main: linear-gradient(135deg, #059669, #0284c7, #2563eb);
       --text-main: #0f172a;
       --text-sub: #64748b;
@@ -243,6 +247,7 @@
       border: 1px solid rgba(0, 229, 153, 0.3);
       padding: 6px 12px;
       border-radius: 20px;
+      transition: all 0.3s ease;
     }
 
     body.light-theme .badge {
@@ -351,7 +356,29 @@
       overflow: hidden;
       transform-style: preserve-3d;
       perspective: 1000px;
-      transition: transform 0.25s var(--spring-ease);
+      transition: transform 0.25s var(--spring-ease), border-color 0.3s ease, background 0.3s ease;
+    }
+
+    /* Подсветка карточки по уровням */
+    .card.tier-none {
+      border-color: var(--card-border);
+      background: var(--card-bg);
+    }
+    .card.tier-bronze {
+      border-color: rgba(205, 127, 50, 0.45);
+      background: linear-gradient(135deg, rgba(205, 127, 50, 0.09) 0%, var(--card-bg) 100%);
+    }
+    .card.tier-silver {
+      border-color: rgba(148, 163, 184, 0.55);
+      background: linear-gradient(135deg, rgba(148, 163, 184, 0.12) 0%, var(--card-bg) 100%);
+    }
+    .card.tier-gold {
+      border-color: rgba(255, 183, 3, 0.55);
+      background: linear-gradient(135deg, rgba(255, 183, 3, 0.13) 0%, var(--card-bg) 100%);
+    }
+    .card.tier-emerald {
+      border-color: rgba(0, 229, 153, 0.6);
+      background: linear-gradient(135deg, rgba(0, 229, 153, 0.15) 0%, var(--card-bg) 100%);
     }
 
     .card h3 {
@@ -901,7 +928,7 @@
   <!-- ВКЛАДКА 2: ОЦЕНКА -->
   <div id="tab-scoring" class="tab-view">
     <h1 id="t_score_title">Рецензия проекта</h1>
-    <p class="subtitle">Оценка от участников сообщества по 5 критериям</p>
+    <p class="subtitle">Оценка от участников сообщества по 4 критериям</p>
 
     <div class="scoring-target-badge">
       <div>
@@ -922,34 +949,32 @@
       </div>
     </div>
 
+    <!-- Критерий 1 -->
     <div class="card">
-      <div class="crit-header"><span class="crit-title">1. Концепция и новизна</span><span id="val1" class="crit-val">7</span></div>
-      <div class="crit-desc">Оригинальность замысла и отличие от того, что уже есть на рынке.</div>
+      <div class="crit-header"><span class="crit-title">1. Идея и польза</span><span id="val1" class="crit-val">7</span></div>
+      <div class="crit-desc">Насколько задумка интересная, понятная и решает реальную задачу.</div>
       <input type="range" id="c1" min="1" max="10" value="7">
     </div>
 
+    <!-- Критерий 2 -->
     <div class="card">
-      <div class="crit-header"><span class="crit-title">2. Визуал и удобство</span><span id="val2" class="crit-val">7</span></div>
-      <div class="crit-desc">Вкус, оформление, аккуратность и насколько приятно этим пользоваться.</div>
+      <div class="crit-header"><span class="crit-title">2. Дизайн и удобство</span><span id="val2" class="crit-val">7</span></div>
+      <div class="crit-desc">Насколько визуал приятный, аккуратный и удобный в использовании.</div>
       <input type="range" id="c2" min="1" max="10" value="7">
     </div>
 
+    <!-- Критерий 3 -->
     <div class="card">
-      <div class="crit-header"><span class="crit-title">3. Интерес аудитории</span><span id="val3" class="crit-val">7</span></div>
-      <div class="crit-desc">Насколько проект вовлекает людей и вызывает желание делиться с друзьями.</div>
+      <div class="crit-header"><span class="crit-title">3. Работоспособность</span><span id="val3" class="crit-val">7</span></div>
+      <div class="crit-desc">Качество реализации, стабильность работы и отсутствие явных багов.</div>
       <input type="range" id="c3" min="1" max="10" value="7">
     </div>
 
+    <!-- Критерий 4 -->
     <div class="card">
-      <div class="crit-header"><span class="crit-title">4. Уровень готовности</span><span id="val4" class="crit-val">7</span></div>
-      <div class="crit-desc">Это уже рабочий продукт/материал или пока только черновой набросок?</div>
+      <div class="crit-header"><span class="crit-title">4. Общее впечатление</span><span id="val4" class="crit-val">7</span></div>
+      <div class="crit-desc">Личное ощущение от продукта и готовность рекомендовать его другим.</div>
       <input type="range" id="c4" min="1" max="10" value="7">
-    </div>
-
-    <div class="card">
-      <div class="crit-header"><span class="crit-title">5. Потенциал масштаба</span><span id="val5" class="crit-val">7</span></div>
-      <div class="crit-desc">Может ли проект вырасти во что-то крупное и собрать широкую аудиторию.</div>
-      <input type="range" id="c5" min="1" max="10" value="7">
     </div>
 
     <div class="card">
@@ -989,15 +1014,15 @@
     <h1>Профиль участника</h1>
     <p class="subtitle">Личная статистика и статус в сообществе</p>
 
-    <div class="card" id="profileCard">
+    <div class="card tier-none" id="profileCard">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:14px;">
-          <div style="width:54px; height:54px; border-radius:50%; background:rgba(0,229,153,0.15); border:2px solid var(--emerald); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--emerald);">
+          <div id="myProfileAvatarBubble" style="width:54px; height:54px; border-radius:50%; background:rgba(255,255,255,0.06); border:2px solid var(--card-border); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--text-sub); transition:all 0.3s ease;">
             👤
           </div>
           <div>
-            <h3 id="user_display_name" style="font-size:18px; margin-bottom:2px;">Участник комьюнити</h3>
-            <span class="badge" id="profileStatusBadge" style="margin-top:2px; display:inline-block;">Community Scout</span>
+            <h3 id="user_display_name" style="font-size:18px; margin-bottom:2px;">Участник сообщества</h3>
+            <span class="badge" id="profileStatusBadge" style="margin-top:2px; display:inline-block;">Без уровня</span>
           </div>
         </div>
         <div id="tierIcon" style="font-size:22px; opacity:0.85;">✦</div>
@@ -1211,7 +1236,7 @@
     if (typeof tg.disableVerticalSwipes === 'function') tg.disableVerticalSwipes();
   }
 
-  // Навигация
+  // Навигация свайпами
   const tabsOrder = ['feed', 'scoring', 'top', 'agent', 'profile'];
   let touchStartX = 0;
   let touchStartY = 0;
@@ -1332,19 +1357,47 @@
       const data = await res.json();
 
       title.textContent = `Профиль ${data.name}`;
-      const tierBadge = (data.reviews_count >= 10 || data.projects_count >= 1) ? '👑 Syndicate Partner' : ((data.reviews_count >= 3) ? '⚡️ Certified Reviewer' : '✦ Community Scout');
+      const r = data.reviews_count || 0;
+      const p = data.projects_count || 0;
+
+      let tierBadge = 'Без уровня';
+      let tierColor = 'var(--text-sub)';
+      let tierBorder = 'var(--card-border)';
+      let tierBg = 'rgba(255, 255, 255, 0.06)';
+
+      if (r >= 37) {
+        tierBadge = '💎 Изумрудный уровень';
+        tierColor = 'var(--emerald)';
+        tierBorder = 'rgba(0, 229, 153, 0.4)';
+        tierBg = 'rgba(0, 229, 153, 0.12)';
+      } else if (r >= 17) {
+        tierBadge = '🥇 Золотой уровень';
+        tierColor = 'var(--gold)';
+        tierBorder = 'rgba(255, 183, 3, 0.4)';
+        tierBg = 'rgba(255, 183, 3, 0.12)';
+      } else if (r >= 9) {
+        tierBadge = '🥈 Серебряный уровень';
+        tierColor = 'var(--silver)';
+        tierBorder = 'rgba(148, 163, 184, 0.4)';
+        tierBg = 'rgba(148, 163, 184, 0.12)';
+      } else if (r >= 3) {
+        tierBadge = '🥉 Бронзовый уровень';
+        tierColor = 'var(--bronze)';
+        tierBorder = 'rgba(205, 127, 50, 0.4)';
+        tierBg = 'rgba(205, 127, 50, 0.12)';
+      }
 
       body.innerHTML = `
         <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
-          <div style="width:52px; height:52px; border-radius:50%; background:rgba(0,229,153,0.15); border:2px solid var(--emerald); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--emerald);">👤</div>
+          <div style="width:52px; height:52px; border-radius:50%; background:${tierBg}; border:2px solid ${tierColor}; display:flex; align-items:center; justify-content:center; font-size:24px; color:${tierColor};">👤</div>
           <div>
             <h3 style="font-size:18px; font-weight:800;">${escapeHtml(data.name)}</h3>
-            <span class="badge" style="display:inline-block; margin-top:4px; font-size:10px;">${tierBadge}</span>
+            <span class="badge" style="display:inline-block; margin-top:4px; font-size:10px; color:${tierColor}; border-color:${tierBorder}; background:${tierBg};">${tierBadge}</span>
           </div>
         </div>
         <div class="project-tags" style="margin-bottom:18px;">
-          <span class="tag">Рецензий: ${data.reviews_count || 0}</span>
-          <span class="tag">Проектов: ${data.projects_count || 0}</span>
+          <span class="tag">Рецензий: ${r}</span>
+          <span class="tag">Проектов: ${p}</span>
         </div>
       `;
     } catch (e) {
@@ -1554,7 +1607,7 @@
     reviewsModal.classList.remove('open');
   }
 
-  // Профиль
+  // Шкала уровней: до 3 без статуса, 3+ бронза, 9+ серебро, 17+ золото, 37+ изумруд
   let profileStats = { reviews_count: null, projects_submitted: null };
 
   function renderProfileStats() {
@@ -1585,22 +1638,66 @@
         const card = document.getElementById('profileCard');
         const badge = document.getElementById('profileStatusBadge');
         const icon = document.getElementById('tierIcon');
+        const avatarBubble = document.getElementById('myProfileAvatarBubble');
         const count = profileStats.reviews_count;
 
-        card.classList.remove('tier-obsidian', 'tier-emerald', 'tier-gold');
+        card.classList.remove('tier-none', 'tier-bronze', 'tier-silver', 'tier-gold', 'tier-emerald');
 
-        if (count >= 10 || profileStats.projects_submitted >= 1) {
-          card.classList.add('tier-gold');
-          badge.textContent = 'Syndicate Partner';
-          icon.textContent = '👑';
-        } else if (count >= 3) {
+        if (count >= 37) {
           card.classList.add('tier-emerald');
-          badge.textContent = 'Certified Reviewer';
-          icon.textContent = '⚡️';
+          badge.textContent = 'Изумрудный уровень';
+          badge.style.color = 'var(--emerald)';
+          badge.style.borderColor = 'rgba(0, 229, 153, 0.4)';
+          badge.style.background = 'rgba(0, 229, 153, 0.12)';
+          icon.textContent = '💎';
+          if (avatarBubble) {
+            avatarBubble.style.borderColor = 'var(--emerald)';
+            avatarBubble.style.color = 'var(--emerald)';
+          }
+        } else if (count >= 17) {
+          card.classList.add('tier-gold');
+          badge.textContent = 'Золотой уровень';
+          badge.style.color = 'var(--gold)';
+          badge.style.borderColor = 'rgba(255, 183, 3, 0.4)';
+          badge.style.background = 'rgba(255, 183, 3, 0.12)';
+          icon.textContent = '🥇';
+          if (avatarBubble) {
+            avatarBubble.style.borderColor = 'var(--gold)';
+            avatarBubble.style.color = 'var(--gold)';
+          }
+        } else if (count >= 9) {
+          card.classList.add('tier-silver');
+          badge.textContent = 'Серебряный уровень';
+          badge.style.color = 'var(--silver)';
+          badge.style.borderColor = 'rgba(148, 163, 184, 0.4)';
+          badge.style.background = 'rgba(148, 163, 184, 0.12)';
+          icon.textContent = '🥈';
+          if (avatarBubble) {
+            avatarBubble.style.borderColor = 'var(--silver)';
+            avatarBubble.style.color = 'var(--silver)';
+          }
+        } else if (count >= 3) {
+          card.classList.add('tier-bronze');
+          badge.textContent = 'Бронзовый уровень';
+          badge.style.color = 'var(--bronze)';
+          badge.style.borderColor = 'rgba(205, 127, 50, 0.4)';
+          badge.style.background = 'rgba(205, 127, 50, 0.12)';
+          icon.textContent = '🥉';
+          if (avatarBubble) {
+            avatarBubble.style.borderColor = 'var(--bronze)';
+            avatarBubble.style.color = 'var(--bronze)';
+          }
         } else {
-          card.classList.add('tier-obsidian');
-          badge.textContent = 'Community Scout';
+          card.classList.add('tier-none');
+          badge.textContent = 'Без уровня';
+          badge.style.color = 'var(--text-sub)';
+          badge.style.borderColor = 'var(--card-border)';
+          badge.style.background = 'rgba(255, 255, 255, 0.06)';
           icon.textContent = '✦';
+          if (avatarBubble) {
+            avatarBubble.style.borderColor = 'var(--card-border)';
+            avatarBubble.style.color = 'var(--text-sub)';
+          }
         }
       }
     } catch (err) {}
@@ -1666,8 +1763,7 @@
     { el: document.getElementById('c1'), valEl: document.getElementById('val1') },
     { el: document.getElementById('c2'), valEl: document.getElementById('val2') },
     { el: document.getElementById('c3'), valEl: document.getElementById('val3') },
-    { el: document.getElementById('c4'), valEl: document.getElementById('val4') },
-    { el: document.getElementById('c5'), valEl: document.getElementById('val5') }
+    { el: document.getElementById('c4'), valEl: document.getElementById('val4') }
   ];
 
   const totalEl = document.getElementById('totalScore');
@@ -1794,7 +1890,7 @@
     else window.open(shareUrl, '_blank');
   });
 
-  // Отправка проекта на модерацию (без категорий)
+  // Отправка проекта на модерацию
   const submitProjBtn = document.getElementById('submitProjBtn');
   let isSubmittingProj = false;
   submitProjBtn.addEventListener('click', async () => {
