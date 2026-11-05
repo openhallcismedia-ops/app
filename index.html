@@ -55,7 +55,6 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
-      -webkit-touch-callout: none;
       user-select: none;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
@@ -104,7 +103,6 @@
       pointer-events: none;
       opacity: 0.45;
       animation: floatBlobs 12s ease-in-out infinite alternate;
-      transition: opacity 0.35s ease;
     }
 
     body.light-theme .bg-blob {
@@ -114,7 +112,7 @@
     .blob-1 {
       width: 280px;
       height: 280px;
-      background: radial-gradient(circle, #00e599 0%, rgba(0, 229, 153, 0) 70%);
+      background: radial-gradient(circle, #00e599 0%, transparent 70%);
       top: -40px;
       left: -60px;
     }
@@ -122,7 +120,7 @@
     .blob-2 {
       width: 320px;
       height: 320px;
-      background: radial-gradient(circle, #00b4d8 0%, rgba(0, 180, 216, 0) 70%);
+      background: radial-gradient(circle, #00b4d8 0%, transparent 70%);
       bottom: 80px;
       right: -80px;
       animation-duration: 16s;
@@ -132,11 +130,10 @@
     .blob-3 {
       width: 220px;
       height: 220px;
-      background: radial-gradient(circle, #1877f2 0%, rgba(24, 119, 242, 0) 70%);
+      background: radial-gradient(circle, #1877f2 0%, transparent 70%);
       top: 45%;
       left: 20%;
       opacity: 0.3;
-      animation-duration: 14s;
     }
 
     @keyframes floatBlobs {
@@ -230,12 +227,6 @@
       margin-bottom: 20px;
     }
 
-    .top-bar-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
     .badge {
       font-size: 11px;
       font-weight: 700;
@@ -266,35 +257,6 @@
       justify-content: center;
       font-size: 14px;
       cursor: pointer;
-    }
-
-    .lang-switcher {
-      display: flex;
-      gap: 3px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 3px;
-      border-radius: 12px;
-    }
-
-    .lang-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-sub);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 8px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .lang-btn.active {
-      background: var(--emerald);
-      color: #ffffff;
-    }
-
-    body.light-theme .lang-btn.active {
-      background: #059669;
     }
 
     .tags-filter-bar {
@@ -890,6 +852,22 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
+
+    .reaction-heart {
+      position: absolute;
+      pointer-events: none;
+      font-size: 40px;
+      color: var(--emerald);
+      transform: translate(-50%, -50%) scale(0);
+      animation: heartPop 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      z-index: 50;
+    }
+
+    @keyframes heartPop {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+      40% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+      100% { transform: translate(-50%, -90px) scale(0.6); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -910,15 +888,7 @@
 <div class="container">
   <div class="top-bar">
     <div class="badge">Open Hall Hub</div>
-    <div class="top-bar-right">
-      <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleAppTheme()">☀️</button>
-      <div class="lang-switcher">
-        <button class="lang-btn active" onclick="setLanguage('ru')">RU</button>
-        <button class="lang-btn" onclick="setLanguage('en')">EN</button>
-        <button class="lang-btn" onclick="setLanguage('am')">AM</button>
-        <button class="lang-btn" onclick="setLanguage('ge')">GE</button>
-      </div>
-    </div>
+    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleAppTheme()">☀️</button>
   </div>
 
   <!-- ВКЛАДКА 1: ЛЕНТА -->
@@ -1022,7 +992,7 @@
     <h1>Профиль участника</h1>
     <p class="subtitle">Личная статистика и статус в сообществе</p>
 
-    <div class="card profile-tier-card tier-obsidian" id="profileCard">
+    <div class="card" id="profileCard">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:14px;">
           <div style="width:54px; height:54px; border-radius:50%; background:rgba(0,229,153,0.15); border:2px solid var(--emerald); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--emerald);">
@@ -1126,6 +1096,7 @@
     <div id="user-profile-modal-body" class="app-modal-body"></div>
   </div>
 </div>
+
 <script>
   const API_URL = "https://openhall-backend-1.onrender.com";
   const tg = window.Telegram?.WebApp;
@@ -1135,13 +1106,12 @@
   let currentFilterTag = 'all';
   let selectedFormTags = new Set();
   let currentTheme = localStorage.getItem('openhall_theme') || 'dark';
-  let currentLang = 'ru';
 
   let currentTab = 'feed';
   let activeProject = 'Open Hall Bot';
   let projectChosen = false;
 
-  // Снятие экрана загрузки
+  // Безопасное снятие прелоадера
   function hidePreloader() {
     const preloader = document.getElementById('app-preloader');
     if (preloader && !preloader.classList.contains('hidden')) {
@@ -1152,9 +1122,9 @@
     }
   }
 
-  window.addEventListener('DOMContentLoaded', () => setTimeout(hidePreloader, 500));
-  window.addEventListener('load', () => setTimeout(hidePreloader, 300));
-  setTimeout(hidePreloader, 2500);
+  window.addEventListener('DOMContentLoaded', () => setTimeout(hidePreloader, 400));
+  window.addEventListener('load', () => setTimeout(hidePreloader, 200));
+  setTimeout(hidePreloader, 2000);
 
   // Тактильный отклик Telegram
   function triggerHaptic(type = 'light') {
@@ -1246,20 +1216,6 @@
     if (typeof tg.disableVerticalSwipes === 'function') tg.disableVerticalSwipes();
   }
 
-  // Интерактив кнопок
-  document.addEventListener('touchstart', (e) => {
-    const target = e.target.closest('.btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
-    if (target) {
-      target.classList.add('touch-active');
-      triggerHaptic('light');
-    }
-  }, { passive: true });
-
-  document.addEventListener('touchend', (e) => {
-    const target = e.target.closest('.btn-small, .read-reviews-btn, .nav-btn, .rank-item, .lang-btn, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
-    if (target) setTimeout(() => target.classList.remove('touch-active'), 120);
-  }, { passive: true });
-
   // 3D-Tilt эффект для карточек
   function init3DTilt(card) {
     let bounds;
@@ -1302,7 +1258,7 @@
     });
   }
 
-  // Реакция на двойной клик (сердечко ✦)
+  // Реакция на двойной тап (сердечко ✦)
   function initDoubleTap(card) {
     let lastTap = 0;
     card.addEventListener('touchend', (e) => {
@@ -1355,7 +1311,7 @@
     }
   }, { passive: true });
 
-  // Скрытие нижней панели при открытии клавиатуры
+  // Скрытие нижней панели при клавиатуре
   const bottomNavEl = document.querySelector('.bottom-nav');
   let navShowTimeout;
   document.addEventListener('focusin', (e) => {
@@ -1371,33 +1327,13 @@
     }
   });
 
-  // Логика перевода
-  async function translateTexts(texts, target) {
-    if (target === 'ru' || !texts || texts.length === 0) return texts;
-    try {
-      const res = await fetch(`${API_URL}/api/translate-batch`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ texts, target })
-      });
-      const data = await res.json();
-      if (data && Array.isArray(data.translations) && data.translations.length === texts.length) {
-        return data.translations;
-      }
-      return texts;
-    } catch (err) {
-      console.error('Ошибка перевода:', err);
-      return texts;
-    }
-  }
-
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str || '';
     return div.innerHTML;
   }
 
-  // Модальное окно "Мои активности"
+  // Модалка активности
   async function openMyContentModal(type) {
     triggerHaptic('medium');
     const modal = document.getElementById('my-content-modal');
@@ -1455,7 +1391,7 @@
     document.getElementById('my-content-modal').classList.remove('open');
   }
 
-  // Модальное окно профиля автора
+  // Модалка профиля
   async function openUserProfile(userId) {
     if (!userId) return;
     triggerHaptic('medium');
@@ -1496,7 +1432,7 @@
     document.getElementById('user-profile-modal').classList.remove('open');
   }
 
-  // Фильтрация тегов в ленте
+  // Фильтрация тегов
   function updateTagsFilterBar(projects) {
     const bar = document.getElementById('tagsFilterBar');
     const tagsSet = new Set();
@@ -1509,7 +1445,7 @@
 
     const tagsArr = Array.from(tagsSet);
     bar.innerHTML = `
-      <div class="filter-tag-chip ${currentFilterTag === 'all' ? 'active' : ''}" onclick="filterByTag('all', this)" id="t_tag_all">${i18n[currentLang].tag_all}</div>
+      <div class="filter-tag-chip ${currentFilterTag === 'all' ? 'active' : ''}" onclick="filterByTag('all', this)">Все</div>
       ${tagsArr.map(t => `
         <div class="filter-tag-chip ${currentFilterTag === t ? 'active' : ''}" onclick="filterByTag('${escapeHtml(t).replace(/'/g, "\\'")}', this)">#${escapeHtml(t)}</div>
       `).join('')}
@@ -1541,7 +1477,7 @@
       const tagsHtml = (p.tags || []).map(tag => `
         <span class="tag tag-interactive" onclick="filterByTag('${escapeHtml(tag).replace(/'/g, "\\'")}', null)">#${escapeHtml(tag)}</span>
       `).join('');
-      const safeDisplayName = escapeHtml(p.displayName || p.name);
+      const safeDisplayName = escapeHtml(p.name);
       const safeOriginalNameJs = escapeHtml(p.name).replace(/'/g, "\\'");
       const delay = Math.min(index * 60, 400);
 
@@ -1553,16 +1489,16 @@
       ` : '';
 
       return `
-        <div class="card stagger-in" style="animation-delay:${delay}ms">
+        <div class="card" style="animation-delay:${delay}ms">
           ${authorBadgeHtml}
           <h3>${safeDisplayName}</h3>
-          <p>${escapeHtml(p.displayDesc || p.description)}</p>
+          <p>${escapeHtml(p.description)}</p>
           <div class="card-footer">
             <div class="project-tags">${tagsHtml}</div>
-            <button class="btn-small" onclick="startScoring('${safeOriginalNameJs}')">${i18n[currentLang].btn_eval}</button>
+            <button class="btn-small" onclick="startScoring('${safeOriginalNameJs}')">Оценить</button>
           </div>
           <div style="margin-top:14px; text-align:right;">
-            <span class="read-reviews-btn" onclick="openReviews('${safeOriginalNameJs}')">${i18n[currentLang].read_reviews}</span>
+            <span class="read-reviews-btn" onclick="openReviews('${safeOriginalNameJs}')">Читать отзывы →</span>
           </div>
         </div>
       `;
@@ -1584,21 +1520,7 @@
       }
 
       lastKnownProjectsCount = projects.length;
-
-      let displayNames = projects.map(p => p.name);
-      let displayDescs = projects.map(p => p.description);
-      if (currentLang !== 'ru') {
-        [displayNames, displayDescs] = await Promise.all([
-          translateTexts(displayNames, currentLang),
-          translateTexts(displayDescs, currentLang)
-        ]);
-      }
-
-      allProjectsData = projects.map((p, i) => ({
-        ...p,
-        displayName: displayNames[i],
-        displayDesc: displayDescs[i]
-      }));
+      allProjectsData = projects;
 
       updateTagsFilterBar(allProjectsData);
       renderFeedList();
@@ -1661,18 +1583,13 @@
         return;
       }
 
-      let displayNames = items.map(it => it.project_name);
-      if (currentLang !== 'ru') {
-        displayNames = await translateTexts(displayNames, currentLang);
-      }
-
       listContainer.innerHTML = items.map((item, index) => {
         const rankNum = String(index + 1).padStart(2, '0');
         const delay = Math.min(index * 60, 400);
-        const safeDisplayName = escapeHtml(displayNames[index]);
+        const safeDisplayName = escapeHtml(item.project_name);
         const safeOriginalNameJs = escapeHtml(item.project_name).replace(/'/g, "\\'");
         return `
-          <div class="rank-item stagger-in" style="animation-delay:${delay}ms;" onclick="openReviews('${safeOriginalNameJs}')">
+          <div class="rank-item" style="animation-delay:${delay}ms;" onclick="openReviews('${safeOriginalNameJs}')">
             <span class="rank-num">${rankNum}</span>
             <div class="rank-info">
               <div class="rank-title">${safeDisplayName}</div>
@@ -1702,7 +1619,7 @@
   function formatReviewDate(iso) {
     try {
       const d = new Date(iso);
-      return d.toLocaleDateString(currentLang === 'ru' ? 'ru-RU' : 'en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      return d.toLocaleDateString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric' });
     } catch (e) {
       return '';
     }
@@ -1710,38 +1627,23 @@
 
   async function openReviews(projectName) {
     triggerHaptic('medium');
-    reviewsModalBody.innerHTML = `<p>${i18n[currentLang].reviews_loading}</p>`;
+    reviewsModalBody.innerHTML = `<p>Загрузка рецензий...</p>`;
     reviewsModal.classList.add('open');
-
-    if (currentLang !== 'ru') {
-      const [translatedTitle] = await translateTexts([projectName], currentLang);
-      document.getElementById('reviewsModalTitle').textContent = translatedTitle;
-    } else {
-      document.getElementById('reviewsModalTitle').textContent = projectName;
-    }
+    document.getElementById('reviewsModalTitle').textContent = projectName;
 
     try {
       const res = await fetch(`${API_URL}/api/reviews?project=${encodeURIComponent(projectName)}`);
       const reviews = await res.json();
 
       if (!reviews || reviews.length === 0) {
-        reviewsModalBody.innerHTML = `<p>${i18n[currentLang].reviews_empty}</p>`;
+        reviewsModalBody.innerHTML = `<p>Пока никто не оставил рецензию на этот проект.</p>`;
         return;
       }
 
-      let displayComments = reviews.map(r => r.comment || '');
-      let displayVerdicts = reviews.map(r => r.verdict || '');
-      if (currentLang !== 'ru') {
-        [displayComments, displayVerdicts] = await Promise.all([
-          translateTexts(displayComments, currentLang),
-          translateTexts(displayVerdicts, currentLang)
-        ]);
-      }
-
-      reviewsModalBody.innerHTML = reviews.map((r, i) => {
-        const commentHtml = displayComments[i]
-          ? `<div style="font-size:13px; color:var(--text-main); line-height:1.45; margin-bottom:8px;">${escapeHtml(displayComments[i])}</div>`
-          : `<div style="font-size:13px; color:var(--text-sub); font-style:italic; margin-bottom:8px;">${i18n[currentLang].reviews_no_comment}</div>`;
+      reviewsModalBody.innerHTML = reviews.map((r) => {
+        const commentHtml = r.comment
+          ? `<div style="font-size:13px; color:var(--text-main); line-height:1.45; margin-bottom:8px;">${escapeHtml(r.comment)}</div>`
+          : `<div style="font-size:13px; color:var(--text-sub); font-style:italic; margin-bottom:8px;">Без комментария</div>`;
 
         return `
           <div class="card" style="margin-bottom:12px; padding:14px 16px;">
@@ -1751,7 +1653,7 @@
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
               <span style="font-size:15px; font-weight:800; color:var(--emerald);">${r.score} / 10</span>
-              <span style="font-size:11px; color:var(--cyan); font-weight:700;">${escapeHtml(displayVerdicts[i])}</span>
+              <span style="font-size:11px; color:var(--cyan); font-weight:700;">${escapeHtml(r.verdict)}</span>
             </div>
             ${commentHtml}
             <div style="font-size:11px; color:var(--text-sub);">${formatReviewDate(r.created_at)}</div>
@@ -1760,7 +1662,7 @@
       }).join('');
     } catch (err) {
       console.error('Ошибка загрузки рецензий:', err);
-      reviewsModalBody.innerHTML = `<p style="color:#ff5c5c;">${i18n[currentLang].reviews_error}</p>`;
+      reviewsModalBody.innerHTML = `<p style="color:#ff5c5c;">Не удалось загрузить рецензии.</p>`;
     }
   }
 
@@ -1773,13 +1675,12 @@
   let profileStats = { reviews_count: null, projects_submitted: null };
 
   function renderProfileStats() {
-    const t = i18n[currentLang];
     const r = profileStats.reviews_count;
     const p = profileStats.projects_submitted;
     const revEl = document.getElementById('t_stat_reviews');
     const projEl = document.getElementById('t_stat_projects');
-    if (revEl) revEl.textContent = `${t.stat_reviews_label}: ${r === null ? '—' : r}`;
-    if (projEl) projEl.textContent = `${t.stat_projects_label}: ${p === null ? '—' : p}`;
+    if (revEl) revEl.textContent = `Рецензий: ${r === null ? '—' : r}`;
+    if (projEl) projEl.textContent = `Проектов подано: ${p === null ? '—' : p}`;
   }
 
   async function fetchProfile() {
@@ -1820,7 +1721,7 @@
         }
       }
     } catch (err) {
-      console.error('Ошибка загрузки статистики профиля:', err);
+      console.error('Ошибка загрузки профиля:', err);
     }
     renderProfileStats();
   }
@@ -1847,7 +1748,7 @@
     }
   }
 
-  // Навигация
+  // Навигация по табам
   function moveNavIndicator(tabId) {
     const indicator = document.getElementById('nav-indicator');
     if (!indicator) return;
@@ -1874,7 +1775,7 @@
     applyTiltToAll();
   }
 
-  // Расчет скоринга
+  // Скоринг
   const sliders = [
     { el: document.getElementById('c1'), valEl: document.getElementById('val1') },
     { el: document.getElementById('c2'), valEl: document.getElementById('val2') },
@@ -1908,7 +1809,6 @@
     const avg = avgNum.toFixed(1);
     totalEl.textContent = avg;
 
-    const t = i18n[currentLang];
     let dynamicAccentColor = null;
 
     if (avgNum >= 7.0) {
@@ -1927,21 +1827,17 @@
     }
 
     if (avg >= 9.0) {
-      verdictEl.textContent = t.v_top;
+      verdictEl.textContent = "Фаворит комьюнити";
       verdictEl.style.color = dynamicAccentColor || 'var(--gold)';
-      scoreBannerBox.classList.add('score-perfect');
     } else if (avg >= 7.0) {
-      verdictEl.textContent = t.v_good;
+      verdictEl.textContent = "Одобрено сообществом";
       verdictEl.style.color = dynamicAccentColor || 'var(--cyan)';
-      scoreBannerBox.classList.remove('score-perfect');
     } else if (avg >= 5.0) {
-      verdictEl.textContent = t.v_mid;
+      verdictEl.textContent = "Есть потенциал";
       verdictEl.style.color = 'var(--text-sub)';
-      scoreBannerBox.classList.remove('score-perfect');
     } else {
-      verdictEl.textContent = t.v_low;
+      verdictEl.textContent = "Нужна доработка";
       verdictEl.style.color = '#ef4444';
-      scoreBannerBox.classList.remove('score-perfect');
     }
 
     sliders.forEach(item => {
@@ -2002,13 +1898,13 @@
 
       showToast(`Оценка для «${activeProject}» отправлена на модерацию!`);
       shareBtn.style.display = 'block';
-      shareBtn.textContent = `${i18n[currentLang].share_btn} «${activeProject}»`;
+      shareBtn.textContent = `Поделиться оценкой «${activeProject}»`;
     } catch (err) {
       console.error("Ошибка сохранения:", err);
       showToast("Не удалось сохранить оценку. Проверьте интернет.");
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = `${i18n[currentLang].submitBtn}: «${activeProject}»`;
+      submitBtn.textContent = `Оставить рецензию: «${activeProject}»`;
       isSubmitting = false;
     }
   });
@@ -2076,7 +1972,7 @@
       showToast('Не удалось отправить заявку. Попробуйте снова.');
     } finally {
       submitProjBtn.disabled = false;
-      submitProjBtn.textContent = i18n[currentLang].btn_submit_proj;
+      submitProjBtn.textContent = 'Опубликовать проект';
       isSubmittingProj = false;
     }
   });
@@ -2084,33 +1980,15 @@
   function startScoring(projName) {
     activeProject = projName;
     projectChosen = true;
-    updateScoreTitle();
+    document.getElementById('scoringTargetName').textContent = activeProject;
+    document.getElementById('t_score_title').textContent = activeProject;
     shareBtn.style.display = 'none';
     const sBtn = document.getElementById('submitBtn');
-    if (sBtn) sBtn.textContent = `${i18n[currentLang].submitBtn}: «${activeProject}»`;
+    if (sBtn) sBtn.textContent = `Оставить рецензию: «${activeProject}»`;
     switchTab('scoring');
   }
 
-  async function updateScoreTitle() {
-    const titleEl = document.getElementById('t_score_title');
-    const targetEl = document.getElementById('scoringTargetName');
-    const t = i18n[currentLang];
-    
-    if (targetEl) targetEl.textContent = activeProject;
-
-    if (!projectChosen) {
-      titleEl.textContent = t.score_title;
-      return;
-    }
-    if (currentLang === 'ru') {
-      titleEl.textContent = activeProject;
-      return;
-    }
-    const [translated] = await translateTexts([activeProject], currentLang);
-    titleEl.textContent = translated;
-  }
-
-  // AI-Агент Чиф
+  // Чат с Чифом
   const agentMessagesEl = document.getElementById('agent-messages');
   const agentInputEl = document.getElementById('agentInput');
   const agentSendBtn = document.getElementById('agentSendBtn');
@@ -2147,7 +2025,7 @@
           initData: tg?.initData || '',
           message: text,
           history: agentHistory.slice(-12),
-          lang: currentLang
+          lang: 'ru'
         })
       });
       const data = await res.json();
@@ -2156,11 +2034,11 @@
         appendAgentMessage('bot', data.reply);
         agentHistory.push({ role: 'assistant', content: data.reply });
       } else {
-        appendAgentMessage('bot', i18n[currentLang].agent_error);
+        appendAgentMessage('bot', 'Не удалось получить ответ. Попробуйте ещё раз.');
       }
     } catch (err) {
       console.error('Ошибка агента:', err);
-      appendAgentMessage('bot', i18n[currentLang].agent_error);
+      appendAgentMessage('bot', 'Не удалось получить ответ. Попробуйте ещё раз.');
     } finally {
       agentSendBtn.disabled = false;
       isAgentSending = false;
@@ -2175,113 +2053,13 @@
     }
   });
 
-  // Локализация
-  const i18n = {
-    ru: {
-      submitBtn: "Оставить рецензию",
-      share_btn: "Поделиться оценкой",
-      btn_eval: "Оценить",
-      score_title: "Рецензия проекта",
-      stat_reviews_label: "Рецензий",
-      stat_projects_label: "Проектов подано",
-      btn_submit_proj: "Опубликовать проект",
-      tag_all: "Все",
-      v_top: "Фаворит комьюнити",
-      v_good: "Одобрено сообществом",
-      v_mid: "Есть потенциал",
-      v_low: "Нужна доработка",
-      read_reviews: "Читать отзывы →",
-      reviews_loading: "Загрузка рецензий...",
-      reviews_empty: "Пока никто не оставил рецензию на этот проект.",
-      reviews_no_comment: "Без комментария",
-      reviews_error: "Не удалось загрузить рецензии.",
-      agent_error: "Не удалось получить ответ. Попробуйте ещё раз."
-    },
-    en: {
-      submitBtn: "Submit Review",
-      share_btn: "Share Review",
-      btn_eval: "Review",
-      score_title: "Project Review",
-      stat_reviews_label: "Reviews",
-      stat_projects_label: "Projects submitted",
-      btn_submit_proj: "Publish Project",
-      tag_all: "All",
-      v_top: "Community Favorite",
-      v_good: "Community Approved",
-      v_mid: "Shows Potential",
-      v_low: "Needs Work",
-      read_reviews: "Read reviews →",
-      reviews_loading: "Loading reviews...",
-      reviews_empty: "No one has reviewed this project yet.",
-      reviews_no_comment: "No comment",
-      reviews_error: "Couldn't load reviews.",
-      agent_error: "Couldn't get a reply. Please try again."
-    },
-    am: {
-      submitBtn: "Ուղարկել ակնարկը",
-      share_btn: "Կիսվել գնահատականով",
-      btn_eval: "Գնահատել",
-      score_title: "Նախագծի գնահատում",
-      stat_reviews_label: "Ակնարկներ",
-      stat_projects_label: "Նախագծեր",
-      btn_submit_proj: "Հրապարակել",
-      tag_all: "Բոլորը",
-      v_top: "Համայնքի ընտրյալ",
-      v_good: "Հավանված",
-      v_mid: "Ունի ներուժ",
-      v_low: "Լրամշակման կարիք ունի",
-      read_reviews: "Կարդալ ակնարկները →",
-      reviews_loading: "Բեռնում...",
-      reviews_empty: "Ակնարկներ դեռ չկան:",
-      reviews_no_comment: "Առանց մեկնաբանության",
-      reviews_error: "Չհաջողվեց բեռնել:",
-      agent_error: "Չհաջողվեց ստանալ պատասխան:"
-    },
-    ge: {
-      submitBtn: "შეფასების გაგზავნა",
-      share_btn: "შეფასების გაზიარება",
-      btn_eval: "შეფასება",
-      score_title: "პროექტის შეფასება",
-      stat_reviews_label: "შეფასებები",
-      stat_projects_label: "პროექტები",
-      btn_submit_proj: "გამოქვეყნება",
-      tag_all: "ყველა",
-      v_top: "რჩეული",
-      v_good: "მოწონებული",
-      v_mid: "პოტენციალით",
-      v_low: "საჭიროებს დამუშავებას",
-      read_reviews: "ნახვა →",
-      reviews_loading: "იტვირთება...",
-      reviews_empty: "შეფასებები არ არის.",
-      reviews_no_comment: "კომენტარის გარეშე",
-      reviews_error: "შეცდომა ჩატვირთვისას.",
-      agent_error: "პასუხის მიღება ვერ მოხერხდა."
-    }
-  };
-
-  function setLanguage(lang) {
-    currentLang = lang;
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
-    });
-    calculate();
-    updateScoreTitle();
-    renderProfileStats();
-    if (currentTab === 'top') fetchLeaderboard();
-    fetchFeed();
-  }
-
   // Запуск при старте
   if (tg?.initDataUnsafe?.user?.first_name) {
     document.getElementById('user_display_name').textContent = tg.initDataUnsafe.user.first_name;
   }
 
-  const userLang = tg?.initDataUnsafe?.user?.language_code;
-  if (userLang === 'hy' || userLang === 'am') setLanguage('am');
-  else if (userLang === 'ka' || userLang === 'ge') setLanguage('ge');
-  else if (userLang === 'en') setLanguage('en');
-  else setLanguage('ru');
-
+  calculate();
+  renderProfileStats();
   fetchFeed();
   fetchProfile();
   applyTiltToAll();
