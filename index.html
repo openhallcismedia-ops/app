@@ -513,6 +513,17 @@
       margin-bottom: 14px;
     }
 
+    /* Стилизация метки оцениваемого проекта */
+    .target-label-styled {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      color: var(--text-sub);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
     .score-banner {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -918,7 +929,7 @@
 
     <div class="scoring-target-badge">
       <div>
-        <span style="font-size:11px; text-transform:uppercase; color:var(--text-sub); font-weight:700;">Оцениваемый проект</span>
+        <span class="target-label-styled">Оцениваемый проект</span>
         <h3 id="scoringTargetName" style="font-size:16px; font-weight:800; margin-top:2px;">Open Hall Bot</h3>
       </div>
       <button class="btn-small ios-btn-tap" onclick="switchTab('feed')" style="padding:6px 12px; font-size:11px;">Выбрать другой</button>
