@@ -251,6 +251,18 @@
       border: 1px solid #a7f3d0;
     }
 
+    /* Анимации нажатий */
+    .ios-btn-tap, .btn-small, .btn-action, .btn-secondary, .read-reviews-btn, .theme-toggle-btn, .filter-tag-chip, .form-tag-item, .nav-btn, .rank-item {
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: transform 0.2s var(--spring-ease), opacity 0.2s ease, filter 0.2s ease;
+    }
+
+    .touch-active, .ios-btn-tap:active, .btn-small:active, .btn-action:active, .btn-secondary:active, .read-reviews-btn:active, .theme-toggle-btn:active, .filter-tag-chip:active, .form-tag-item:active, .nav-btn:active, .rank-item:active {
+      transform: scale(0.94) !important;
+      opacity: 0.82 !important;
+    }
+
     .theme-toggle-btn {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -262,7 +274,6 @@
       align-items: center;
       justify-content: center;
       font-size: 14px;
-      cursor: pointer;
     }
 
     .tags-filter-bar {
@@ -287,7 +298,6 @@
       font-size: 11px;
       font-weight: 700;
       white-space: nowrap;
-      cursor: pointer;
       flex-shrink: 0;
     }
 
@@ -318,7 +328,6 @@
       border-radius: 10px;
       font-size: 11px;
       font-weight: 700;
-      cursor: pointer;
     }
 
     .form-tag-item.selected {
@@ -364,6 +373,9 @@
       box-shadow: 0 4px 16px var(--shadow-color);
       position: relative;
       overflow: hidden;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: transform 0.25s var(--spring-ease);
     }
 
     .card h3 {
@@ -442,7 +454,6 @@
       border-radius: 12px;
       font-size: 12px;
       font-weight: 800;
-      cursor: pointer;
       flex-shrink: 0;
     }
 
@@ -462,7 +473,6 @@
       border-radius: 10px;
       background: rgba(0, 180, 216, 0.1);
       border: 1px solid rgba(0, 180, 216, 0.25);
-      cursor: pointer;
     }
 
     .btn-action {
@@ -474,7 +484,6 @@
       font-size: 16px;
       font-weight: 800;
       border: none;
-      cursor: pointer;
     }
 
     body:not(.light-theme) .btn-action {
@@ -492,7 +501,6 @@
       font-weight: 700;
       margin-top: 10px;
       display: none;
-      cursor: pointer;
     }
 
     .scoring-target-badge {
@@ -608,7 +616,6 @@
       border-radius: 16px;
       padding: 14px 18px;
       margin-bottom: 10px;
-      cursor: pointer;
     }
 
     .rank-num {
@@ -678,7 +685,6 @@
       align-items: center;
       justify-content: center;
       color: var(--text-sub);
-      cursor: pointer;
       width: 20%;
       height: 100%;
       position: relative;
@@ -753,7 +759,6 @@
       height: 32px;
       border-radius: 50%;
       font-size: 19px;
-      cursor: pointer;
     }
 
     .app-modal-body {
@@ -833,7 +838,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
     }
 
     .app-toast {
@@ -859,6 +863,22 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
+
+    .reaction-heart {
+      position: absolute;
+      pointer-events: none;
+      font-size: 40px;
+      color: var(--emerald);
+      transform: translate(-50%, -50%) scale(0);
+      animation: heartPop 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      z-index: 50;
+    }
+
+    @keyframes heartPop {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+      40% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+      100% { transform: translate(-50%, -90px) scale(0.6); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -879,7 +899,7 @@
 <div class="container">
   <div class="top-bar">
     <div class="badge">Open Hall Hub</div>
-    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleAppTheme()">☀️</button>
+    <button class="theme-toggle-btn ios-btn-tap" id="themeToggleBtn" onclick="toggleAppTheme()">☀️</button>
   </div>
 
   <!-- ВКЛАДКА 1: ЛЕНТА -->
@@ -902,7 +922,7 @@
         <span style="font-size:11px; text-transform:uppercase; color:var(--text-sub); font-weight:700;">Оцениваемый бот</span>
         <h3 id="scoringTargetName" style="font-size:16px; font-weight:800; margin-top:2px;">Open Hall Bot</h3>
       </div>
-      <button class="btn-small" onclick="switchTab('feed')" style="padding:6px 12px; font-size:11px;">Выбрать другой</button>
+      <button class="btn-small ios-btn-tap" onclick="switchTab('feed')" style="padding:6px 12px; font-size:11px;">Выбрать другой</button>
     </div>
 
     <div class="score-banner" id="scoreBannerBox">
@@ -951,8 +971,8 @@
       <textarea id="comment" placeholder="В чем главные плюсы и что авторам стоит доработать?"></textarea>
     </div>
 
-    <button class="btn-action" id="submitBtn">Оставить рецензию</button>
-    <button class="btn-secondary" id="shareBtn">Поделиться оценкой</button>
+    <button class="btn-action ios-btn-tap" id="submitBtn">Оставить рецензию</button>
+    <button class="btn-secondary ios-btn-tap" id="shareBtn">Поделиться оценкой</button>
   </div>
 
   <!-- ВКЛАДКА 3: ТОП -->
@@ -973,7 +993,7 @@
       </div>
       <div class="agent-input-row">
         <textarea id="agentInput" rows="1" placeholder="Спросить у Чифа..."></textarea>
-        <button id="agentSendBtn" class="agent-send-btn">➤</button>
+        <button id="agentSendBtn" class="agent-send-btn ios-btn-tap">➤</button>
       </div>
     </div>
   </div>
@@ -997,8 +1017,8 @@
         <div id="tierIcon" style="font-size:22px; opacity:0.85;">✦</div>
       </div>
       <div class="project-tags">
-        <span class="tag" id="t_stat_reviews" onclick="openMyContentModal('reviews')">Рецензий: —</span>
-        <span class="tag" id="t_stat_projects" onclick="openMyContentModal('projects')">Проектов: —</span>
+        <span class="tag ios-btn-tap" id="t_stat_reviews" onclick="openMyContentModal('reviews')">Рецензий: —</span>
+        <span class="tag ios-btn-tap" id="t_stat_projects" onclick="openMyContentModal('projects')">Проектов: —</span>
       </div>
     </div>
 
@@ -1007,7 +1027,7 @@
       <p style="margin-bottom:14px; font-size:12px;">Укажите никнейм, который будет отображаться на ваших проектах и рецензиях.</p>
       <label for="customHandleInput" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;">Отображаемый ник</label>
       <input type="text" id="customHandleInput" maxlength="30" placeholder="@nickname" style="margin-bottom:14px;">
-      <button class="btn-small" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить ник</button>
+      <button class="btn-small ios-btn-tap" style="width:100%; padding:14px; font-size:13px;" onclick="saveCustomProfile()">Сохранить ник</button>
     </div>
 
     <div class="card" style="margin-bottom:30px;">
@@ -1019,39 +1039,39 @@
       <textarea id="newProjDesc" maxlength="500" placeholder="Пара предложений о проекте..." style="margin-bottom:12px;"></textarea>
       <label style="display:block; font-size:13px; font-weight:700; margin-bottom:8px;">Выберите категории (до 4)</label>
       <div class="form-tags-picker" id="formTagsPicker">
-        <span class="form-tag-item" onclick="toggleFormTag('Telegram App', this)">Telegram App</span>
-        <span class="form-tag-item" onclick="toggleFormTag('AI', this)">AI</span>
-        <span class="form-tag-item" onclick="toggleFormTag('Media', this)">Media</span>
-        <span class="form-tag-item" onclick="toggleFormTag('Community', this)">Community</span>
-        <span class="form-tag-item" onclick="toggleFormTag('Fintech', this)">Fintech</span>
-        <span class="form-tag-item" onclick="toggleFormTag('Web3', this)">Web3</span>
-        <span class="form-tag-item" onclick="toggleFormTag('Culture', this)">Culture</span>
-        <span class="form-tag-item" onclick="toggleFormTag('SaaS', this)">SaaS</span>
+        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Telegram App', this)">Telegram App</span>
+        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('AI', this)">AI</span>
+        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Media', this)">Media</span>
+        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Community', this)">Community</span>
+        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Fintech', this)">Fintech</span>
+        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Web3', this)">Web3</span>
+        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Culture', this)">Culture</span>
+        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('SaaS', this)">SaaS</span>
       </div>
-      <button class="btn-action" style="padding:15px;" id="submitProjBtn">Опубликовать проект</button>
+      <button class="btn-action ios-btn-tap" style="padding:15px;" id="submitProjBtn">Опубликовать проект</button>
     </div>
   </div>
 </div>
 
 <nav class="bottom-nav">
   <div id="nav-indicator" class="nav-indicator"></div>
-  <button class="nav-btn active" onclick="switchTab('feed')">
+  <button class="nav-btn ios-btn-tap active" onclick="switchTab('feed')">
     <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
     <span class="nav-label">Лента</span>
   </button>
-  <button class="nav-btn" onclick="switchTab('scoring')">
+  <button class="nav-btn ios-btn-tap" onclick="switchTab('scoring')">
     <svg class="nav-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
     <span class="nav-label">Оценка</span>
   </button>
-  <button class="nav-btn" onclick="switchTab('top')">
+  <button class="nav-btn ios-btn-tap" onclick="switchTab('top')">
     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/><path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"/><path d="M4 22h16"/><path d="M6 3h12v7a6 6 0 0 1-12 0V3z"/></svg>
     <span class="nav-label">Топ</span>
   </button>
-  <button class="nav-btn" onclick="switchTab('agent')">
+  <button class="nav-btn ios-btn-tap" onclick="switchTab('agent')">
     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 8.5 7.5 4 10 7.5"/><path d="M20 8.5 16.5 4 14 7.5"/><path d="M3.5 14.5c0-4.42 3.8-8 8.5-8s8.5 3.58 8.5 8c0 4.2-3.4 7.5-8.5 7.5s-8.5-3.3-8.5-7.5Z"/><circle cx="8.5" cy="13.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="13.5" r="1.25" fill="currentColor"/></svg>
     <span class="nav-label">Чиф</span>
   </button>
-  <button class="nav-btn" onclick="switchTab('profile')">
+  <button class="nav-btn ios-btn-tap" onclick="switchTab('profile')">
     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     <span class="nav-label">Профиль</span>
   </button>
@@ -1062,7 +1082,7 @@
   <div class="app-modal-sheet">
     <div class="app-modal-header">
       <h3 id="reviewsModalTitle">Рецензии</h3>
-      <button class="app-modal-close" onclick="closeReviews()">&times;</button>
+      <button class="app-modal-close ios-btn-tap" onclick="closeReviews()">&times;</button>
     </div>
     <div id="reviews-modal-body" class="app-modal-body"><p>Загрузка...</p></div>
   </div>
@@ -1072,7 +1092,7 @@
   <div class="app-modal-sheet">
     <div class="app-modal-header">
       <h3 id="myContentModalTitle">Мои активности</h3>
-      <button class="app-modal-close" onclick="closeMyContentModal()">&times;</button>
+      <button class="app-modal-close ios-btn-tap" onclick="closeMyContentModal()">&times;</button>
     </div>
     <div id="my-content-modal-body" class="app-modal-body"></div>
   </div>
@@ -1082,7 +1102,7 @@
   <div class="app-modal-sheet">
     <div class="app-modal-header">
       <h3 id="userProfileModalTitle">Профиль автора</h3>
-      <button class="app-modal-close" onclick="closeUserProfileModal()">&times;</button>
+      <button class="app-modal-close ios-btn-tap" onclick="closeUserProfileModal()">&times;</button>
     </div>
     <div id="user-profile-modal-body" class="app-modal-body"></div>
   </div>
@@ -1116,6 +1136,7 @@
   setTimeout(hidePreloader, 300);
   setTimeout(hidePreloader, 1000);
 
+  // Тактильный отклик и анимации нажатия
   function triggerHaptic(type = 'light') {
     if (tg?.HapticFeedback) {
       if (type === 'medium') tg.HapticFeedback.impactOccurred('medium');
@@ -1124,6 +1145,19 @@
       else tg.HapticFeedback.impactOccurred('light');
     }
   }
+
+  document.addEventListener('touchstart', (e) => {
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .btn-action, .btn-secondary, .read-reviews-btn, .nav-btn, .rank-item, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
+    if (target) {
+      target.classList.add('touch-active');
+      triggerHaptic('light');
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .btn-action, .btn-secondary, .read-reviews-btn, .nav-btn, .rank-item, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
+    if (target) setTimeout(() => target.classList.remove('touch-active'), 120);
+  }, { passive: true });
 
   function showToast(text) {
     if (tg?.showAlert) {
@@ -1397,7 +1431,7 @@
       const safeOriginalNameJs = escapeHtml(p.name).replace(/'/g, "\\'");
 
       const authorBadgeHtml = p.submitted_by ? `
-        <div class="author-badge" onclick="openUserProfile('${p.submitted_by}')">
+        <div class="author-badge ios-btn-tap" onclick="openUserProfile('${p.submitted_by}')">
           <div class="author-avatar-bubble">👤</div>
           <span class="author-name-text">${escapeHtml(p.author_name || 'Фаундер')}</span>
         </div>
@@ -1410,10 +1444,10 @@
           <p>${escapeHtml(p.description)}</p>
           <div class="card-footer">
             <div class="project-tags">${tagsHtml}</div>
-            <button class="btn-small" onclick="startScoring('${safeOriginalNameJs}')">Оценить</button>
+            <button class="btn-small ios-btn-tap" onclick="startScoring('${safeOriginalNameJs}')">Оценить</button>
           </div>
           <div style="margin-top:14px; text-align:right;">
-            <span class="read-reviews-btn" onclick="openReviews('${safeOriginalNameJs}')">Читать отзывы →</span>
+            <span class="read-reviews-btn ios-btn-tap" onclick="openReviews('${safeOriginalNameJs}')">Читать отзывы →</span>
           </div>
         </div>
       `;
@@ -1480,7 +1514,7 @@
         const safeDisplayName = escapeHtml(item.project_name);
         const safeOriginalNameJs = escapeHtml(item.project_name).replace(/'/g, "\\'");
         return `
-          <div class="rank-item" onclick="openReviews('${safeOriginalNameJs}')">
+          <div class="rank-item ios-btn-tap" onclick="openReviews('${safeOriginalNameJs}')">
             <span class="rank-num">${rankNum}</span>
             <div class="rank-info">
               <div class="rank-title">${safeDisplayName}</div>
@@ -1748,7 +1782,7 @@
     });
   });
 
-  // Отправка оценки
+  // Отправка оценки на модерацию (с передачей всех нужных полей)
   let isSubmitting = false;
   submitBtn.addEventListener('click', async () => {
     if (isSubmitting) return;
@@ -1800,7 +1834,7 @@
     else window.open(shareUrl, '_blank');
   });
 
-  // Отправка проекта
+  // Отправка проекта на модерацию (с корректными полями)
   const submitProjBtn = document.getElementById('submitProjBtn');
   let isSubmittingProj = false;
   submitProjBtn.addEventListener('click', async () => {
