@@ -251,13 +251,13 @@
       border: 1px solid #a7f3d0;
     }
 
-    .ios-btn-tap, .btn-small, .btn-action, .btn-secondary, .read-reviews-btn, .theme-toggle-btn, .filter-tag-chip, .form-tag-item, .nav-btn, .rank-item {
+    .ios-btn-tap, .btn-small, .btn-action, .btn-secondary, .read-reviews-btn, .theme-toggle-btn, .filter-tag-chip, .nav-btn, .rank-item {
       cursor: pointer;
       touch-action: manipulation;
       transition: transform 0.2s var(--spring-ease), opacity 0.2s ease, filter 0.2s ease;
     }
 
-    .touch-active, .ios-btn-tap:active, .btn-small:active, .btn-action:active, .btn-secondary:active, .read-reviews-btn:active, .theme-toggle-btn:active, .filter-tag-chip:active, .form-tag-item:active, .nav-btn:active, .rank-item:active {
+    .touch-active, .ios-btn-tap:active, .btn-small:active, .btn-action:active, .btn-secondary:active, .read-reviews-btn:active, .theme-toggle-btn:active, .filter-tag-chip:active, .nav-btn:active, .rank-item:active {
       transform: scale(0.94) !important;
       opacity: 0.82 !important;
     }
@@ -310,29 +310,6 @@
       background: #059669;
       border-color: #059669;
       color: #ffffff;
-    }
-
-    .form-tags-picker {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-bottom: 16px;
-    }
-
-    .form-tag-item {
-      background: var(--input-bg);
-      border: 1px solid var(--tag-border);
-      color: var(--text-sub);
-      padding: 6px 12px;
-      border-radius: 10px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .form-tag-item.selected {
-      background: rgba(0, 229, 153, 0.2);
-      border-color: var(--emerald);
-      color: var(--emerald);
     }
 
     .tab-view {
@@ -513,7 +490,6 @@
       margin-bottom: 14px;
     }
 
-    /* Стилизация метки оцениваемого проекта */
     .target-label-styled {
       font-size: 12px;
       font-weight: 600;
@@ -1046,18 +1022,8 @@
       <label for="newProjName" style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;">Название проекта</label>
       <input type="text" id="newProjName" maxlength="80" placeholder="Например: My Cool App" style="margin-bottom:12px;">
       <label for="newProjDesc" style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;">Описание</label>
-      <textarea id="newProjDesc" maxlength="500" placeholder="Пара предложений о проекте..." style="margin-bottom:12px;"></textarea>
-      <label style="display:block; font-size:13px; font-weight:700; margin-bottom:8px;">Выберите категории (до 4)</label>
-      <div class="form-tags-picker" id="formTagsPicker">
-        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Telegram App', this)">Telegram App</span>
-        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('AI', this)">AI</span>
-        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Media', this)">Media</span>
-        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Community', this)">Community</span>
-        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Fintech', this)">Fintech</span>
-        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Web3', this)">Web3</span>
-        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('Culture', this)">Culture</span>
-        <span class="form-tag-item ios-btn-tap" onclick="toggleFormTag('SaaS', this)">SaaS</span>
-      </div>
+      <textarea id="newProjDesc" maxlength="500" placeholder="Пара предложений о проекте..." style="margin-bottom:16px;"></textarea>
+      
       <button class="btn-action ios-btn-tap" style="padding:15px;" id="submitProjBtn">Опубликовать проект</button>
     </div>
   </div>
@@ -1125,7 +1091,6 @@
   let allProjectsData = [];
   let lastKnownProjectsCount = 0;
   let currentFilterTag = 'all';
-  let selectedFormTags = new Set();
   let currentTheme = localStorage.getItem('openhall_theme') || 'dark';
 
   let currentTab = 'feed';
@@ -1157,7 +1122,7 @@
   }
 
   document.addEventListener('touchstart', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .btn-action, .btn-secondary, .read-reviews-btn, .nav-btn, .rank-item, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .btn-action, .btn-secondary, .read-reviews-btn, .nav-btn, .rank-item, .filter-tag-chip, .theme-toggle-btn');
     if (target) {
       target.classList.add('touch-active');
       triggerHaptic('light');
@@ -1165,7 +1130,7 @@
   }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    const target = e.target.closest('.ios-btn-tap, .btn-small, .btn-action, .btn-secondary, .read-reviews-btn, .nav-btn, .rank-item, .filter-tag-chip, .form-tag-item, .theme-toggle-btn');
+    const target = e.target.closest('.ios-btn-tap, .btn-small, .btn-action, .btn-secondary, .read-reviews-btn, .nav-btn, .rank-item, .filter-tag-chip, .theme-toggle-btn');
     if (target) setTimeout(() => target.classList.remove('touch-active'), 120);
   }, { passive: true });
 
@@ -1482,21 +1447,6 @@
       renderFeedList();
     } catch (err) {
       feedContainer.innerHTML = `<div class="card"><p style="color:#ff5c5c;">Сервер просыпается... повторите через 15 секунд.</p></div>`;
-    }
-  }
-
-  function toggleFormTag(tag, element) {
-    triggerHaptic('light');
-    if (selectedFormTags.has(tag)) {
-      selectedFormTags.delete(tag);
-      element.classList.remove('selected');
-    } else {
-      if (selectedFormTags.size >= 4) {
-        showToast('Можно выбрать максимум 4 категории.');
-        return;
-      }
-      selectedFormTags.add(tag);
-      element.classList.add('selected');
     }
   }
 
@@ -1844,7 +1794,7 @@
     else window.open(shareUrl, '_blank');
   });
 
-  // Отправка проекта на модерацию
+  // Отправка проекта на модерацию (без категорий)
   const submitProjBtn = document.getElementById('submitProjBtn');
   let isSubmittingProj = false;
   submitProjBtn.addEventListener('click', async () => {
@@ -1852,7 +1802,6 @@
 
     const nameEl = document.getElementById('newProjName');
     const descEl = document.getElementById('newProjDesc');
-    const tags = Array.from(selectedFormTags);
 
     const name = nameEl.value.trim();
     const description = descEl.value.trim();
@@ -1875,7 +1824,7 @@
           initData: tg?.initData || '',
           name,
           description,
-          tags: tags
+          tags: []
         })
       });
 
@@ -1887,8 +1836,6 @@
         showToast(`Проект «${name}» отправлен на модерацию!`);
         nameEl.value = '';
         descEl.value = '';
-        selectedFormTags.clear();
-        document.querySelectorAll('.form-tag-item').forEach(el => el.classList.remove('selected'));
         switchTab('feed');
       }
     } catch (err) {
