@@ -142,7 +142,6 @@
       100% { transform: translate(-20px, -25px) scale(0.95); }
     }
 
-    /* Автоматическое исчезновение прелоадера */
     .preloader {
       position: fixed;
       inset: 0;
@@ -152,11 +151,11 @@
       align-items: center;
       justify-content: center;
       z-index: 10000;
-      animation: autoHideLoader 1s forwards ease-in-out;
+      animation: autoHideLoader 0.9s forwards ease-in-out;
     }
 
     @keyframes autoHideLoader {
-      0%, 70% { opacity: 1; visibility: visible; }
+      0%, 60% { opacity: 1; visibility: visible; }
       100% { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
     }
 
@@ -517,7 +516,7 @@
       justify-content: space-between;
       margin-bottom: 20px;
       box-shadow: 0 4px 16px var(--shadow-color);
-      transition: all 0.3s ease;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .big-num {
@@ -527,6 +526,8 @@
       background: var(--grad-main);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      display: inline-block;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .crit-header {
@@ -551,6 +552,7 @@
       border-radius: 9px;
       min-width: 42px;
       text-align: center;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
 
     .crit-desc {
@@ -577,6 +579,7 @@
       background: var(--slider-thumb-color, var(--emerald));
       cursor: pointer;
       border: 2.5px solid #fff;
+      transition: background-color 0.2s ease;
     }
 
     input[type=text], textarea {
@@ -1109,7 +1112,6 @@
     }
   }
 
-  // Принудительно гасим прелоадер сразу
   hidePreloader();
   setTimeout(hidePreloader, 300);
   setTimeout(hidePreloader, 1000);
@@ -1658,7 +1660,14 @@
     if (tabId === 'profile') fetchProfile();
   }
 
-  // Расчет баллов
+  // Расчет цвета и золотого градиента
+  function interpolateColor(color1, color2, factor) {
+    const r = Math.round(color1[0] + factor * (color2[0] - color1[0]));
+    const g = Math.round(color1[1] + factor * (color2[1] - color1[1]));
+    const b = Math.round(color1[2] + factor * (color2[2] - color1[2]));
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
   const sliders = [
     { el: document.getElementById('c1'), valEl: document.getElementById('val1') },
     { el: document.getElementById('c2'), valEl: document.getElementById('val2') },
@@ -1685,22 +1694,29 @@
     const avg = avgNum.toFixed(1);
     totalEl.textContent = avg;
 
+    let dynamicAccentColor = null;
+
     if (avgNum >= 7.0) {
       const factor = Math.min(Math.max((avgNum - 7.0) / 3.0, 0), 1);
-      const accent = `rgb(${Math.round(255 * factor)}, ${Math.round(229 - 46 * factor)}, ${Math.round(153 - 150 * factor)})`;
-      document.documentElement.style.setProperty('--slider-thumb-color', accent);
-      scoreBannerBox.style.borderColor = accent;
+      dynamicAccentColor = interpolateColor([0, 229, 153], [255, 183, 3], factor);
+      
+      document.documentElement.style.setProperty('--slider-thumb-color', dynamicAccentColor);
+      totalEl.style.backgroundImage = `linear-gradient(135deg, ${dynamicAccentColor}, #fb8500)`;
+      scoreBannerBox.style.borderColor = dynamicAccentColor;
+      scoreBannerBox.style.boxShadow = `0 4px 20px rgba(255, 183, 3, ${(factor * 0.22).toFixed(2)})`;
     } else {
       document.documentElement.style.removeProperty('--slider-thumb-color');
+      totalEl.style.backgroundImage = 'var(--grad-main)';
       scoreBannerBox.style.borderColor = 'var(--card-border)';
+      scoreBannerBox.style.boxShadow = '0 4px 16px var(--shadow-color)';
     }
 
     if (avg >= 9.0) {
       verdictEl.textContent = "Фаворит комьюнити";
-      verdictEl.style.color = 'var(--gold)';
+      verdictEl.style.color = dynamicAccentColor || 'var(--gold)';
     } else if (avg >= 7.0) {
       verdictEl.textContent = "Одобрено сообществом";
-      verdictEl.style.color = 'var(--cyan)';
+      verdictEl.style.color = dynamicAccentColor || 'var(--cyan)';
     } else if (avg >= 5.0) {
       verdictEl.textContent = "Есть потенциал";
       verdictEl.style.color = 'var(--text-sub)';
@@ -1708,6 +1724,21 @@
       verdictEl.textContent = "Нужна доработка";
       verdictEl.style.color = '#ef4444';
     }
+
+    sliders.forEach(item => {
+      const v = Number(item.el.value);
+      if (v >= 8.0) {
+        const factorItem = (v - 8.0) / 2.0;
+        const colorItem = interpolateColor([0, 229, 153], [255, 183, 3], factorItem);
+        item.valEl.style.color = colorItem;
+        item.valEl.style.borderColor = colorItem;
+        item.valEl.style.backgroundColor = `rgba(255, 183, 3, ${(factorItem * 0.12).toFixed(2)})`;
+      } else {
+        item.valEl.style.color = '';
+        item.valEl.style.borderColor = '';
+        item.valEl.style.backgroundColor = '';
+      }
+    });
   }
 
   sliders.forEach(item => {
